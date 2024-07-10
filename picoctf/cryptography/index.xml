@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Cryptography on abund4nt</title>
+    <link>http://localhost:1313/picoctf/cryptography/</link>
+    <description>Recent content in Cryptography on abund4nt</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 10 Jul 2024 17:27:57 -0400</lastBuildDate>
+    <atom:link href="http://localhost:1313/picoctf/cryptography/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>rsa-pop-quiz</title>
+      <link>http://localhost:1313/picoctf/cryptography/writeup/</link>
+      <pubDate>Wed, 10 Jul 2024 17:27:57 -0400</pubDate>
+      <guid>http://localhost:1313/picoctf/cryptography/writeup/</guid>
+      <description>The following desiption is provided in the challenge.&#xA;Description Class, take your seats! It&amp;#39;s PRIME-time for a quiz... nc jupiter.challenges.picoctf.org 1981 A sentence inviting us to take a seat, supposedly they have a test prepared for us. We will use nc to connect to the remote server.&#xA;Good morning class! It&amp;#39;s me Ms. Adleman-Shamir-Rivest Today we will be taking a pop quiz, so I hope you studied. Cramming just will not do!</description>
+    </item>
+  </channel>
+</rss>

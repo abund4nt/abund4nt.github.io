@@ -4,9 +4,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     
-    <title>Rsa Pop Quiz | abund4nt</title>
+    <title>rsa-pop-quiz | abund4nt</title>
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="description" content="picoCTF / Cryptography">
+    <meta name="description" content="picoCTF 2019 / Cryptography">
     <meta name="generator" content="Hugo 0.123.7">
     
     
@@ -48,19 +48,19 @@
       <link rel="canonical" href="http://localhost:1313/writeups/rsa-pop-quiz/">
     
 
-    <meta property="og:title" content="Rsa Pop Quiz" />
-<meta property="og:description" content="picoCTF / Cryptography" />
+    <meta property="og:title" content="rsa-pop-quiz" />
+<meta property="og:description" content="picoCTF 2019 / Cryptography" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="http://localhost:1313/writeups/rsa-pop-quiz/" /><meta property="article:section" content="writeups" />
 <meta property="article:published_time" content="2024-07-10T17:27:57-04:00" />
 <meta property="article:modified_time" content="2024-07-10T17:27:57-04:00" />
 
-<meta itemprop="name" content="Rsa Pop Quiz">
-<meta itemprop="description" content="picoCTF / Cryptography"><meta itemprop="datePublished" content="2024-07-10T17:27:57-04:00" />
+<meta itemprop="name" content="rsa-pop-quiz">
+<meta itemprop="description" content="picoCTF 2019 / Cryptography"><meta itemprop="datePublished" content="2024-07-10T17:27:57-04:00" />
 <meta itemprop="dateModified" content="2024-07-10T17:27:57-04:00" />
-<meta itemprop="wordCount" content="1314">
-<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Rsa Pop Quiz"/>
-<meta name="twitter:description" content="picoCTF / Cryptography"/>
+<meta itemprop="wordCount" content="1316">
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/><meta name="twitter:title" content="rsa-pop-quiz"/>
+<meta name="twitter:description" content="picoCTF 2019 / Cryptography"/>
 
 	
   </head>
@@ -146,7 +146,7 @@
   </div>
 
 
-      <h1 class="f1 athelas mt3 mb1">Rsa Pop Quiz</h1>
+      <h1 class="f1 athelas mt3 mb1">rsa-pop-quiz</h1>
       
       <p class="tracked">
         By <strong>abund4nt</strong>
@@ -185,8 +185,8 @@ $$
 c = m^{e} \text{ (mod } n \text{)}
 \end{equation*}
 $$
-<p>The public key is formed by \(n\) and \(e\). \(n = p \cdot q\) which are two large prime numbers multiplied (these are stored as the private key).</p>
-<p>In order to decrypt the message you need the value \(\phi\)(\(n\)) \(=\) (\(p - 1\)) \(\dot\) (\(q - 1\)). Then</p>
+<p>The public key is formed by \(n\) and \(e\). \(n = p \dot q\) which are two large prime numbers multiplied (these are stored as the private key).</p>
+<p>In order to decrypt the message you need the value \(\phi\)(\(n\)) \(=\) (\(p - 1\)) \( \dot \) (\(q - 1\)). Then</p>
 $$
 \begin{equation*}
 m = c^{d} \text{ (mod } n \text{)}

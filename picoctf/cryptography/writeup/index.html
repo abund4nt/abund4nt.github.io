@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>rsa-pop-quiz | abund4nt</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="picoCTF 2019 / Cryptography">
+    <meta name="generator" content="Hugo 0.123.7">
+    
+    
+    
+    
+      <meta name="robots" content="noindex, nofollow">
+    
+    
+      <meta name="author" content = "abund4nt">
+    
+
+    
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<script>
+  MathJax = {
+    tex: {
+      displayMath: [['\\[', '\\]'], ['$$', '$$']],  
+      inlineMath: [['\\(', '\\)']]                  
+    }
+  };
+</script>
+    
+
+    
+<link rel="stylesheet" href="/ananke/css/main.min.css" >
+
+
+
+    
+
+    
+      
+
+    
+
+    
+
+    
+      <link rel="canonical" href="http://localhost:1313/picoctf/cryptography/writeup/">
+    
+
+    <meta property="og:title" content="rsa-pop-quiz" />
+<meta property="og:description" content="picoCTF 2019 / Cryptography" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/picoctf/cryptography/writeup/" /><meta property="article:section" content="picoctf" />
+<meta property="article:published_time" content="2024-07-10T17:27:57-04:00" />
+<meta property="article:modified_time" content="2024-07-10T17:27:57-04:00" />
+
+<meta itemprop="name" content="rsa-pop-quiz">
+<meta itemprop="description" content="picoCTF 2019 / Cryptography"><meta itemprop="datePublished" content="2024-07-10T17:27:57-04:00" />
+<meta itemprop="dateModified" content="2024-07-10T17:27:57-04:00" />
+<meta itemprop="wordCount" content="1316">
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/><meta name="twitter:title" content="rsa-pop-quiz"/>
+<meta name="twitter:description" content="picoCTF 2019 / Cryptography"/>
+
+	
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      
+        abund4nt
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/picoctf/" title="picoCTF page">
+              picoCTF
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/writeups/" title="Writeups page">
+              Writeups
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+<div class="ananke-socials">
+  
+    
+    <a href="https://github.com/abund4nt" target="_blank" rel="noopener" class="github ananke-social-link link-transition stackoverflow link dib z-999 pt3 pt0-l mr1" title="GitHub link" aria-label="follow on GitHub——Opens in a new window">
+      
+        <span class="icon"><svg style="enable-background:new 0 0 512 512;" version="1.1" viewBox="0 0 512 512"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+  <path d="M256,32C132.3,32,32,134.8,32,261.7c0,101.5,64.2,187.5,153.2,217.9c11.2,2.1,15.3-5,15.3-11.1   c0-5.5-0.2-19.9-0.3-39.1c-62.3,13.9-75.5-30.8-75.5-30.8c-10.2-26.5-24.9-33.6-24.9-33.6c-20.3-14.3,1.5-14,1.5-14   c22.5,1.6,34.3,23.7,34.3,23.7c20,35.1,52.4,25,65.2,19.1c2-14.8,7.8-25,14.2-30.7c-49.7-5.8-102-25.5-102-113.5   c0-25.1,8.7-45.6,23-61.6c-2.3-5.8-10-29.2,2.2-60.8c0,0,18.8-6.2,61.6,23.5c17.9-5.1,37-7.6,56.1-7.7c19,0.1,38.2,2.6,56.1,7.7   c42.8-29.7,61.5-23.5,61.5-23.5c12.2,31.6,4.5,55,2.2,60.8c14.3,16.1,23,36.6,23,61.6c0,88.2-52.4,107.6-102.3,113.3   c8,7.1,15.2,21.1,15.2,42.5c0,30.7-0.3,55.5-0.3,63c0,6.1,4,13.3,15.4,11C415.9,449.1,480,363.1,480,261.7   C480,134.8,379.7,32,256,32z"/>
+</svg>
+</span>
+      
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span></a>
+  
+</div>
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked ttu">
+          
+        Cryptography
+      </aside>
+      
+
+
+
+
+
+
+
+
+
+
+  <div id="sharing" class="mt3 ananke-socials">
+    
+  </div>
+
+
+      <h1 class="f1 athelas mt3 mb1">rsa-pop-quiz</h1>
+      
+      <p class="tracked">
+        By <strong>abund4nt</strong>
+      </p>
+      
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2024-07-10T17:27:57-04:00">July 10, 2024</time>
+      
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links black pr4-l w-two-thirds-l"><p>The following desiption is provided in the challenge.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-latex" data-lang="latex"><span style="display:flex;"><span>Description
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Class, take your seats! It&#39;s PRIME-time for a quiz... 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>nc jupiter.challenges.picoctf.org 1981
+</span></span></code></pre></div><p>A sentence inviting us to take a seat, supposedly they have a test prepared for us. We will use nc to connect to the remote server.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Good morning class! It<span style="color:#960050;background-color:#1e0010">&#39;</span>s me Ms. Adleman-Shamir-Rivest
+</span></span><span style="display:flex;"><span>Today we will be taking a pop quiz, so I hope you studied. Cramming just will not <span style="color:#66d9ef">do</span>!
+</span></span><span style="display:flex;"><span>You will need to tell me <span style="color:#66d9ef">if</span> each example is possible, given your extensive crypto knowledge.
+</span></span><span style="display:flex;"><span>Inputs and outputs are in decimal. No hex here!
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#### NEW PROBLEM ####</span>
+</span></span><span style="display:flex;"><span>q : <span style="color:#ae81ff">60413</span>
+</span></span><span style="display:flex;"><span>p : <span style="color:#ae81ff">76753</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">##### PRODUCE THE FOLLOWING ####</span>
+</span></span><span style="display:flex;"><span>n
+</span></span><span style="display:flex;"><span>IS THIS POSSIBLE and FEASIBLE? <span style="color:#f92672">(</span>Y/N<span style="color:#f92672">)</span>:
+</span></span></code></pre></div><p>We are facing a surprise questionnaire about RSA, in this case it asks us if it is possible to calculate \(n\) using \(p\) and \(q\).</p>
+<h2 id="rsa-context">RSA Context.</h2>
+<p>RSA encrypts a message in decimal format $m$ we can encrypt it with the following equation.</p>
+$$
+\begin{equation*}
+c = m^{e} \text{ (mod } n \text{)}
+\end{equation*}
+$$
+<p>The public key is formed by \(n\) and \(e\). \(n = p \dot q\) which are two large prime numbers multiplied (these are stored as the private key).</p>
+<p>In order to decrypt the message you need the value \(\phi\)(\(n\)) \(=\) (\(p - 1\)) \( \dot \) (\(q - 1\)). Then</p>
+$$
+\begin{equation*}
+m = c^{d} \text{ (mod } n \text{)}
+\end{equation*}
+$$
+<p>For a Python implementation of RSA you can look at this:</p>
+<p><a href="https://github.com/luk4spwn/rsa-implementation/">https://github.com/luk4spwn/rsa-implementation/</a></p>
+<h2 id="solución">Solución</h2>
+<p>In the first question we are asked if it is possible to get $n$ by $p$ and $q$.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Good morning class! It<span style="color:#960050;background-color:#1e0010">&#39;</span>s me Ms. Adleman-Shamir-Rivest
+</span></span><span style="display:flex;"><span>Today we will be taking a pop quiz, so I hope you studied. Cramming just will not <span style="color:#66d9ef">do</span>!
+</span></span><span style="display:flex;"><span>You will need to tell me <span style="color:#66d9ef">if</span> each example is possible, given your extensive crypto knowledge.
+</span></span><span style="display:flex;"><span>Inputs and outputs are in decimal. No hex here!
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#### NEW PROBLEM ####</span>
+</span></span><span style="display:flex;"><span>q : <span style="color:#ae81ff">60413</span>
+</span></span><span style="display:flex;"><span>p : <span style="color:#ae81ff">76753</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">##### PRODUCE THE FOLLOWING ####</span>
+</span></span><span style="display:flex;"><span>n
+</span></span><span style="display:flex;"><span>IS THIS POSSIBLE and FEASIBLE? <span style="color:#f92672">(</span>Y/N<span style="color:#f92672">)</span>:
+</span></span></code></pre></div><p>If we know that $n = p \cdot q$ we can get $n$ out with a multiplication in Python.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>➜ python3 -q
+</span></span><span style="display:flex;"><span>&gt;&gt;&gt; p <span style="color:#f92672">=</span> <span style="color:#ae81ff">76753</span>
+</span></span><span style="display:flex;"><span>&gt;&gt;&gt; q <span style="color:#f92672">=</span> <span style="color:#ae81ff">60413</span>
+</span></span><span style="display:flex;"><span>&gt;&gt;&gt; n <span style="color:#f92672">=</span> p * q
+</span></span><span style="display:flex;"><span>&gt;&gt;&gt; n
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">4636878989</span>
+</span></span></code></pre></div><p>We press Y in the script and send the value of $n$, we can see that the server responds with <code>Outstanding move!!!</code> giving us to understand that the result is correct.</p>
+<blockquote>
+<p>I checked if closing the connection to the server and connecting again changed the numbers, but NO, the numbers are not random, they are always the same.</p>
+</blockquote>
+<p>In the second question we are asked if it is possible to calculate $q$ if we have the value of $p$ and $n$.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#### NEW PROBLEM ####</span>
+</span></span><span style="display:flex;"><span>p : <span style="color:#ae81ff">54269</span>
+</span></span><span style="display:flex;"><span>n : <span style="color:#ae81ff">5051846941</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">##### PRODUCE THE FOLLOWING ####</span>
+</span></span><span style="display:flex;"><span>q
+</span></span><span style="display:flex;"><span>IS THIS POSSIBLE and FEASIBLE? <span style="color:#f92672">(</span>Y/N<span style="color:#f92672">)</span>:
+</span></span></code></pre></div><p>If we read a little about how RSA works we will come to the conclusion that $q$ can be calculated: $n / q$.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>&gt;&gt;&gt; p <span style="color:#f92672">=</span> <span style="color:#ae81ff">54269</span>
+</span></span><span style="display:flex;"><span>&gt;&gt;&gt; n <span style="color:#f92672">=</span> <span style="color:#ae81ff">5051846941</span>
+</span></span><span style="display:flex;"><span>&gt;&gt;&gt; q <span style="color:#f92672">=</span> n // p
+</span></span><span style="display:flex;"><span>&gt;&gt;&gt; q
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">93089</span>
+</span></span></code></pre></div><p>The other solution is to factor $n$, since $n$ is a small number we can use <a href="http://factordb.com/">factordb.com</a> and we will get the value of $q$.</p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/9be67bbb-2916-41bc-a8b7-7c941ad14288/3017c158-075c-4f8a-b646-17202a4b9929/Untitled.png" alt="Untitled"></p>
+<p>The value of \(q\) is 93089. We press Y and send the result through the server. This one answers us with an <code>Outstanding move!!!</code> giving us to understand that the result is correct.</p>
+<p>In the third question we are asked if it is possible to calculate \(q\) and \(p\) by \(n\) and \(e\).</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#### NEW PROBLEM ####</span>
+</span></span><span style="display:flex;"><span>e : <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>n : <span style="color:#ae81ff">12738162802910546503821920886905393316386362759567480839428456525224226445173031635306683726182522494910808518920409019414034814409330094245825749680913204566832337704700165993198897029795786969124232138869784626202501366135975223827287812326250577148625360887698930625504334325804587329905617936581116392784684334664204309771430814449606147221349888320403451637882447709796221706470239625292297988766493746209684880843111138170600039888112404411310974758532603998608057008811836384597579147244737606088756299939654265086899096359070667266167754944587948695842171915048619846282873769413489072243477764350071787327913</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">##### PRODUCE THE FOLLOWING ####</span>
+</span></span><span style="display:flex;"><span>q
+</span></span><span style="display:flex;"><span>p
+</span></span></code></pre></div><p>\(n\) is a giant number so it is not possible to retrieve the value of \(p\) and \(q\). We send \(n\) (saying it is not possible) through the script and move on to the next question.</p>
+<p>In the fourth question we are asked if it is possible to calculate the totient function of euler(\(\phi\)).</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#### NEW PROBLEM ####</span>
+</span></span><span style="display:flex;"><span>q : <span style="color:#ae81ff">66347</span>
+</span></span><span style="display:flex;"><span>p : <span style="color:#ae81ff">12611</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">##### PRODUCE THE FOLLOWING ####</span>
+</span></span><span style="display:flex;"><span>totient<span style="color:#f92672">(</span>n<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>IS THIS POSSIBLE and FEASIBLE? <span style="color:#f92672">(</span>Y/N<span style="color:#f92672">)</span>:
+</span></span></code></pre></div><p>The Euler totient function is the number of positive integers less than or equal to a given integer that are relative primes with respect to it. Recall that \(\phi\) is calculated \((p - 1) * (q - 1)\). Using interactive Python we can easily derive this value.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>&gt;&gt;&gt; p <span style="color:#f92672">=</span> <span style="color:#ae81ff">12611</span>
+</span></span><span style="display:flex;"><span>&gt;&gt;&gt; q <span style="color:#f92672">=</span> <span style="color:#ae81ff">66347</span>
+</span></span><span style="display:flex;"><span>&gt;&gt;&gt; totient <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>p - 1<span style="color:#f92672">)</span> * <span style="color:#f92672">(</span>q - 1<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>&gt;&gt;&gt; totient
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">836623060</span>
+</span></span></code></pre></div><p>Or also using sympy&rsquo;s totient module. Program the following script and we will get the same result as above.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> sympy.ntheory.factor_ <span style="color:#f92672">import</span> totient
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>n <span style="color:#f92672">=</span> <span style="color:#ae81ff">836702017</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>totient_n <span style="color:#f92672">=</span> totient(n)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(totient_n)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 836623060</span>
+</span></span></code></pre></div><p>We press Y and send the result of totient, it will answer us with an <code>Outstanding move!!!</code> giving us to understand that the result is correct.</p>
+<p>In the fifth question we are given a plain text (\(m\)), \(e\) and \(n\). Asking us if it is possible to extract a ciphertext with these values.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#### NEW PROBLEM ####</span>
+</span></span><span style="display:flex;"><span>plaintext : <span style="color:#ae81ff">6357294171489311547190987615544575133581967886499484091352661406414044440475205342882841236357665973431462491355089413710392273380203038793241564304774271529108729717</span>
+</span></span><span style="display:flex;"><span>e : <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>n : <span style="color:#ae81ff">29129463609326322559521123136222078780585451208149138547799121083622333250646678767769126248182207478527881025116332742616201890576280859777513414460842754045651093593251726785499360828237897586278068419875517543013545369871704159718105354690802726645710699029936754265654381929650494383622583174075805797766685192325859982797796060391271817578087472948205626257717479858369754502615173773514087437504532994142632207906501079835037052797306690891600559321673928943158514646572885986881016569647357891598545880304236145548059520898133142087545369179876065657214225826997676844000054327141666320553082128424707948750331</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">##### PRODUCE THE FOLLOWING ####</span>
+</span></span><span style="display:flex;"><span>ciphertext
+</span></span><span style="display:flex;"><span>IS THIS POSSIBLE and FEASIBLE? <span style="color:#f92672">(</span>Y/N<span style="color:#f92672">)</span>:
+</span></span></code></pre></div><p>Recall that:</p>
+$$
+\begin{equation*}
+c = m^{e} \text{ (mod } n \text{)}
+\end{equation*}
+$$
+<p>With the following Python script we can obtain the ciphertext.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>plaintext <span style="color:#f92672">=</span> <span style="color:#ae81ff">6357294171489311547190987615544575133581967886499484091352661406414044440475205342882841236357665973431462491355089413710392273380203038793241564304774271529108729717</span>
+</span></span><span style="display:flex;"><span>e <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>n <span style="color:#f92672">=</span> <span style="color:#ae81ff">29129463609326322559521123136222078780585451208149138547799121083622333250646678767769126248182207478527881025116332742616201890576280859777513414460842754045651093593251726785499360828237897586278068419875517543013545369871704159718105354690802726645710699029936754265654381929650494383622583174075805797766685192325859982797796060391271817578087472948205626257717479858369754502615173773514087437504532994142632207906501079835037052797306690891600559321673928943158514646572885986881016569647357891598545880304236145548059520898133142087545369179876065657214225826997676844000054327141666320553082128424707948750331</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>enc_message <span style="color:#f92672">=</span> pow(plaintext, e, n)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(enc_message)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 256931246631782714357241556582441991993437399854161372646318659020994329843524306570818293602492485385337029697819837182169818816821461486018802894936801257629375428544752970630870631166355711254848465862207765051226282541748174535990314552471546936536330397892907207943448897073772015986097770443616540466471245438117157152783246654401668267323136450122287983612851171545784168132230208726238881861407976917850248110805724300421712827401063963117423718797887144760360749619552577176382615108244813</span>
+</span></span></code></pre></div><p>We press Y and send the encrypted message, we will see that it responds with an Outstanding move!!! giving us to understand that the answer is correct.</p>
+<p>In the sixth question we are given a ciphertext, \(e\) and \(n\). Asking us if it is possible to calculate the plaintext.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e">#### NEW PROBLEM ####</span>
+</span></span><span style="display:flex;"><span>ciphertext : <span style="color:#ae81ff">107524013451079348539944510756143604203925717262185033799328445011792760545528944993719783392542163428637172323512252624567111110666168664743115203791510985709942366609626436995887781674651272233566303814979677507101168587739375699009734588985482369702634499544891509228440194615376339573685285125730286623323</span>
+</span></span><span style="display:flex;"><span>e : <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>n : <span style="color:#ae81ff">27566996291508213932419371385141522859343226560050921196294761870500846140132385080994630946107675330189606021165260590147068785820203600882092467797813519434652632126061353583124063944373336654246386074125394368479677295167494332556053947231141336142392086767742035970752738056297057898704112912616565299451359791548536846025854378347423520104947907334451056339439706623069503088916316369813499705073573777577169392401411708920615574908593784282546154486446779246790294398198854547069593987224578333683144886242572837465834139561122101527973799583927411936200068176539747586449939559180772690007261562703222558103359</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">##### PRODUCE THE FOLLOWING ####</span>
+</span></span><span style="display:flex;"><span>plaintext
+</span></span></code></pre></div><p>$n$ is a giant number, so we cannot calculate the plaintext, we answer N (which is not possible and skip to the seventh question).</p>
+<p>In the seventh question, we are given \(p, q\) and \(e\). Asking us to calculate \(d\).</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e">#### NEW PROBLEM ####</span>
+</span></span><span style="display:flex;"><span>q : <span style="color:#ae81ff">92092076805892533739724722602668675840671093008520241548191914215399824020372076186460768206814914423802230398410980218741906960527104568970225804374404612617736579286959865287226538692911376507934256844456333236362669879347073756238894784951597211105734179388300051579994253565459304743059533646753003894559</span>
+</span></span><span style="display:flex;"><span>p : <span style="color:#ae81ff">97846775312392801037224396977012615848433199640105786119757047098757998273009741128821931277074555731813289423891389911801250326299324018557072727051765547115514791337578758859803890173153277252326496062476389498019821358465433398338364421624871010292162533041884897182597065662521825095949253625730631876637</span>
+</span></span><span style="display:flex;"><span>e : <span style="color:#ae81ff">65537</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">##### PRODUCE THE FOLLOWING ####</span>
+</span></span><span style="display:flex;"><span>d
+</span></span></code></pre></div><p>We have the necessary values to calculate $d$. Using the following Python script we can calculate it.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">gcd</span>(a, b):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> b <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>        a, b <span style="color:#f92672">=</span> b, a <span style="color:#f92672">%</span> b
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> a
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">extended_gcd</span>(a, b):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> a <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> (b, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>        gcd, x, y <span style="color:#f92672">=</span> extended_gcd(b <span style="color:#f92672">%</span> a, a)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> (gcd, y <span style="color:#f92672">-</span> (b <span style="color:#f92672">//</span> a) <span style="color:#f92672">*</span> x, x)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">mod_inverse</span>(a, m):
+</span></span><span style="display:flex;"><span>    gcd, x, y <span style="color:#f92672">=</span> extended_gcd(a, m)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> gcd <span style="color:#f92672">!=</span> <span style="color:#ae81ff">1</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">Exception</span>(<span style="color:#e6db74">&#39;No existe inverso modular&#39;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> x <span style="color:#f92672">%</span> m
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">calculate_d</span>(p, q, e):
+</span></span><span style="display:flex;"><span>    phi <span style="color:#f92672">=</span> (p <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">*</span> (q <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>    d <span style="color:#f92672">=</span> mod_inverse(e, phi)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> d
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">=</span> int(input(<span style="color:#e6db74">&#34;Ingrese el valor de p: &#34;</span>))
+</span></span><span style="display:flex;"><span>q <span style="color:#f92672">=</span> int(input(<span style="color:#e6db74">&#34;Ingrese el valor de q: &#34;</span>))
+</span></span><span style="display:flex;"><span>e <span style="color:#f92672">=</span> int(input(<span style="color:#e6db74">&#34;Ingrese el valor de e: &#34;</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>d <span style="color:#f92672">=</span> calculate_d(p, q, e)
+</span></span><span style="display:flex;"><span>print(d)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 1405046269503207469140791548403639533127416416214210694972085079171787580463776820425965898174272870486015739516125786182821637006600742140682552321645503743280670839819078749092730110549881891271317396450158021688253989767145578723458252769465545504142139663476747479225923933192421405464414574786272963741656223941750084051228611576708609346787101088759062724389874160693008783334605903142528824559223515203978707969795087506678894006628296743079886244349469131831225757926844843554897638786146036869572653204735650843186722732736888918789379054050122205253165705085538743651258400390580971043144644984654914856729</span>
+</span></span></code></pre></div><p>We send the result and it responds with an <code>Outstanding move!!!!</code> giving us to understand that the answer is correct.</p>
+<p>In the eighth question we are given a ciphertext, \(p, e\) and \(n\). We are asked to calculate the plaintext.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e">#### NEW PROBLEM ####</span>
+</span></span><span style="display:flex;"><span>p : <span style="color:#ae81ff">153143042272527868798412612417204434156935146874282990942386694020462861918068684561281763577034706600608387699148071015194725533394126069826857182428660427818277378724977554365910231524827258160904493774748749088477328204812171935987088715261127321911849092207070653272176072509933245978935455542420691737433</span>
+</span></span><span style="display:flex;"><span>ciphertext : <span style="color:#ae81ff">18031488536864379496089550017272599246134435121343229164236671388038630752847645738968455413067773166115234039247540029174331743781203512108626594601293283737392240326020888417252388602914051828980913478927759934805755030493894728974208520271926698905550119698686762813722190657005740866343113838228101687566611695952746931293926696289378849403873881699852860519784750763227733530168282209363348322874740823803639617797763626570478847423136936562441423318948695084910283653593619962163665200322516949205854709192890808315604698217238383629613355109164122397545332736734824591444665706810731112586202816816647839648399</span>
+</span></span><span style="display:flex;"><span>e : <span style="color:#ae81ff">65537</span>
+</span></span><span style="display:flex;"><span>n : <span style="color:#ae81ff">23952937352643527451379227516428377705004894508566304313177880191662177061878993798938496818120987817049538365206671401938265663712351239785237507341311858383628932183083145614696585411921662992078376103990806989257289472590902167457302888198293135333083734504191910953238278860923153746261500759411620299864395158783509535039259714359526738924736952759753503357614939203434092075676169179112452620687731670534906069845965633455748606649062394293289967059348143206600765820021392608270528856238306849191113241355842396325210132358046616312901337987464473799040762271876389031455051640937681745409057246190498795697239</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">##### PRODUCE THE FOLLOWING ####</span>
+</span></span><span style="display:flex;"><span>plaintext
+</span></span><span style="display:flex;"><span>IS THIS POSSIBLE <span style="color:#f92672">and</span> FEASIBLE<span style="color:#960050;background-color:#1e0010">?</span> (Y<span style="color:#f92672">/</span>N):y
+</span></span></code></pre></div><p>We are missing \(q\) but we calculate it easily with \(n \div p\).</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> p <span style="color:#f92672">=</span> <span style="color:#ae81ff">153143042272527868798412612417204434156935146874282990942386694020462861918068684561281763577034706600608387699148071015194725533394126069826857182428660427818277378724977554365910231524827258160904493774748749088477328204812171935987088715261127321911849092207070653272176072509933245978935455542420691737433</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> n <span style="color:#f92672">=</span> <span style="color:#ae81ff">23952937352643527451379227516428377705004894508566304313177880191662177061878993798938496818120987817049538365206671401938265663712351239785237507341311858383628932183083145614696585411921662992078376103990806989257289472590902167457302888198293135333083734504191910953238278860923153746261500759411620299864395158783509535039259714359526738924736952759753503357614939203434092075676169179112452620687731670534906069845965633455748606649062394293289967059348143206600765820021392608270528856238306849191113241355842396325210132358046616312901337987464473799040762271876389031455051640937681745409057246190498795697239</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> q <span style="color:#f92672">=</span> n <span style="color:#f92672">//</span> p
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> q
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">156408916769576372285319235535320446340733908943564048157238512311891352879208957302116527435165097143521156600690562005797819820759620198602417583539668686152735534648541252847927334505648478214810780526425005943955838623325525300844493280040860604499838598837599791480284496210333200247148213274376422459183</span>
+</span></span></code></pre></div><p>Having \(q\) we can use dcodefr to decrypt the message and get the flag.</p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/9be67bbb-2916-41bc-a8b7-7c941ad14288/7a629d40-cde1-4b67-95b5-1450bcc9fbe3/Untitled.png" alt=""></p>
+<p><code>picoCTF{wA8_th4t$_ill3aGal..ode01e4bb}</code></p>
+<blockquote>
+<p>Maybe the flag changes, because I did the writeup days later and the flag was not the same, I guess picoCTF does this to avoid cheating :)
+()</p>
+</blockquote>
+<ul class="pa0">
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="http://localhost:1313/" >
+    &copy;  abund4nt 2024 
+  </a>
+    <div>
+<div class="ananke-socials">
+  
+    
+    <a href="https://github.com/abund4nt" target="_blank" rel="noopener" class="github ananke-social-link link-transition stackoverflow link dib z-999 pt3 pt0-l mr1" title="GitHub link" aria-label="follow on GitHub——Opens in a new window">
+      
+        <span class="icon"><svg style="enable-background:new 0 0 512 512;" version="1.1" viewBox="0 0 512 512"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+  <path d="M256,32C132.3,32,32,134.8,32,261.7c0,101.5,64.2,187.5,153.2,217.9c11.2,2.1,15.3-5,15.3-11.1   c0-5.5-0.2-19.9-0.3-39.1c-62.3,13.9-75.5-30.8-75.5-30.8c-10.2-26.5-24.9-33.6-24.9-33.6c-20.3-14.3,1.5-14,1.5-14   c22.5,1.6,34.3,23.7,34.3,23.7c20,35.1,52.4,25,65.2,19.1c2-14.8,7.8-25,14.2-30.7c-49.7-5.8-102-25.5-102-113.5   c0-25.1,8.7-45.6,23-61.6c-2.3-5.8-10-29.2,2.2-60.8c0,0,18.8-6.2,61.6,23.5c17.9-5.1,37-7.6,56.1-7.7c19,0.1,38.2,2.6,56.1,7.7   c42.8-29.7,61.5-23.5,61.5-23.5c12.2,31.6,4.5,55,2.2,60.8c14.3,16.1,23,36.6,23,61.6c0,88.2-52.4,107.6-102.3,113.3   c8,7.1,15.2,21.1,15.2,42.5c0,30.7-0.3,55.5-0.3,63c0,6.1,4,13.3,15.4,11C415.9,449.1,480,363.1,480,261.7   C480,134.8,379.7,32,256,32z"/>
+</svg>
+</span>
+      
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span></a>
+  
+</div>
+</div>
+  </div>
+</footer>
+
+  </body>
+</html>

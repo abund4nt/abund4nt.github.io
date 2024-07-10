@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Gonna Lift Em All | abund4nt</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="Hack The Box / Cryptography">
+    <meta name="generator" content="Hugo 0.123.7">
+    
+    
+    
+    
+      <meta name="robots" content="noindex, nofollow">
+    
+    
+      <meta name="author" content = "abund4nt">
+    
+
+    
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<script>
+  MathJax = {
+    tex: {
+      displayMath: [['\\[', '\\]'], ['$$', '$$']],  
+      inlineMath: [['\\(', '\\)']]                  
+    }
+  };
+</script>
+    
+
+    
+<link rel="stylesheet" href="/ananke/css/main.min.css" >
+
+
+
+    
+
+    
+      
+
+    
+
+    
+
+    
+      <link rel="canonical" href="http://localhost:1313/crypto/gonna-lift-em-all/">
+    
+
+    <meta property="og:title" content="Gonna Lift Em All" />
+<meta property="og:description" content="Hack The Box / Cryptography" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/crypto/gonna-lift-em-all/" /><meta property="article:section" content="crypto" />
+<meta property="article:published_time" content="2024-07-10T19:02:58-04:00" />
+<meta property="article:modified_time" content="2024-07-10T19:02:58-04:00" />
+
+<meta itemprop="name" content="Gonna Lift Em All">
+<meta itemprop="description" content="Hack The Box / Cryptography"><meta itemprop="datePublished" content="2024-07-10T19:02:58-04:00" />
+<meta itemprop="dateModified" content="2024-07-10T19:02:58-04:00" />
+<meta itemprop="wordCount" content="311">
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Gonna Lift Em All"/>
+<meta name="twitter:description" content="Hack The Box / Cryptography"/>
+
+	
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      
+        abund4nt
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/crypto/" title="Crypto page">
+              Crypto
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/pwn/" title="Pwn page">
+              Pwn
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/web/" title="Web page">
+              Web
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+<div class="ananke-socials">
+  
+    
+    <a href="https://github.com/abund4nt" target="_blank" rel="noopener" class="github ananke-social-link link-transition stackoverflow link dib z-999 pt3 pt0-l mr1" title="GitHub link" aria-label="follow on GitHub——Opens in a new window">
+      
+        <span class="icon"><svg style="enable-background:new 0 0 512 512;" version="1.1" viewBox="0 0 512 512"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+  <path d="M256,32C132.3,32,32,134.8,32,261.7c0,101.5,64.2,187.5,153.2,217.9c11.2,2.1,15.3-5,15.3-11.1   c0-5.5-0.2-19.9-0.3-39.1c-62.3,13.9-75.5-30.8-75.5-30.8c-10.2-26.5-24.9-33.6-24.9-33.6c-20.3-14.3,1.5-14,1.5-14   c22.5,1.6,34.3,23.7,34.3,23.7c20,35.1,52.4,25,65.2,19.1c2-14.8,7.8-25,14.2-30.7c-49.7-5.8-102-25.5-102-113.5   c0-25.1,8.7-45.6,23-61.6c-2.3-5.8-10-29.2,2.2-60.8c0,0,18.8-6.2,61.6,23.5c17.9-5.1,37-7.6,56.1-7.7c19,0.1,38.2,2.6,56.1,7.7   c42.8-29.7,61.5-23.5,61.5-23.5c12.2,31.6,4.5,55,2.2,60.8c14.3,16.1,23,36.6,23,61.6c0,88.2-52.4,107.6-102.3,113.3   c8,7.1,15.2,21.1,15.2,42.5c0,30.7-0.3,55.5-0.3,63c0,6.1,4,13.3,15.4,11C415.9,449.1,480,363.1,480,261.7   C480,134.8,379.7,32,256,32z"/>
+</svg>
+</span>
+      
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span></a>
+  
+</div>
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked ttu">
+          
+        Cryptography
+      </aside>
+      
+
+
+
+
+
+
+
+
+
+
+  <div id="sharing" class="mt3 ananke-socials">
+    
+  </div>
+
+
+      <h1 class="f1 athelas mt3 mb1">Gonna Lift Em All</h1>
+      
+      <p class="tracked">
+        By <strong>abund4nt</strong>
+      </p>
+      
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2024-07-10T19:02:58-04:00">July 10, 2024</time>
+      
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links black pr4-l w-two-thirds-l"><p>The following source code is provided.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> Crypto.Util.number <span style="color:#f92672">import</span> bytes_to_long, getPrime
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> random
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>FLAG <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;HTB{???????????????????????????????????????????????????}&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">gen_params</span>():
+</span></span><span style="display:flex;"><span>    p <span style="color:#f92672">=</span> getPrime(<span style="color:#ae81ff">1024</span>)
+</span></span><span style="display:flex;"><span>    g <span style="color:#f92672">=</span> random<span style="color:#f92672">.</span>randint(<span style="color:#ae81ff">2</span>, p <span style="color:#f92672">-</span> <span style="color:#ae81ff">2</span>)
+</span></span><span style="display:flex;"><span>    x <span style="color:#f92672">=</span> random<span style="color:#f92672">.</span>randint(<span style="color:#ae81ff">2</span>, p <span style="color:#f92672">-</span> <span style="color:#ae81ff">2</span>)
+</span></span><span style="display:flex;"><span>    h <span style="color:#f92672">=</span> pow(g, x, p)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> (p, g, h), x
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">encrypt</span>(pubkey):
+</span></span><span style="display:flex;"><span>    p, g, h <span style="color:#f92672">=</span> pubkey
+</span></span><span style="display:flex;"><span>    m <span style="color:#f92672">=</span> bytes_to_long(FLAG)
+</span></span><span style="display:flex;"><span>    y <span style="color:#f92672">=</span> random<span style="color:#f92672">.</span>randint(<span style="color:#ae81ff">2</span>, p <span style="color:#f92672">-</span> <span style="color:#ae81ff">2</span>)
+</span></span><span style="display:flex;"><span>    s <span style="color:#f92672">=</span> pow(h, y, p)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> (g <span style="color:#f92672">*</span> y <span style="color:#f92672">%</span> p, m <span style="color:#f92672">*</span> s <span style="color:#f92672">%</span> p)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main</span>():
+</span></span><span style="display:flex;"><span>    pubkey, _ <span style="color:#f92672">=</span> gen_params()
+</span></span><span style="display:flex;"><span>    c1, c2 <span style="color:#f92672">=</span> encrypt(pubkey)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#39;out.txt&#39;</span>, <span style="color:#e6db74">&#39;w&#39;</span>) <span style="color:#66d9ef">as</span> f:
+</span></span><span style="display:flex;"><span>        f<span style="color:#f92672">.</span>write(
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;p = </span><span style="color:#e6db74">{</span>pubkey[<span style="color:#ae81ff">0</span>]<span style="color:#e6db74">}</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">g = </span><span style="color:#e6db74">{</span>pubkey[<span style="color:#ae81ff">1</span>]<span style="color:#e6db74">}</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">h = </span><span style="color:#e6db74">{</span>pubkey[<span style="color:#ae81ff">2</span>]<span style="color:#e6db74">}</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">(c1, c2) = (</span><span style="color:#e6db74">{</span>c1<span style="color:#e6db74">}</span><span style="color:#e6db74">, </span><span style="color:#e6db74">{</span>c2<span style="color:#e6db74">}</span><span style="color:#e6db74">)</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
+</span></span><span style="display:flex;"><span>    main()
+</span></span></code></pre></div><p>And also the following output that was encrypted with that source code.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>p <span style="color:#f92672">=</span> <span style="color:#ae81ff">163924920994230253637901818188432016168244271739612329857589126113342762280179217681751572174802922903476854156324228497960403054780444742311082033470378692771947296079573091561798164949003989592245623978327019668789826246878280613414312438425787726549209707561194579292492350868953301012702750092281807657719</span>
+</span></span><span style="display:flex;"><span>g <span style="color:#f92672">=</span> <span style="color:#ae81ff">97407673851268146184804267386115296213106535602908738837573109808033224187746927894605766365039669844761355888387043653015559933298433068597707383843814893442087063136640943475006105673619942401850890433169719970841218851182254280222787630139143746993351533776324254770080289574521452767936507196421481076841</span>
+</span></span><span style="display:flex;"><span>h <span style="color:#f92672">=</span> <span style="color:#ae81ff">7771801879117000288817915415260102060832587957130098985489551063161695391373720317596178655146834967333192201720460001561670355858493084613455139466487717364432242890680666229302181326080340061384604634749443972114930849979067572441792867514664636574923631540074373758015873624100768698622048136552173788916</span>
+</span></span><span style="display:flex;"><span>(c1, c2) <span style="color:#f92672">=</span> (<span style="color:#ae81ff">83194887666722435308945316429939841668109985194860518882743309895332330525232854733374220834562004665371728589040849388337869965962272329974327341953512030547150987478914221697662859702721549751949905379177524490596978865458493461926865553151329446008396048857775620413257603550197735539508582063967332954541</span>, <span style="color:#ae81ff">46980139827823872709797876525359718565495105542826335055296195898993549717497706297570900140303523646691120660896057591142474133027314700072754720423416473219145616105901315902667461002549138134613137623172629251106773324834864521095329972962212429468236356687505826351839310216384806147074454773818037349470</span>)
+</span></span></code></pre></div><h2 id="source-code-analysis">Source code analysis</h2>
+<p>This is a cryptosystem that uses modular exponentiation operations to perform encryption and key generation. $c1$ and $c2$ are the encrypted messages that are generated as follows.</p>
+$$
+\begin{equation*}
+C1 = g \cdot y\text{ (mod } n \text{)}
+\end{equation*}
+$$
+$$
+\begin{equation*}
+C2 = m \cdot s\text{ (mod } n \text{)}
+\end{equation*}
+$$
+<p>The vulnerability of this cipher lies in the output since it gives us a lot of information ($p$, $q$, $h$, $c1$ and $c2$). We must find $y$ and $s$, to find these values we must solve the following operations.</p>
+$$
+\begin{equation*}
+y = (c1 \cdot g^{-1})\text{ mod } p \text{}
+\end{equation*}
+$$
+$$
+\begin{equation*}
+s = (h^{y}) \text{ mod } p \text{}
+\end{equation*}
+$$
+<p>The script I created to get the flag is the following.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> Crypto.Util.number <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">=</span> <span style="color:#ae81ff">163924920994230253637901818188432016168244271739612329857589126113342762280179217681751572174802922903476854156324228497960403054780444742311082033470378692771947296079573091561798164949003989592245623978327019668789826246878280613414312438425787726549209707561194579292492350868953301012702750092281807657719</span>
+</span></span><span style="display:flex;"><span>g <span style="color:#f92672">=</span> <span style="color:#ae81ff">97407673851268146184804267386115296213106535602908738837573109808033224187746927894605766365039669844761355888387043653015559933298433068597707383843814893442087063136640943475006105673619942401850890433169719970841218851182254280222787630139143746993351533776324254770080289574521452767936507196421481076841</span>
+</span></span><span style="display:flex;"><span>h <span style="color:#f92672">=</span> <span style="color:#ae81ff">7771801879117000288817915415260102060832587957130098985489551063161695391373720317596178655146834967333192201720460001561670355858493084613455139466487717364432242890680666229302181326080340061384604634749443972114930849979067572441792867514664636574923631540074373758015873624100768698622048136552173788916</span>
+</span></span><span style="display:flex;"><span>c1 <span style="color:#f92672">=</span> <span style="color:#ae81ff">83194887666722435308945316429939841668109985194860518882743309895332330525232854733374220834562004665371728589040849388337869965962272329974327341953512030547150987478914221697662859702721549751949905379177524490596978865458493461926865553151329446008396048857775620413257603550197735539508582063967332954541</span>
+</span></span><span style="display:flex;"><span>c2 <span style="color:#f92672">=</span> <span style="color:#ae81ff">46980139827823872709797876525359718565495105542826335055296195898993549717497706297570900140303523646691120660896057591142474133027314700072754720423416473219145616105901315902667461002549138134613137623172629251106773324834864521095329972962212429468236356687505826351839310216384806147074454773818037349470</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>y <span style="color:#f92672">=</span> (c1 <span style="color:#f92672">*</span> inverse(g, p) <span style="color:#f92672">%</span> p)
+</span></span><span style="display:flex;"><span>s <span style="color:#f92672">=</span> pow(h, y, p)
+</span></span><span style="display:flex;"><span>m <span style="color:#f92672">=</span> (c2 <span style="color:#f92672">*</span> inverse(s, p) <span style="color:#f92672">%</span> p)
+</span></span><span style="display:flex;"><span>flag <span style="color:#f92672">=</span> long_to_bytes(m)
+</span></span><span style="display:flex;"><span>print(flag)
+</span></span></code></pre></div><h2 id="flag">Flag</h2>
+<pre tabindex="0"><code>HTB{7h3_mu171p11c471v3_920up_15_4_d4n9320u5_p14c3_70_83}
+</code></pre><ul class="pa0">
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="http://localhost:1313/" >
+    &copy;  abund4nt 2024 
+  </a>
+    <div>
+<div class="ananke-socials">
+  
+    
+    <a href="https://github.com/abund4nt" target="_blank" rel="noopener" class="github ananke-social-link link-transition stackoverflow link dib z-999 pt3 pt0-l mr1" title="GitHub link" aria-label="follow on GitHub——Opens in a new window">
+      
+        <span class="icon"><svg style="enable-background:new 0 0 512 512;" version="1.1" viewBox="0 0 512 512"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+  <path d="M256,32C132.3,32,32,134.8,32,261.7c0,101.5,64.2,187.5,153.2,217.9c11.2,2.1,15.3-5,15.3-11.1   c0-5.5-0.2-19.9-0.3-39.1c-62.3,13.9-75.5-30.8-75.5-30.8c-10.2-26.5-24.9-33.6-24.9-33.6c-20.3-14.3,1.5-14,1.5-14   c22.5,1.6,34.3,23.7,34.3,23.7c20,35.1,52.4,25,65.2,19.1c2-14.8,7.8-25,14.2-30.7c-49.7-5.8-102-25.5-102-113.5   c0-25.1,8.7-45.6,23-61.6c-2.3-5.8-10-29.2,2.2-60.8c0,0,18.8-6.2,61.6,23.5c17.9-5.1,37-7.6,56.1-7.7c19,0.1,38.2,2.6,56.1,7.7   c42.8-29.7,61.5-23.5,61.5-23.5c12.2,31.6,4.5,55,2.2,60.8c14.3,16.1,23,36.6,23,61.6c0,88.2-52.4,107.6-102.3,113.3   c8,7.1,15.2,21.1,15.2,42.5c0,30.7-0.3,55.5-0.3,63c0,6.1,4,13.3,15.4,11C415.9,449.1,480,363.1,480,261.7   C480,134.8,379.7,32,256,32z"/>
+</svg>
+</span>
+      
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span></a>
+  
+</div>
+</div>
+  </div>
+</footer>
+
+  </body>
+</html>

@@ -3,30 +3,65 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>http://localhost:1313/</loc>
+    <lastmod>2024-07-10T19:04:31-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>http://localhost:1313/crypto/brainys-cipher/</loc>
+    <lastmod>2024-07-10T19:04:31-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>http://localhost:1313/crypto/</loc>
+    <lastmod>2024-07-10T19:04:31-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>http://localhost:1313/crypto/gonna-lift-em-all/</loc>
+    <lastmod>2024-07-10T19:02:58-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>http://localhost:1313/crypto/rsactftool/</loc>
+    <lastmod>2024-07-10T19:00:46-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>http://localhost:1313/crypto/twoforone/</loc>
+    <lastmod>2024-07-10T18:59:49-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>http://localhost:1313/crypto/no-padding-no-problem/</loc>
+    <lastmod>2024-07-10T18:09:25-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>http://localhost:1313/crypto/dachshund-attacks/</loc>
     <lastmod>2024-07-10T17:42:01-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/writeups/dachshund-attacks/</loc>
-    <lastmod>2024-07-10T17:42:01-04:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url><url>
-    <loc>http://localhost:1313/writeups/</loc>
-    <lastmod>2024-07-10T17:42:01-04:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url><url>
-    <loc>http://localhost:1313/writeups/rsa-pop-quiz/</loc>
+    <loc>http://localhost:1313/pwn/</loc>
     <lastmod>2024-07-10T17:27:57-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/writeups/basic-mod-1/</loc>
+    <loc>http://localhost:1313/crypto/rsa-pop-quiz/</loc>
+    <lastmod>2024-07-10T17:27:57-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/writeups/basic-mod-2/</loc>
+    <loc>http://localhost:1313/pwn/test/</loc>
+    <lastmod>2024-07-10T17:27:57-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>http://localhost:1313/crypto/basic-mod-1/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>http://localhost:1313/crypto/basic-mod-2/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
@@ -38,7 +73,11 @@
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/writeups/very-smooth/</loc>
+    <loc>http://localhost:1313/crypto/very-smooth/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>http://localhost:1313/web/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>

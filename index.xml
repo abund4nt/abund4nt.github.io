@@ -6,41 +6,76 @@
     <description>Recent content on abund4nt</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 10 Jul 2024 17:42:01 -0400</lastBuildDate>
+    <lastBuildDate>Wed, 10 Jul 2024 19:04:31 -0400</lastBuildDate>
     <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>Brainys Cipher</title>
+      <link>http://localhost:1313/crypto/brainys-cipher/</link>
+      <pubDate>Wed, 10 Jul 2024 19:04:31 -0400</pubDate>
+      <guid>http://localhost:1313/crypto/brainys-cipher/</guid>
+      <description>We are provided with the following text file named (brainy.txt).&#xA;++++++++++[&amp;gt;+&amp;gt;+++&amp;gt;+++++++&amp;gt;++++++++++&amp;lt;&amp;lt;&amp;lt;&amp;lt;-]&amp;gt;&amp;gt;&amp;gt;&amp;gt;+++++++++++++++++++++++.-----------.&amp;lt;------------.---.++.---------.+.++.-.++.+.-----.++..++++.--.++++.+..-------.+.+++.---.+.+++++.-------.+.---.+++++++.+.-------..+++.-.+++++.-------.++.+++++.-----.+++++..-----.--.++++++++.-------.--.++++.+++.---.++..+++.------.+++.--.-..++++++.-.----..+++++.------.++++++.---.---.--.+++.++++.-------.+++++..-.++..-------.++++++.---.++..+++.----.++++.-------.++++++++..----.+++.+.------.--.-.++.-.+++++.--..--.++++.-.++++.---.------.+++++.++.+.---.+++.---.----.++++.--.+++.-----.+++++.+.---.--.+++++++.---.---...---.+.++++++++.----.++++.-----.++.--.-.--.++.-.-.+++++.--..+++++.-------.-.++++.++.-----.++++++.--------.+++.+++.-.+++.----.----.++++++.----.++++++.-------.-----.&amp;gt;+.&amp;lt;++++++++++++++.---------.+.++++++.--------.++.+++++++.--------.+++++++.----.+.----.+++...----.++++..++.----..+++.+++.-----.++++.--.++..-------.+++.++++.--.---.--.++++++..-----..+++++++.-------.+++++++.--------..++++++.++.--..++.----.+++.++.------.++++.+.-..+.+.-------.++++++.-.---.---.-.++++++++..-----.---.++.+.++..-.--.+++.++++.--..------.++++++++.-------.+++++++..---.+.++..---.----.+.++++++..-.-.-----.--.++++.--.+++++++.----.++++.-----.-.+.++.+..+..--.-.---.+++++.--.--.++++++.--------.++.---.+++++++..----.---.+++++++++.-...-------.++++++++.-------.++.-.+++++.----.-.+++++.---.----.+++++.++.-----.---.+++++++.++.---------...++.+++++++.------.+++++.-------.++++.-----.+++++.----.-----.&amp;gt;-------------.++++++++++++.&amp;lt;++++++++++++++.-----..-.----.++++++.-..-----.++.++++++.--.----..--.++.-.++++++++.------.+..--.+++++++.------.---.++++++.----.++++++.-.++.------.++++...--.---.+++++++.--------.++++++++.----..+.----.+..---.++++++++.+.---.-.---.--.++++++++.-----.+++++.----.+.+++.------.--..+++++++++.-.---.++.----.++++.-.------.+++++.--.++.+++.-----.++.++.--..----.-.+++++++.+.----.---.+++++.+++.---.-----.+++++.------.++++++.-.----..++.+++.--.---.++.++++++.--------..+++++.+++.---.-----.++.++++++.---.+++.-.-------.++.+++.-.---.+++.---.+.++.-----.+++++++.---.--.-..++++.++.-------.++++.+.--.++++..+.+.-.---.-.--.+.+++++.--.+++.------..--.++++++++.-.------.++++.+++.-----.+.----.-----.&amp;gt;------------.+++++++++++++.&amp;lt;++++++++++++++.-.---------.++++++..++.+.--.----.-.--.+++.---.++++++++..-----.+.--.--.++++++.+++.----.---.+.++.++++.------.++++++..--.----.++++..---.+++.----.--..++++++++.-.-----..---.+++++++++.---------.++++++.----.+++++.-.--.---.++++++.+.+.---------.++++++.----.++++.+++.-----.+++.--.+++.----.+++.------.++++++.----.++++++.---..------.+++++++.----.++.+.+.++.-..-------.++++++.-------.++++.---.++++.+++.-----.++++++..----.-.+++++..---.---.-..+.--.+++.---.++++.++.---.-.+++++.-..-------.++..+++.++++.----.---.++.+++++.--------.++++.+.------..+++++.---.++++++.-.------.+++.++.--.---.++.+++.-----.+++++.---.+.--.-.+++++++.+.-------.--.+++++.-----..+++++.++.---.+++++.-.--.-.----.-----.&amp;gt;--------------.&amp;lt;++++++++++++++.----.----.--.+++++++.+.--------.++++++++.--..+..---.---.+++++..++.--.++.--.+.------.+++++++.-----.+++++.---.++.++.----.++.----.++.-----.+++..+++++.-----.--.+++...++.----.++++++.--------.+++++++++.--------.+.++++.+.----..++++++.-------.++..++++.--------.++++++.-.-----.++.++++.++.---.-----.++.-.+.++++.++.---.--.-.++++.-..----..+++++++.-----.++++++.---.----.--.+++++.+.--.+++++.----.++++.---.--.+.++.++.--.+.------.+.-.+++.--.---.++.--.++++++++.------.--.+++++.-.-.++++++.------.++++++.------..+++.++.------..++++.-.++..-----.++++++.--------.++.+++++.--.-----.++++++++..-.-----.+++++++.------.+++.------.++.++.-.-.+++.----.+.+++++++.---.+.++..-----.++++.--------.+++++..-.+++++..---.-.-----.++.--.+++++++++.--------.+++++.+++.----.--.+++.--..++.---.++.++++.---.-.++++.--------.+++++..------.+++++++.++.-------.+++.--..++.+.---.++++++.---------.++.+++++.--.++.++.--------.+++++++.-.---.-.++.----.+++++++.--------.++++++.------.+++++++.---.+++.--.++++.---.---..-..++.++.-.-.---.++++++..--.+++.+.----.++++.---------..++.+.+++++.---.-.+.----.+++++++.--.---.--.+..-.-.++++++.--.++++.-.+.-----.+.+++.+.----.++.++..--------.++.+++++++.--------.+++++.+..-----.--.+.++++++.--.----.+.++++++.--------.++++++++.------.--.++++++...+.-------.+++++++++.-----.+.+.----.+++.-----.++++++.+.+.--------.+++.+++++.-------.+.+++++++.--.-------.++++++++.-.------.&amp;gt;++++++++++++++++++++++++++. It is an esoteric language called Brianfuck, to execute this code we can use the following online compiler. When we compile the code and run it we receive the following output.&#xA;{ p:7901324502264899236349230781143813838831920474669364339844939631481665770635584819958931021644265960578585153616742963330195946431321644921572803658406281, q:12802918451444044622583757703752066118180068668479378778928741088302355425977192996799623998720429594346778865275391307730988819243843851683079000293815051, dp:5540655028622021934429306287937775291955623308965208384582009857376053583575510784169616065113641391169613969813652523507421157045377898542386933198269451, dq:9066897320308834206952359399737747311983309062764178906269475847173966073567988170415839954996322314157438770225952491560052871464136163421892050057498651, c:62078086677416686867183857957350338314446280912673392448065026850212685326551183962056495964579782325302082054393933682265772802750887293602432512967994805549965020916953644635965916607925335639027579187435180607475963322465417758959002385451863122106487834784688029167720175128082066670945625067803812970871&#x9;} We have the values $p$, $q$, $dp$, $dq$, and $c$. At first glance we can see that we are facing a cryptosystem similar to RSA.</description>
+    </item>
+    <item>
+      <title>Gonna Lift Em All</title>
+      <link>http://localhost:1313/crypto/gonna-lift-em-all/</link>
+      <pubDate>Wed, 10 Jul 2024 19:02:58 -0400</pubDate>
+      <guid>http://localhost:1313/crypto/gonna-lift-em-all/</guid>
+      <description>The following source code is provided.&#xA;from Crypto.Util.number import bytes_to_long, getPrime import random FLAG = b&amp;#39;HTB{???????????????????????????????????????????????????}&amp;#39; def gen_params(): p = getPrime(1024) g = random.randint(2, p - 2) x = random.randint(2, p - 2) h = pow(g, x, p) return (p, g, h), x def encrypt(pubkey): p, g, h = pubkey m = bytes_to_long(FLAG) y = random.randint(2, p - 2) s = pow(h, y, p) return (g * y % p, m * s % p) def main(): pubkey, _ = gen_params() c1, c2 = encrypt(pubkey) with open(&amp;#39;out.</description>
+    </item>
+    <item>
+      <title>RsaCtfTool</title>
+      <link>http://localhost:1313/crypto/rsactftool/</link>
+      <pubDate>Wed, 10 Jul 2024 19:00:46 -0400</pubDate>
+      <guid>http://localhost:1313/crypto/rsactftool/</guid>
+      <description>We get three files flag.txt.aes, key and pubkey.pem.&#xA;flag.txt.aes&#xA;➜ challenge xxd flag.txt.aes 00000000: 4845 da30 14a5 2429 e914 c311 7b1c 45a0 HE.0..$)....{.E. 00000010: a68d 6454 e830 57af 6fca dada e011 814d ..dT.0W.o......M 00000020: 0a key&#xA;13822f9028b100e2b345a1ad989d9cdedbacc3c706c9454ec7d63abb15b58bef8ba545bb0a3b883f91bf12ca12437eb42e26eff38d0bf4f31cf1ca21c080f11877a7bb5fa8ea97170c932226eab4812c821d082030100030d84ebc63fd8767cde994e0bd1a1f905c27fb0d7adb55e3a1f101d8b5b997ba6b1c09a5e1cc65a9206906ef5e01f13d7beeebdf389610fb54676f76ec0afc51a304403d44bb3c739fd8276f0895c3587a710d15e43fc67284070519e6e0810caf86b134f02ec54018 pubkey.pem&#xA;-----BEGIN PUBLIC KEY----- MIHeMA0GCSqGSIb3DQEBAQUAA4HMADCByAKBwHfR4yv+QfsHYSvLlS6LGW2cMDlB 3RlH1PteD7gN6nU4KhyMlRznOUQI7cgB082btMWs1usPYfUSrqkDs+1EDrzzw42M G683YvLlJRfcO2syc+YNJTDqtVHW5V3SNJ2J+WKCw0A5+ab2qA+sfhRFhvPJ7gsL vUj+blt5qweyGVheMOQvy+WXI+Vi/jwtlW3it25kBLZUoESDBg+HZKnxz3MgcJ6X roMdjPPwTH2f8sOrCTI1jJzNUYxJ9JQ0QPTrxwIDAQAB -----END PUBLIC KEY----- We have the flag encrypted with AES, a key in hexadecimal format and the public key. With the public key we can get the values of $n$ and $e$.</description>
+    </item>
+    <item>
+      <title>TwoForOne</title>
+      <link>http://localhost:1313/crypto/twoforone/</link>
+      <pubDate>Wed, 10 Jul 2024 18:59:49 -0400</pubDate>
+      <guid>http://localhost:1313/crypto/twoforone/</guid>
+      <description>We are provided with two keys in PEM format.&#xA;-----BEGIN PUBLIC KEY----- MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxqy430huZnHUpVZIA+HD IUqOJ03grABD7CjIWJ83fH6NMIvD4wKFA4Q0S6eYiIViCkGOatlVV4KE/ATyifEm s4oBgWJRzvmhT9TCSdlraQh/qRsuGtvcgMuW/wzLYSnY9nN9qFDEUfLtP2y2HDaJ Hckk0Kso8mrfDtNXzoSNAv/gCRJxTM9jcsH0EIDoZ0egMD61zfbOkS8RRP1PVXQ8 eWh1oU/f+Pi2YhUMVr5YsJI5dx3ETZaQecStj9mTvGMLeFXS4C6L4Wgk3NWrOBMj HBcxEQqL0CjXod+riS51KUVXuvxxrq9eSNsCZ6bbY9NQ+ZUGjuHK1tMt8RpJvSS6 lwIDAQAB -----END PUBLIC KEY----- -----BEGIN PUBLIC KEY----- MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxqy430huZnHUpVZIA+HD IUqOJ03grABD7CjIWJ83fH6NMIvD4wKFA4Q0S6eYiIViCkGOatlVV4KE/ATyifEm s4oBgWJRzvmhT9TCSdlraQh/qRsuGtvcgMuW/wzLYSnY9nN9qFDEUfLtP2y2HDaJ Hckk0Kso8mrfDtNXzoSNAv/gCRJxTM9jcsH0EIDoZ0egMD61zfbOkS8RRP1PVXQ8 eWh1oU/f+Pi2YhUMVr5YsJI5dx3ETZaQecStj9mTvGMLeFXS4C6L4Wgk3NWrOBMj HBcxEQqL0CjXod+riS51KUVXuvxxrq9eSNsCZ6bbY9NQ+ZUGjuHK1tMt8RpJvSS6 lwIDBTy3 -----END PUBLIC KEY----- And they also deliver two encrypted messages that are associated with the two public keys above.&#xA;RBVdQw7Pllwb42GDYyRa6ByVOfzRrZHmxBkUPD393zxOcrNRZgfub1mqcrAgX4PAsvAOWptJSHbrHctFm6rJLzhBi/rAsKGboWqPAWYIu49Rt7Sc/5+LE2dvy5zriAKclchv9d+uUJ4/kU/vcpg2qlfTnyor6naBsZQvRze0VCMkPvqWPuE6iL6YEAjZmLWmb+bqO+unTLF4YtM1MkKTtiOEy+Bbd4LxlXIO1KSFVOoGjyLW2pVIgKzotB1/9BwJMKJV14/+MUEiP40ehH0U2zr8BeueeXp6NIZwS/9svmvmVi06Np74EbL+aeB4meaXH22fJU0eyL2FppeyvbVaYQ== TSHSOfFBkK/sSE4vWxy00EAnZXrIsBI/Y6mGv466baOsST+qyYXHdPsI33Kr6ovucDjgDw/VvQtsAuGhthLbLVdldt9OWDhK5lbM6e0CuhKSoJntnvCz7GtZvjgPM7JDHQkAU7Pcyall9UEqL+W6ZCkiSQnK+j6QB7ynwCsW1wAmnCM68fY2HaBvd8RP2+rPgWv9grcEBkXf7ewA+sxSw7hahMaW0LYhsMYUggrcKqhofGgl+4UR5pdSiFg4YKUSgdSw1Ic/tug9vfHuLSiiuhrtP38yVzazqOZPXGxG4tQ6btc1helH0cLfw1SCdua1ejyan9l1GLXsAyGOKSFdKw== Using the following Python script we will determine if both public keys are the same, and if they differ in their $n$ or $d$ exponent.</description>
+    </item>
+    <item>
+      <title>No Padding, No Problem</title>
+      <link>http://localhost:1313/crypto/no-padding-no-problem/</link>
+      <pubDate>Wed, 10 Jul 2024 18:09:25 -0400</pubDate>
+      <guid>http://localhost:1313/crypto/no-padding-no-problem/</guid>
+      <description>Descripcion del desafio.&#xA;Oracles can be your best friend, they will decrypt anything, except the flag&amp;rsquo;s ciphertext. How will you break it? Connect with nc mercury.picoctf.net 30048.&#xA;Nos dan una instancia remota que al conectarnos nos muestra lo siguiente.&#xA;➜ No-Padding-No-Problem nc mercury.picoctf.net 30048 Welcome to the Padding Oracle Challenge This oracle will take anything you give it and decrypt using RSA. It will not accept the ciphertext with the secret message.</description>
+    </item>
+    <item>
       <title>Dachshund Attacks</title>
-      <link>http://localhost:1313/writeups/dachshund-attacks/</link>
+      <link>http://localhost:1313/crypto/dachshund-attacks/</link>
       <pubDate>Wed, 10 Jul 2024 17:42:01 -0400</pubDate>
-      <guid>http://localhost:1313/writeups/dachshund-attacks/</guid>
+      <guid>http://localhost:1313/crypto/dachshund-attacks/</guid>
       <description>The challenge has the following description.&#xA;Description What if d is too small? Connect with nc mercury.picoctf.net 31133. When connecting to the remote instance we are welcomed to an RSA challenge and given three values (\(e\), \(n\) and \(c\)).&#xA;➜ Dachshund-Attacks nc mercury.picoctf.net 31133 Welcome to my RSA challenge! e: 3899220099094708444461682248176152520520056426340054894764653758439039130763198987228593790755627668955878507012681154231840420615157592956685661905225667325170019971623452645321546764115867115496366064031 2471138156646420619850127528032342928039653079176790826202649972056973495042955152930392869564972388205 n: 5227045576630319725373178571736630922433225105872032348242414990729939118066297086620025000323233204919200628662906427146007654315178218108525671456664397957532246344632398410496805849665581442280254608007 2842423327437505080254026986025203675583887641249251919193895319759097067794294989396574355786672266861 c: 5157633326504022880025794686385735121002435378799341626758745374769731350501026544968887374880165856615445527765387878650454459102034394874253488283545003402348253085381685642836049755152235735616181117932 8614811969652621885121674588377882182458882853233672525697508226281400175253908066557535216321104581197 The purpose of this challenge is to break \(c\) to find the flag, we see that we are facing the RSA cryptosystem.</description>
     </item>
     <item>
-      <title>Rsa Pop Quiz</title>
-      <link>http://localhost:1313/writeups/rsa-pop-quiz/</link>
+      <title>rsa-pop-quiz</title>
+      <link>http://localhost:1313/crypto/rsa-pop-quiz/</link>
       <pubDate>Wed, 10 Jul 2024 17:27:57 -0400</pubDate>
-      <guid>http://localhost:1313/writeups/rsa-pop-quiz/</guid>
+      <guid>http://localhost:1313/crypto/rsa-pop-quiz/</guid>
       <description>The following description is provided in the challenge.&#xA;Description Class, take your seats! It&amp;#39;s PRIME-time for a quiz... nc jupiter.challenges.picoctf.org 1981 A sentence inviting us to take a seat, supposedly they have a test prepared for us. We will use nc to connect to the remote server.&#xA;Good morning class! It&amp;#39;s me Ms. Adleman-Shamir-Rivest Today we will be taking a pop quiz, so I hope you studied. Cramming just will not do!</description>
     </item>
     <item>
-      <title>basic-mod 1</title>
-      <link>http://localhost:1313/writeups/basic-mod-1/</link>
+      <title>basic-mod1</title>
+      <link>http://localhost:1313/crypto/basic-mod-1/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/writeups/basic-mod-1/</guid>
+      <guid>http://localhost:1313/crypto/basic-mod-1/</guid>
       <description>The challenge has the following description.&#xA;We found this weird message being passed around on the servers, we think we have a working decryption scheme. Download the message here. Take each number mod 37 and map it to the following character set: 0-25 is the alphabet (uppercase), 26-35 are the decimal digits, and 36 is an underscore. Wrap your decrypted message in the picoCTF flag format (i.e. picoCTF{decrypted_message}) In summary we are told that each letter of the message is encrypted module 27, and the dictionary has the capital letters from A to B, has the numbers from 0 to 9 and an underscore (_).</description>
     </item>
     <item>
-      <title>basic-mod 2</title>
-      <link>http://localhost:1313/writeups/basic-mod-2/</link>
+      <title>basic-mod2</title>
+      <link>http://localhost:1313/crypto/basic-mod-2/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/writeups/basic-mod-2/</guid>
+      <guid>http://localhost:1313/crypto/basic-mod-2/</guid>
       <description>The challenge has the following description.&#xA;A new modular challenge! Download the message here. Take each number mod 41 and find the modular inverse for the result. Then map to the following character set: 1-26 are the alphabet, 27-36 are the decimal digits, and 37 is an underscore. Wrap your decrypted message in the picoCTF flag format (i.e. picoCTF{decrypted_message}) We are told that to solve the challenge we have to take each number modulo 41 and calculate the modular inverse to get the flag.</description>
     </item>
     <item>
       <title>Very Smooth</title>
-      <link>http://localhost:1313/writeups/very-smooth/</link>
+      <link>http://localhost:1313/crypto/very-smooth/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/writeups/very-smooth/</guid>
+      <guid>http://localhost:1313/crypto/very-smooth/</guid>
       <description>The challenge has the following description.&#xA;Description Forget safe primes... Here, we like to live life dangerously... &amp;gt;:) - gen.py - output.txt We get the files gen.py and output.txt. The .py file contains the source code that encrypts the contents of output.txt.&#xA;In the output.txt file we are given n and c.&#xA;gen.py&#xA;#!/usr/bin/python from binascii import hexlify from gmpy2 import * import math import os import sys if sys.version_info &amp;lt; (3, 9): math.</description>
     </item>
   </channel>
