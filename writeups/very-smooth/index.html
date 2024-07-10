@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Very Smooth | abund4nt</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="picoCTF / Cryptography">
+    <meta name="generator" content="Hugo 0.123.7">
+    
+    
+    
+    
+      <meta name="robots" content="noindex, nofollow">
+    
+    
+      <meta name="author" content = "abund4nt">
+    
+
+    
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<script>
+  MathJax = {
+    tex: {
+      displayMath: [['\\[', '\\]'], ['$$', '$$']],  
+      inlineMath: [['\\(', '\\)']]                  
+    }
+  };
+</script>
+    
+
+    
+<link rel="stylesheet" href="/ananke/css/main.min.css" >
+
+
+
+    
+
+    
+      
+
+    
+
+    
+
+    
+      <link rel="canonical" href="http://localhost:1313/writeups/very-smooth/">
+    
+
+    <meta property="og:title" content="Very Smooth" />
+<meta property="og:description" content="picoCTF / Cryptography" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/writeups/very-smooth/" /><meta property="article:section" content="writeups" />
+
+
+
+<meta itemprop="name" content="Very Smooth">
+<meta itemprop="description" content="picoCTF / Cryptography">
+
+<meta itemprop="wordCount" content="736">
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Very Smooth"/>
+<meta name="twitter:description" content="picoCTF / Cryptography"/>
+
+	
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      
+        abund4nt
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/writeups/" title="Writeups page">
+              Writeups
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+<div class="ananke-socials">
+  
+    
+    <a href="https://github.com/abund4nt" target="_blank" rel="noopener" class="github ananke-social-link link-transition stackoverflow link dib z-999 pt3 pt0-l mr1" title="GitHub link" aria-label="follow on GitHub——Opens in a new window">
+      
+        <span class="icon"><svg style="enable-background:new 0 0 512 512;" version="1.1" viewBox="0 0 512 512"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+  <path d="M256,32C132.3,32,32,134.8,32,261.7c0,101.5,64.2,187.5,153.2,217.9c11.2,2.1,15.3-5,15.3-11.1   c0-5.5-0.2-19.9-0.3-39.1c-62.3,13.9-75.5-30.8-75.5-30.8c-10.2-26.5-24.9-33.6-24.9-33.6c-20.3-14.3,1.5-14,1.5-14   c22.5,1.6,34.3,23.7,34.3,23.7c20,35.1,52.4,25,65.2,19.1c2-14.8,7.8-25,14.2-30.7c-49.7-5.8-102-25.5-102-113.5   c0-25.1,8.7-45.6,23-61.6c-2.3-5.8-10-29.2,2.2-60.8c0,0,18.8-6.2,61.6,23.5c17.9-5.1,37-7.6,56.1-7.7c19,0.1,38.2,2.6,56.1,7.7   c42.8-29.7,61.5-23.5,61.5-23.5c12.2,31.6,4.5,55,2.2,60.8c14.3,16.1,23,36.6,23,61.6c0,88.2-52.4,107.6-102.3,113.3   c8,7.1,15.2,21.1,15.2,42.5c0,30.7-0.3,55.5-0.3,63c0,6.1,4,13.3,15.4,11C415.9,449.1,480,363.1,480,261.7   C480,134.8,379.7,32,256,32z"/>
+</svg>
+</span>
+      
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span></a>
+  
+</div>
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked ttu">
+          
+        Writeups
+      </aside>
+      
+
+
+
+
+
+
+
+
+
+
+  <div id="sharing" class="mt3 ananke-socials">
+    
+  </div>
+
+
+      <h1 class="f1 athelas mt3 mb1">Very Smooth</h1>
+      
+      <p class="tracked">
+        By <strong>abund4nt</strong>
+      </p>
+      
+      
+      
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links black pr4-l w-two-thirds-l"><p>The challenge has the following description.</p>
+<pre tabindex="0"><code>Description
+Forget safe primes... Here, we like to live life dangerously... &gt;:)
+
+- gen.py
+- output.txt
+</code></pre><p>We get the files <a href="http://gen.py/"><code>gen.py</code></a> and <code>output.txt</code>. The .py file contains the source code that encrypts the contents of output.txt.</p>
+<p>In the output.txt file we are given n and c.</p>
+<p><em>gen.py</em></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/python</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> binascii <span style="color:#f92672">import</span> hexlify
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> gmpy2 <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> math
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> os
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> sys
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> sys<span style="color:#f92672">.</span>version_info <span style="color:#f92672">&lt;</span> (<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">9</span>):
+</span></span><span style="display:flex;"><span>    math<span style="color:#f92672">.</span>gcd <span style="color:#f92672">=</span> gcd
+</span></span><span style="display:flex;"><span>    math<span style="color:#f92672">.</span>lcm <span style="color:#f92672">=</span> lcm
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>_DEBUG <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>FLAG  <span style="color:#f92672">=</span> open(<span style="color:#e6db74">&#39;flag.txt&#39;</span>)<span style="color:#f92672">.</span>read()<span style="color:#f92672">.</span>strip()
+</span></span><span style="display:flex;"><span>FLAG  <span style="color:#f92672">=</span> mpz(hexlify(FLAG<span style="color:#f92672">.</span>encode()), <span style="color:#ae81ff">16</span>)
+</span></span><span style="display:flex;"><span>SEED  <span style="color:#f92672">=</span> mpz(hexlify(os<span style="color:#f92672">.</span>urandom(<span style="color:#ae81ff">32</span>))<span style="color:#f92672">.</span>decode(), <span style="color:#ae81ff">16</span>)
+</span></span><span style="display:flex;"><span>STATE <span style="color:#f92672">=</span> random_state(SEED)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_prime</span>(state, bits):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> next_prime(mpz_urandomb(state, bits) <span style="color:#f92672">|</span> (<span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> (bits <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>)))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_smooth_prime</span>(state, bits, smoothness<span style="color:#f92672">=</span><span style="color:#ae81ff">16</span>):
+</span></span><span style="display:flex;"><span>    p <span style="color:#f92672">=</span> mpz(<span style="color:#ae81ff">2</span>)
+</span></span><span style="display:flex;"><span>    p_factors <span style="color:#f92672">=</span> [p]
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> p<span style="color:#f92672">.</span>bit_length() <span style="color:#f92672">&lt;</span> bits <span style="color:#f92672">-</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> smoothness:
+</span></span><span style="display:flex;"><span>        factor <span style="color:#f92672">=</span> get_prime(state, smoothness)
+</span></span><span style="display:flex;"><span>        p_factors<span style="color:#f92672">.</span>append(factor)
+</span></span><span style="display:flex;"><span>        p <span style="color:#f92672">*=</span> factor
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    bitcnt <span style="color:#f92672">=</span> (bits <span style="color:#f92672">-</span> p<span style="color:#f92672">.</span>bit_length()) <span style="color:#f92672">//</span> <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
+</span></span><span style="display:flex;"><span>        prime1 <span style="color:#f92672">=</span> get_prime(state, bitcnt)
+</span></span><span style="display:flex;"><span>        prime2 <span style="color:#f92672">=</span> get_prime(state, bitcnt)
+</span></span><span style="display:flex;"><span>        tmpp <span style="color:#f92672">=</span> p <span style="color:#f92672">*</span> prime1 <span style="color:#f92672">*</span> prime2
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> tmpp<span style="color:#f92672">.</span>bit_length() <span style="color:#f92672">&lt;</span> bits:
+</span></span><span style="display:flex;"><span>            bitcnt <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">continue</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> tmpp<span style="color:#f92672">.</span>bit_length() <span style="color:#f92672">&gt;</span> bits:
+</span></span><span style="display:flex;"><span>            bitcnt <span style="color:#f92672">-=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">continue</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> is_prime(tmpp <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>):
+</span></span><span style="display:flex;"><span>            p_factors<span style="color:#f92672">.</span>append(prime1)
+</span></span><span style="display:flex;"><span>            p_factors<span style="color:#f92672">.</span>append(prime2)
+</span></span><span style="display:flex;"><span>            p <span style="color:#f92672">=</span> tmpp <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">break</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    p_factors<span style="color:#f92672">.</span>sort()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> (p, p_factors)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>e <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x10001</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
+</span></span><span style="display:flex;"><span>    p, p_factors <span style="color:#f92672">=</span> get_smooth_prime(STATE, <span style="color:#ae81ff">1024</span>, <span style="color:#ae81ff">16</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> len(p_factors) <span style="color:#f92672">!=</span> len(set(p_factors)):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">continue</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Smoothness should be different or some might encounter issues.</span>
+</span></span><span style="display:flex;"><span>    q, q_factors <span style="color:#f92672">=</span> get_smooth_prime(STATE, <span style="color:#ae81ff">1024</span>, <span style="color:#ae81ff">17</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> len(q_factors) <span style="color:#f92672">!=</span> len(set(q_factors)):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">continue</span>
+</span></span><span style="display:flex;"><span>    factors <span style="color:#f92672">=</span> p_factors <span style="color:#f92672">+</span> q_factors
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> e <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> factors:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">break</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> _DEBUG:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">import</span> sys
+</span></span><span style="display:flex;"><span>    sys<span style="color:#f92672">.</span>stderr<span style="color:#f92672">.</span>write(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;p = </span><span style="color:#e6db74">{</span>p<span style="color:#f92672">.</span>digits(<span style="color:#ae81ff">16</span>)<span style="color:#e6db74">}</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>    sys<span style="color:#f92672">.</span>stderr<span style="color:#f92672">.</span>write(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;p_factors = [</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> factor <span style="color:#f92672">in</span> p_factors:
+</span></span><span style="display:flex;"><span>        sys<span style="color:#f92672">.</span>stderr<span style="color:#f92672">.</span>write(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;    </span><span style="color:#e6db74">{</span>factor<span style="color:#f92672">.</span>digits(<span style="color:#ae81ff">16</span>)<span style="color:#e6db74">}</span><span style="color:#e6db74">,</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>    sys<span style="color:#f92672">.</span>stderr<span style="color:#f92672">.</span>write(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;]</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    sys<span style="color:#f92672">.</span>stderr<span style="color:#f92672">.</span>write(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;q = </span><span style="color:#e6db74">{</span>q<span style="color:#f92672">.</span>digits(<span style="color:#ae81ff">16</span>)<span style="color:#e6db74">}</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>    sys<span style="color:#f92672">.</span>stderr<span style="color:#f92672">.</span>write(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;q_factors = [</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> factor <span style="color:#f92672">in</span> q_factors:
+</span></span><span style="display:flex;"><span>        sys<span style="color:#f92672">.</span>stderr<span style="color:#f92672">.</span>write(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;    </span><span style="color:#e6db74">{</span>factor<span style="color:#f92672">.</span>digits(<span style="color:#ae81ff">16</span>)<span style="color:#e6db74">}</span><span style="color:#e6db74">,</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>    sys<span style="color:#f92672">.</span>stderr<span style="color:#f92672">.</span>write(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;]</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>n <span style="color:#f92672">=</span> p <span style="color:#f92672">*</span> q
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>m <span style="color:#f92672">=</span> math<span style="color:#f92672">.</span>lcm(p <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>, q <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>d <span style="color:#f92672">=</span> pow(e, <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>, m)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>c <span style="color:#f92672">=</span> pow(FLAG, e, n)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;n = </span><span style="color:#e6db74">{</span>n<span style="color:#f92672">.</span>digits(<span style="color:#ae81ff">16</span>)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;c = </span><span style="color:#e6db74">{</span>c<span style="color:#f92672">.</span>digits(<span style="color:#ae81ff">16</span>)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+</span></span></code></pre></div><p><em>output.txt</em></p>
+<pre tabindex="0"><code>n = 4f7aa864f662a42a92220e372f5ff25a142aef26106a0dbdf573a66594966ac5dd03848745bb6a80402cad7ac6f2bf93f9ed840edd9c157dfd5d265ce2403e155a29666df8f9b98167ad2452e5a63fd0b7b14ffe966db60c6e2c65b0f602f5c22eb030c0335187759909abd4df622118c23463bcc42650e0a7761257452bf40069ca50dbe0c922d8823a9dcc4231b3952d31d1e977cb520528c6a450405f2a2ee6134db8c61ceb4478a647b0469712cc4f3d1369ef3dfd3d876a2c77bac5a149ccf3723a6e8c3ba1deb0675f25def8da9de2b3ac8b3e38d5ac5c9736b9af087b3fc53450136428e07d58fbc00f6609a4cc14eb0a13a7e76056a241256e03e95d
+c = e41a61908eb48b85dc78975c288e62a271b1f237fdc958162727d2930b9af850e908137655c5955a078ff1aa63f5509fbaf79d179d24d209a061c36e0709437b8d2641f41d354bdea062084ea3be8637ed1c4bd8cf63d16c942976dd9d6188fc5e419afae17493d7cdb93d84052637d15e7fa1f852f4f5d786c86bfd024df0dfcf8431e7230cfbbce76a1835b178020ef839af42c377706918a50aac56f79285d743f4a177425eb00eaeb2bebe99343911ab653fe64bb61e140153b113f8554fe29561756fafc7460683d59dd3ee50eb48b718443b9f49e663b6dd02b0a15297468ec30a4f487e328103cdbc59d1d66fc4f03ef75ae45d6ce2035fdfaeb86b7
+</code></pre><h2 id="source-code-analysis">Source code analysis</h2>
+<p>At first sight the source code is quite dense but I will summarize it and explain it in parts, this in order to give you a better understanding of what it does.</p>
+<p>We are dealing with an RSA system that uses soft prime numbers (p and q) to encrypt the flag.</p>
+<blockquote>
+<p>If you are not familiar with RSA you can see this implementation that I made in Python in the simplest possible way so you have a notion before facing the challenge.</p>
+</blockquote>
+<p><a href="https://github.com/luk4spwn/rsa-implementation">https://github.com/luk4spwn/rsa-implementation</a></p>
+<p>We can see in the function <code>get_smooth_prime()</code> how it generates smooth prime numbers.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_smooth_prime</span>(state, bits, smoothness<span style="color:#f92672">=</span><span style="color:#ae81ff">16</span>):
+</span></span><span style="display:flex;"><span>    p <span style="color:#f92672">=</span> mpz(<span style="color:#ae81ff">2</span>)
+</span></span><span style="display:flex;"><span>    p_factors <span style="color:#f92672">=</span> [p]
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> p<span style="color:#f92672">.</span>bit_length() <span style="color:#f92672">&lt;</span> bits <span style="color:#f92672">-</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> smoothness:
+</span></span><span style="display:flex;"><span>        factor <span style="color:#f92672">=</span> get_prime(state, smoothness)
+</span></span><span style="display:flex;"><span>        p_factors<span style="color:#f92672">.</span>append(factor)
+</span></span><span style="display:flex;"><span>        p <span style="color:#f92672">*=</span> factor
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    bitcnt <span style="color:#f92672">=</span> (bits <span style="color:#f92672">-</span> p<span style="color:#f92672">.</span>bit_length()) <span style="color:#f92672">//</span> <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
+</span></span><span style="display:flex;"><span>        prime1 <span style="color:#f92672">=</span> get_prime(state, bitcnt)
+</span></span><span style="display:flex;"><span>        prime2 <span style="color:#f92672">=</span> get_prime(state, bitcnt)
+</span></span><span style="display:flex;"><span>        tmpp <span style="color:#f92672">=</span> p <span style="color:#f92672">*</span> prime1 <span style="color:#f92672">*</span> prime2
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> tmpp<span style="color:#f92672">.</span>bit_length() <span style="color:#f92672">&lt;</span> bits:
+</span></span><span style="display:flex;"><span>            bitcnt <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">continue</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> tmpp<span style="color:#f92672">.</span>bit_length() <span style="color:#f92672">&gt;</span> bits:
+</span></span><span style="display:flex;"><span>            bitcnt <span style="color:#f92672">-=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">continue</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> is_prime(tmpp <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>):
+</span></span><span style="display:flex;"><span>            p_factors<span style="color:#f92672">.</span>append(prime1)
+</span></span><span style="display:flex;"><span>            p_factors<span style="color:#f92672">.</span>append(prime2)
+</span></span><span style="display:flex;"><span>            p <span style="color:#f92672">=</span> tmpp <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">break</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    p_factors<span style="color:#f92672">.</span>sort()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> (p, p_factors)
+</span></span></code></pre></div><h2 id="definition-of-a-smooth-number">Definition of a smooth number</h2>
+<p>In number theory, a smooth number is an integer that can be fully factored into small prime numbers. So a positive January is called B-smooth if none of its prime factors is greater than B. For example the integer 1620 has the prime factorization of 2<strong>2 x 3</strong>4 x 5, so 1620 is 5-smooth because none of its prime factors is greater than 5. For a more exact definition you can visit <a href="https://es.wikipedia.org/wiki/N%C3%BAmero_liso">wikipedia</a>.</p>
+<h2 id="solution">Solution</h2>
+<p>Knowing that p and q are smooth prime numbers we must find a way to factor n, researching I came across Pollard&rsquo;s p -1 algorithm. Pollard&rsquo;s p-1 algorithm is an integer factoring algorithm that is only suitable for integers with factors of specific types.</p>
+<p>The factors it finds are those for which the number preceding the factor p - 1 is a ready power that can be factored into small prime numbers. For further definition visit wikipedia. With the following script we solve the challenge.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> gmpy2 <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> Crypto.Util.number <span style="color:#f92672">import</span> long_to_bytes
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>a <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>n <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>N <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;4f7aa864f662a42a92220e372f5ff25a142aef26106a0dbdf573a66594966ac5dd03848745bb6a80402cad7ac6f2bf93f9ed840edd9c157dfd5d265ce2403e155a29666df8f9b98167ad2452e5a63fd0b7b14ffe966db60c6e2c65b0f602f5c22eb030c0335187759909abd4df622118c23463bcc42650e0a7761257452bf40069ca50dbe0c922d8823a9dcc4231b3952d31d1e977cb520528c6a450405f2a2ee6134db8c61ceb4478a647b0469712cc4f3d1369ef3dfd3d876a2c77bac5a149ccf3723a6e8c3ba1deb0675f25def8da9de2b3ac8b3e38d5ac5c9736b9af087b3fc53450136428e07d58fbc00f6609a4cc14eb0a13a7e76056a241256e03e95d&#34;</span>
+</span></span><span style="display:flex;"><span>e <span style="color:#f92672">=</span> <span style="color:#ae81ff">65537</span>
+</span></span><span style="display:flex;"><span>c <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;e41a61908eb48b85dc78975c288e62a271b1f237fdc958162727d2930b9af850e908137655c5955a078ff1aa63f5509fbaf79d179d24d209a061c36e0709437b8d2641f41d354bdea062084ea3be8637ed1c4bd8cf63d16c942976dd9d6188fc5e419afae17493d7cdb93d84052637d15e7fa1f852f4f5d786c86bfd024df0dfcf8431e7230cfbbce76a1835b178020ef839af42c377706918a50aac56f79285d743f4a177425eb00eaeb2bebe99343911ab653fe64bb61e140153b113f8554fe29561756fafc7460683d59dd3ee50eb48b718443b9f49e663b6dd02b0a15297468ec30a4f487e328103cdbc59d1d66fc4f03ef75ae45d6ce2035fdfaeb86b7&#34;</span>
+</span></span><span style="display:flex;"><span>c <span style="color:#f92672">=</span> int(c, <span style="color:#ae81ff">16</span>)
+</span></span><span style="display:flex;"><span>N <span style="color:#f92672">=</span> int(N, <span style="color:#ae81ff">16</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
+</span></span><span style="display:flex;"><span>    a <span style="color:#f92672">=</span> pow(a, n, N)
+</span></span><span style="display:flex;"><span>    res <span style="color:#f92672">=</span> gcd(a<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>, N)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> res <span style="color:#f92672">!=</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">and</span> res <span style="color:#f92672">!=</span> N:
+</span></span><span style="display:flex;"><span>        q <span style="color:#f92672">=</span> N <span style="color:#f92672">//</span> res
+</span></span><span style="display:flex;"><span>        d <span style="color:#f92672">=</span> invert(e, (res <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>)<span style="color:#f92672">*</span>(q <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>))
+</span></span><span style="display:flex;"><span>        m <span style="color:#f92672">=</span> pow(c, d, N)
+</span></span><span style="display:flex;"><span>        print(long_to_bytes(m))
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">break</span>
+</span></span><span style="display:flex;"><span>    n <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span></code></pre></div><p>And execute the script to get the flag.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>➜  Very-Smooth python3 solve.py
+</span></span><span style="display:flex;"><span>b<span style="color:#e6db74">&#39;picoCTF{p0ll4rd_f4ct0r1z4at10n_FTW_7c8625a1}&#39;</span>
+</span></span></code></pre></div><p><code>picoCTF{p0ll4rd_f4ct0r1z4at10n_FTW_7c8625a1}</code></p>
+<ul class="pa0">
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="http://localhost:1313/" >
+    &copy;  abund4nt 2024 
+  </a>
+    <div>
+<div class="ananke-socials">
+  
+    
+    <a href="https://github.com/abund4nt" target="_blank" rel="noopener" class="github ananke-social-link link-transition stackoverflow link dib z-999 pt3 pt0-l mr1" title="GitHub link" aria-label="follow on GitHub——Opens in a new window">
+      
+        <span class="icon"><svg style="enable-background:new 0 0 512 512;" version="1.1" viewBox="0 0 512 512"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+  <path d="M256,32C132.3,32,32,134.8,32,261.7c0,101.5,64.2,187.5,153.2,217.9c11.2,2.1,15.3-5,15.3-11.1   c0-5.5-0.2-19.9-0.3-39.1c-62.3,13.9-75.5-30.8-75.5-30.8c-10.2-26.5-24.9-33.6-24.9-33.6c-20.3-14.3,1.5-14,1.5-14   c22.5,1.6,34.3,23.7,34.3,23.7c20,35.1,52.4,25,65.2,19.1c2-14.8,7.8-25,14.2-30.7c-49.7-5.8-102-25.5-102-113.5   c0-25.1,8.7-45.6,23-61.6c-2.3-5.8-10-29.2,2.2-60.8c0,0,18.8-6.2,61.6,23.5c17.9-5.1,37-7.6,56.1-7.7c19,0.1,38.2,2.6,56.1,7.7   c42.8-29.7,61.5-23.5,61.5-23.5c12.2,31.6,4.5,55,2.2,60.8c14.3,16.1,23,36.6,23,61.6c0,88.2-52.4,107.6-102.3,113.3   c8,7.1,15.2,21.1,15.2,42.5c0,30.7-0.3,55.5-0.3,63c0,6.1,4,13.3,15.4,11C415.9,449.1,480,363.1,480,261.7   C480,134.8,379.7,32,256,32z"/>
+</svg>
+</span>
+      
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span></a>
+  
+</div>
+</div>
+  </div>
+</footer>
+
+  </body>
+</html>
