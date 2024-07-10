@@ -42,17 +42,7 @@
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/pwn/</loc>
-    <lastmod>2024-07-10T17:27:57-04:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url><url>
     <loc>http://localhost:1313/crypto/rsa-pop-quiz/</loc>
-    <lastmod>2024-07-10T17:27:57-04:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url><url>
-    <loc>http://localhost:1313/pwn/test/</loc>
     <lastmod>2024-07-10T17:27:57-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -74,10 +64,6 @@
     <priority>0.5</priority>
   </url><url>
     <loc>http://localhost:1313/crypto/very-smooth/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url><url>
-    <loc>http://localhost:1313/web/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
