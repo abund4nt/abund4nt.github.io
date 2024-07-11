@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en-us">
-  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     
     <title>Very Smooth | abund4nt</title>
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="description" content="picoCTF 2022 / Cryptography">
+    <meta name="description" content="picoCTF 2022">
     <meta name="generator" content="Hugo 0.123.7">
     
     
@@ -45,22 +45,22 @@
     
 
     
-      <link rel="canonical" href="http://localhost:1313/crypto/very-smooth/">
+      <link rel="canonical" href="https://abund4nt.github.io/crypto/very-smooth/">
     
 
     <meta property="og:title" content="Very Smooth" />
-<meta property="og:description" content="picoCTF 2022 / Cryptography" />
+<meta property="og:description" content="picoCTF 2022" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://localhost:1313/crypto/very-smooth/" /><meta property="article:section" content="crypto" />
+<meta property="og:url" content="https://abund4nt.github.io/crypto/very-smooth/" /><meta property="article:section" content="crypto" />
 
 
 
 <meta itemprop="name" content="Very Smooth">
-<meta itemprop="description" content="picoCTF 2022 / Cryptography">
+<meta itemprop="description" content="picoCTF 2022">
 
-<meta itemprop="wordCount" content="736">
+<meta itemprop="wordCount" content="739">
 <meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Very Smooth"/>
-<meta name="twitter:description" content="picoCTF 2022 / Cryptography"/>
+<meta name="twitter:description" content="picoCTF 2022"/>
 
 	
   </head>
@@ -166,7 +166,7 @@ Forget safe primes... Here, we like to live life dangerously... &gt;:)
 - output.txt
 </code></pre><p>We get the files <a href="http://gen.py/"><code>gen.py</code></a> and <code>output.txt</code>. The .py file contains the source code that encrypts the contents of output.txt.</p>
 <p>In the output.txt file we are given n and c.</p>
-<p><em>gen.py</em></p>
+<p><strong>gen.py</strong></p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/python</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> binascii <span style="color:#f92672">import</span> hexlify
@@ -256,7 +256,7 @@ Forget safe primes... Here, we like to live life dangerously... &gt;:)
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;n = </span><span style="color:#e6db74">{</span>n<span style="color:#f92672">.</span>digits(<span style="color:#ae81ff">16</span>)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
 </span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;c = </span><span style="color:#e6db74">{</span>c<span style="color:#f92672">.</span>digits(<span style="color:#ae81ff">16</span>)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
-</span></span></code></pre></div><p><em>output.txt</em></p>
+</span></span></code></pre></div><p><strong>output.txt</strong></p>
 <pre tabindex="0"><code>n = 4f7aa864f662a42a92220e372f5ff25a142aef26106a0dbdf573a66594966ac5dd03848745bb6a80402cad7ac6f2bf93f9ed840edd9c157dfd5d265ce2403e155a29666df8f9b98167ad2452e5a63fd0b7b14ffe966db60c6e2c65b0f602f5c22eb030c0335187759909abd4df622118c23463bcc42650e0a7761257452bf40069ca50dbe0c922d8823a9dcc4231b3952d31d1e977cb520528c6a450405f2a2ee6134db8c61ceb4478a647b0469712cc4f3d1369ef3dfd3d876a2c77bac5a149ccf3723a6e8c3ba1deb0675f25def8da9de2b3ac8b3e38d5ac5c9736b9af087b3fc53450136428e07d58fbc00f6609a4cc14eb0a13a7e76056a241256e03e95d
 c = e41a61908eb48b85dc78975c288e62a271b1f237fdc958162727d2930b9af850e908137655c5955a078ff1aa63f5509fbaf79d179d24d209a061c36e0709437b8d2641f41d354bdea062084ea3be8637ed1c4bd8cf63d16c942976dd9d6188fc5e419afae17493d7cdb93d84052637d15e7fa1f852f4f5d786c86bfd024df0dfcf8431e7230cfbbce76a1835b178020ef839af42c377706918a50aac56f79285d743f4a177425eb00eaeb2bebe99343911ab653fe64bb61e140153b113f8554fe29561756fafc7460683d59dd3ee50eb48b718443b9f49e663b6dd02b0a15297468ec30a4f487e328103cdbc59d1d66fc4f03ef75ae45d6ce2035fdfaeb86b7
 </code></pre><h2 id="source-code-analysis">Source code analysis</h2>
@@ -298,8 +298,8 @@ c = e41a61908eb48b85dc78975c288e62a271b1f237fdc958162727d2930b9af850e908137655c5
 </span></span></code></pre></div><h2 id="definition-of-a-smooth-number">Definition of a smooth number</h2>
 <p>In number theory, a smooth number is an integer that can be fully factored into small prime numbers. So a positive January is called B-smooth if none of its prime factors is greater than B. For example the integer 1620 has the prime factorization of 2<strong>2 x 3</strong>4 x 5, so 1620 is 5-smooth because none of its prime factors is greater than 5. For a more exact definition you can visit <a href="https://es.wikipedia.org/wiki/N%C3%BAmero_liso">wikipedia</a>.</p>
 <h2 id="solution">Solution</h2>
-<p>Knowing that p and q are smooth prime numbers we must find a way to factor n, researching I came across Pollard&rsquo;s p -1 algorithm. Pollard&rsquo;s p-1 algorithm is an integer factoring algorithm that is only suitable for integers with factors of specific types.</p>
-<p>The factors it finds are those for which the number preceding the factor p - 1 is a ready power that can be factored into small prime numbers. For further definition visit wikipedia. With the following script we solve the challenge.</p>
+<p>Knowing that p and q are smooth prime numbers we must find a way to factor n, researching I came across Pollard&rsquo;s \(p - 1\) algorithm. Pollard&rsquo;s \(p - 1\) algorithm is an integer factoring algorithm that is only suitable for integers with factors of specific types.</p>
+<p>The factors it finds are those for which the number preceding the factor \(p - 1\) is a ready power that can be factored into small prime numbers. For further definition visit wikipedia. With the following script we solve the challenge.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> gmpy2 <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> Crypto.Util.number <span style="color:#f92672">import</span> long_to_bytes
 </span></span><span style="display:flex;"><span>
@@ -321,11 +321,11 @@ c = e41a61908eb48b85dc78975c288e62a271b1f237fdc958162727d2930b9af850e908137655c5
 </span></span><span style="display:flex;"><span>        print(long_to_bytes(m))
 </span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">break</span>
 </span></span><span style="display:flex;"><span>    n <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
-</span></span></code></pre></div><p>And execute the script to get the flag.</p>
+</span></span></code></pre></div><h2 id="flag">Flag</h2>
+<p>And execute the script to get the flag.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>➜  Very-Smooth python3 solve.py
 </span></span><span style="display:flex;"><span>b<span style="color:#e6db74">&#39;picoCTF{p0ll4rd_f4ct0r1z4at10n_FTW_7c8625a1}&#39;</span>
-</span></span></code></pre></div><p><code>picoCTF{p0ll4rd_f4ct0r1z4at10n_FTW_7c8625a1}</code></p>
-<ul class="pa0">
+</span></span></code></pre></div><ul class="pa0">
   
 </ul>
 <div class="mt6 instapaper_ignoref">
@@ -346,7 +346,7 @@ c = e41a61908eb48b85dc78975c288e62a271b1f237fdc958162727d2930b9af850e908137655c5
     </main>
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
-  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="http://localhost:1313/" >
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://abund4nt.github.io/" >
     &copy;  abund4nt 2024 
   </a>
     <div>

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en-us">
-  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     
     <title>Gonna Lift Em All | abund4nt</title>
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="description" content="Hack The Box / Cryptography">
+    <meta name="description" content="Hack The Box">
     <meta name="generator" content="Hugo 0.123.7">
     
     
@@ -45,22 +45,22 @@
     
 
     
-      <link rel="canonical" href="http://localhost:1313/crypto/gonna-lift-em-all/">
+      <link rel="canonical" href="https://abund4nt.github.io/crypto/gonna-lift-em-all/">
     
 
     <meta property="og:title" content="Gonna Lift Em All" />
-<meta property="og:description" content="Hack The Box / Cryptography" />
+<meta property="og:description" content="Hack The Box" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://localhost:1313/crypto/gonna-lift-em-all/" /><meta property="article:section" content="crypto" />
+<meta property="og:url" content="https://abund4nt.github.io/crypto/gonna-lift-em-all/" /><meta property="article:section" content="crypto" />
 <meta property="article:published_time" content="2024-07-10T19:02:58-04:00" />
 <meta property="article:modified_time" content="2024-07-10T19:02:58-04:00" />
 
 <meta itemprop="name" content="Gonna Lift Em All">
-<meta itemprop="description" content="Hack The Box / Cryptography"><meta itemprop="datePublished" content="2024-07-10T19:02:58-04:00" />
+<meta itemprop="description" content="Hack The Box"><meta itemprop="datePublished" content="2024-07-10T19:02:58-04:00" />
 <meta itemprop="dateModified" content="2024-07-10T19:02:58-04:00" />
 <meta itemprop="wordCount" content="311">
 <meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Gonna Lift Em All"/>
-<meta name="twitter:description" content="Hack The Box / Cryptography"/>
+<meta name="twitter:description" content="Hack The Box"/>
 
 	
   </head>
@@ -197,7 +197,7 @@
 </span></span><span style="display:flex;"><span>h <span style="color:#f92672">=</span> <span style="color:#ae81ff">7771801879117000288817915415260102060832587957130098985489551063161695391373720317596178655146834967333192201720460001561670355858493084613455139466487717364432242890680666229302181326080340061384604634749443972114930849979067572441792867514664636574923631540074373758015873624100768698622048136552173788916</span>
 </span></span><span style="display:flex;"><span>(c1, c2) <span style="color:#f92672">=</span> (<span style="color:#ae81ff">83194887666722435308945316429939841668109985194860518882743309895332330525232854733374220834562004665371728589040849388337869965962272329974327341953512030547150987478914221697662859702721549751949905379177524490596978865458493461926865553151329446008396048857775620413257603550197735539508582063967332954541</span>, <span style="color:#ae81ff">46980139827823872709797876525359718565495105542826335055296195898993549717497706297570900140303523646691120660896057591142474133027314700072754720423416473219145616105901315902667461002549138134613137623172629251106773324834864521095329972962212429468236356687505826351839310216384806147074454773818037349470</span>)
 </span></span></code></pre></div><h2 id="source-code-analysis">Source code analysis</h2>
-<p>This is a cryptosystem that uses modular exponentiation operations to perform encryption and key generation. $c1$ and $c2$ are the encrypted messages that are generated as follows.</p>
+<p>This is a cryptosystem that uses modular exponentiation operations to perform encryption and key generation. \(c1\) and \(c2\) are the encrypted messages that are generated as follows.</p>
 $$
 \begin{equation*}
 C1 = g \cdot y\text{ (mod } n \text{)}
@@ -208,7 +208,7 @@ $$
 C2 = m \cdot s\text{ (mod } n \text{)}
 \end{equation*}
 $$
-<p>The vulnerability of this cipher lies in the output since it gives us a lot of information ($p$, $q$, $h$, $c1$ and $c2$). We must find $y$ and $s$, to find these values we must solve the following operations.</p>
+<p>The vulnerability of this cipher lies in the output since it gives us a lot of information (\(p\), \(q\), \(h\), \(c1\) and \(c2\)). We must find \(y\) and \(s\), to find these values we must solve the following operations.</p>
 $$
 \begin{equation*}
 y = (c1 \cdot g^{-1})\text{ mod } p \text{}
@@ -256,7 +256,7 @@ $$
     </main>
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
-  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="http://localhost:1313/" >
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://abund4nt.github.io/" >
     &copy;  abund4nt 2024 
   </a>
     <div>

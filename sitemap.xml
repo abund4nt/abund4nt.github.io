@@ -2,68 +2,53 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:1313/</loc>
+    <loc>https://abund4nt.github.io/</loc>
     <lastmod>2024-07-10T19:04:31-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/crypto/brainys-cipher/</loc>
+    <loc>https://abund4nt.github.io/crypto/brainys-cipher/</loc>
     <lastmod>2024-07-10T19:04:31-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/crypto/</loc>
+    <loc>https://abund4nt.github.io/crypto/</loc>
     <lastmod>2024-07-10T19:04:31-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/crypto/gonna-lift-em-all/</loc>
+    <loc>https://abund4nt.github.io/crypto/gonna-lift-em-all/</loc>
     <lastmod>2024-07-10T19:02:58-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/crypto/rsactftool/</loc>
+    <loc>https://abund4nt.github.io/crypto/rsactftool/</loc>
     <lastmod>2024-07-10T19:00:46-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/crypto/twoforone/</loc>
-    <lastmod>2024-07-10T18:59:49-04:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url><url>
-    <loc>http://localhost:1313/crypto/no-padding-no-problem/</loc>
-    <lastmod>2024-07-10T18:09:25-04:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url><url>
-    <loc>http://localhost:1313/crypto/dachshund-attacks/</loc>
-    <lastmod>2024-07-10T17:42:01-04:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url><url>
-    <loc>http://localhost:1313/crypto/rsa-pop-quiz/</loc>
+    <loc>https://abund4nt.github.io/crypto/rsa-pop-quiz/</loc>
     <lastmod>2024-07-10T17:27:57-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/crypto/basic-mod-1/</loc>
+    <loc>https://abund4nt.github.io/crypto/basic-mod-1/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/crypto/basic-mod-2/</loc>
+    <loc>https://abund4nt.github.io/crypto/basic-mod-2/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/categories/</loc>
+    <loc>https://abund4nt.github.io/categories/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/tags/</loc>
+    <loc>https://abund4nt.github.io/tags/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/crypto/very-smooth/</loc>
+    <loc>https://abund4nt.github.io/crypto/very-smooth/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
