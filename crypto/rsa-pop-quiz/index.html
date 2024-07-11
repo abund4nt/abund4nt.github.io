@@ -195,7 +195,7 @@ $$
 <p>For a Python implementation of RSA you can look at this:</p>
 <p><a href="https://github.com/luk4spwn/rsa-implementation/">https://github.com/luk4spwn/rsa-implementation/</a></p>
 <h2 id="solución">Solución</h2>
-<p>In the first question we are asked if it is possible to get $n$ by $p$ and $q$.</p>
+<p>In the first question we are asked if it is possible to get \(n\) by \(p\) and \(q\).</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Good morning class! It<span style="color:#960050;background-color:#1e0010">&#39;</span>s me Ms. Adleman-Shamir-Rivest
 </span></span><span style="display:flex;"><span>Today we will be taking a pop quiz, so I hope you studied. Cramming just will not <span style="color:#66d9ef">do</span>!
 </span></span><span style="display:flex;"><span>You will need to tell me <span style="color:#66d9ef">if</span> each example is possible, given your extensive crypto knowledge.
@@ -206,14 +206,14 @@ $$
 </span></span><span style="display:flex;"><span><span style="color:#75715e">##### PRODUCE THE FOLLOWING ####</span>
 </span></span><span style="display:flex;"><span>n
 </span></span><span style="display:flex;"><span>IS THIS POSSIBLE and FEASIBLE? <span style="color:#f92672">(</span>Y/N<span style="color:#f92672">)</span>:
-</span></span></code></pre></div><p>If we know that \(n = p \cdot q\) we can get $n$ out with a multiplication in Python.</p>
+</span></span></code></pre></div><p>If we know that \(n = p \cdot q\) we can get \(n\) out with a multiplication in Python.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>➜ python3 -q
 </span></span><span style="display:flex;"><span>&gt;&gt;&gt; p <span style="color:#f92672">=</span> <span style="color:#ae81ff">76753</span>
 </span></span><span style="display:flex;"><span>&gt;&gt;&gt; q <span style="color:#f92672">=</span> <span style="color:#ae81ff">60413</span>
 </span></span><span style="display:flex;"><span>&gt;&gt;&gt; n <span style="color:#f92672">=</span> p * q
 </span></span><span style="display:flex;"><span>&gt;&gt;&gt; n
 </span></span><span style="display:flex;"><span><span style="color:#ae81ff">4636878989</span>
-</span></span></code></pre></div><p>We press Y in the script and send the value of $n$, we can see that the server responds with <code>Outstanding move!!!</code> giving us to understand that the result is correct.</p>
+</span></span></code></pre></div><p>We press Y in the script and send the value of \(n\), we can see that the server responds with <code>Outstanding move!!!</code> giving us to understand that the result is correct.</p>
 <blockquote>
 <p>I checked if closing the connection to the server and connecting again changed the numbers, but NO, the numbers are not random, they are always the same.</p>
 </blockquote>
