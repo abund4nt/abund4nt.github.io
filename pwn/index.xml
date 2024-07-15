@@ -2,10 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Binary Explotation on abund4nt</title>
-    <link>http://localhost:1313/pwn/</link>
+    <link>https://abund4nt.github.io/pwn/</link>
     <description>Recent content in Binary Explotation on abund4nt</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <atom:link href="http://localhost:1313/pwn/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 15 Jul 2024 13:19:09 -0400</lastBuildDate>
+    <atom:link href="https://abund4nt.github.io/pwn/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>buffer overflow 1</title>
+      <link>https://abund4nt.github.io/pwn/buffer-overflow-1/</link>
+      <pubDate>Mon, 15 Jul 2024 13:19:09 -0400</pubDate>
+      <guid>https://abund4nt.github.io/pwn/buffer-overflow-1/</guid>
+      <description>We are provided with the compiled vuln binary, the source code vuln.c and a remote instance to connect to.&#xA;#include &amp;lt;stdio.h&amp;gt; #include &amp;lt;stdlib.h&amp;gt; #include &amp;lt;string.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; #include &amp;lt;sys/types.h&amp;gt; #include &amp;#34;asm.h&amp;#34; #define BUFSIZE 32 #define FLAGSIZE 64 void win() { char buf[FLAGSIZE]; FILE *f = fopen(&amp;#34;flag.txt&amp;#34;,&amp;#34;r&amp;#34;); if (f == NULL) { printf(&amp;#34;%s %s&amp;#34;, &amp;#34;Please create &amp;#39;flag.txt&amp;#39; in this directory with your&amp;#34;, &amp;#34;own debugging flag.\n&amp;#34;); exit(0); } fgets(buf,FLAGSIZE,f); printf(buf); } void vuln(){ char buf[BUFSIZE]; gets(buf); printf(&amp;#34;Okay, time to return.</description>
+    </item>
   </channel>
 </rss>
