@@ -6,8 +6,15 @@
     <description>Recent content in Binary Explotation on abund4nt</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 15 Jul 2024 13:19:09 -0400</lastBuildDate>
+    <lastBuildDate>Mon, 15 Jul 2024 20:18:45 -0400</lastBuildDate>
     <atom:link href="https://abund4nt.github.io/pwn/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>RPS</title>
+      <link>https://abund4nt.github.io/pwn/rps/</link>
+      <pubDate>Mon, 15 Jul 2024 20:18:45 -0400</pubDate>
+      <guid>https://abund4nt.github.io/pwn/rps/</guid>
+      <description>We are provided with a remote instance to connect to and the source code for this game-redacted.c.&#xA;#include &amp;lt;stdio.h&amp;gt; #include &amp;lt;stdlib.h&amp;gt; #include &amp;lt;stdbool.h&amp;gt; #include &amp;lt;string.h&amp;gt; #include &amp;lt;time.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; #include &amp;lt;sys/time.h&amp;gt; #include &amp;lt;sys/types.h&amp;gt; #define WAIT 60 static const char* flag = &amp;#34;[REDACTED]&amp;#34;; char* hands[3] = {&amp;#34;rock&amp;#34;, &amp;#34;paper&amp;#34;, &amp;#34;scissors&amp;#34;}; char* loses[3] = {&amp;#34;paper&amp;#34;, &amp;#34;scissors&amp;#34;, &amp;#34;rock&amp;#34;}; int wins = 0; int tgetinput(char *input, unsigned int l) { fd_set input_set; struct timeval timeout; int ready_for_reading = 0; int read_bytes = 0; if( l &amp;lt;= 0 ) { printf(&amp;#34;&amp;#39;l&amp;#39; for tgetinput must be greater than 0\n&amp;#34;); return -2; } /* Empty the FD Set */ FD_ZERO(&amp;amp;input_set ); /* Listen to the input descriptor */ FD_SET(STDIN_FILENO, &amp;amp;input_set); /* Waiting for some seconds */ timeout.</description>
+    </item>
     <item>
       <title>buffer overflow 1</title>
       <link>https://abund4nt.github.io/pwn/buffer-overflow-1/</link>
