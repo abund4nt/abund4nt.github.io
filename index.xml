@@ -6,8 +6,15 @@
     <description>Recent content on abund4nt</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 15 Jul 2024 20:18:45 -0400</lastBuildDate>
+    <lastBuildDate>Mon, 15 Jul 2024 22:29:17 -0400</lastBuildDate>
     <atom:link href="https://abund4nt.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>buffer overflow 2</title>
+      <link>https://abund4nt.github.io/pwn/buffer-overflow-2/</link>
+      <pubDate>Mon, 15 Jul 2024 22:29:17 -0400</pubDate>
+      <guid>https://abund4nt.github.io/pwn/buffer-overflow-2/</guid>
+      <description>We are provided with a compiled binary vuln, the source code vuln.c and a remote instance to connect to.&#xA;#include &amp;lt;stdio.h&amp;gt; #include &amp;lt;stdlib.h&amp;gt; #include &amp;lt;string.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; #include &amp;lt;sys/types.h&amp;gt; #define BUFSIZE 100 #define FLAGSIZE 64 void win(unsigned int arg1, unsigned int arg2) { char buf[FLAGSIZE]; FILE *f = fopen(&amp;#34;flag.txt&amp;#34;,&amp;#34;r&amp;#34;); if (f == NULL) { printf(&amp;#34;%s %s&amp;#34;, &amp;#34;Please create &amp;#39;flag.txt&amp;#39; in this directory with your&amp;#34;, &amp;#34;own debugging flag.\n&amp;#34;); exit(0); } fgets(buf,FLAGSIZE,f); if (arg1 !</description>
+    </item>
     <item>
       <title>RPS</title>
       <link>https://abund4nt.github.io/pwn/rps/</link>

