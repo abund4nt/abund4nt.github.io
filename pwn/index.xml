@@ -6,8 +6,15 @@
     <description>Recent content in Binary Explotation on abund4nt</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 15 Jul 2024 22:29:17 -0400</lastBuildDate>
+    <lastBuildDate>Tue, 16 Jul 2024 22:37:36 -0400</lastBuildDate>
     <atom:link href="https://abund4nt.github.io/pwn/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>clutter-overflow</title>
+      <link>https://abund4nt.github.io/pwn/clutter-overflow/</link>
+      <pubDate>Tue, 16 Jul 2024 22:37:36 -0400</pubDate>
+      <guid>https://abund4nt.github.io/pwn/clutter-overflow/</guid>
+      <description>We are provided with a chall binary with the following protections.&#xA;Arch: amd64-64-little RELRO: Partial RELRO Stack: No canary found NX: NX enabled PIE: No PIE (0x400000) We also have the source code chall.c.&#xA;#include &amp;lt;stdio.h&amp;gt; #include &amp;lt;stdlib.h&amp;gt; #define SIZE 0x100 #define GOAL 0xdeadbeef const char* HEADER = &amp;#34; ______________________________________________________________________\n&amp;#34; &amp;#34;|^ ^ ^ ^ ^ ^ |L L L L|^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^|\n&amp;#34; &amp;#34;| ^ ^ ^ ^ ^ ^| L L L | ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ |\n&amp;#34; &amp;#34;|^ ^ ^ ^ ^ ^ |L L L L|^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ==================^ ^ ^|\n&amp;#34; &amp;#34;| ^ ^ ^ ^ ^ ^| L L L | ^ ^ ^ ^ ^ ^ ___ ^ ^ ^ ^ / \\^ ^ |\n&amp;#34; &amp;#34;|^ ^_^ ^ ^ ^ =========^ ^ ^ ^ _ ^ / \\ ^ _ ^ / | | \\^ ^|\n&amp;#34; &amp;#34;| ^/_\\^ ^ ^ /_________\\^ ^ ^ /_\\ | // | /_\\ ^| | ____ ____ | | ^ |\n&amp;#34; &amp;#34;|^ =|= ^ =================^ ^=|=^| |^=|=^ | | {____}{____} | |^ ^|\n&amp;#34; &amp;#34;| ^ ^ ^ ^ | ========= |^ ^ ^ ^ ^\\___/^ ^ ^ ^| |__%%%%%%%%%%%%__| | ^ |\n&amp;#34; &amp;#34;|^ ^ ^ ^ ^| / ( \\ | ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ |/ %%%%%%%%%%%%%% \\|^ ^|\n&amp;#34; &amp;#34;.</description>
+    </item>
     <item>
       <title>buffer overflow 2</title>
       <link>https://abund4nt.github.io/pwn/buffer-overflow-2/</link>
