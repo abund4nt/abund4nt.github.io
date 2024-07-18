@@ -58,7 +58,7 @@
 <meta itemprop="name" content="Hack.ING 2024 Challenges">
 <meta itemprop="description" content="Writeup of cryptographic challenges in Hack.ING 2024 CTF"><meta itemprop="datePublished" content="2024-07-17T15:45:33-04:00" />
 <meta itemprop="dateModified" content="2024-07-17T15:45:33-04:00" />
-<meta itemprop="wordCount" content="909">
+<meta itemprop="wordCount" content="947">
 <meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Hack.ING 2024 Challenges"/>
 <meta name="twitter:description" content="Writeup of cryptographic challenges in Hack.ING 2024 CTF"/>
 
@@ -171,11 +171,11 @@
 <p>Thanks to <a href="https://github.com/taconeomental">neo</a>, <a href="https://github.com/s4orii">s4ori</a> and <a href="https://github.com/Nik0Sec">Nik0Sec</a> for being part of my team, we managed to get first blood in the Fintual web challenge and we got a prize.</p>
 <p>I know that the solution for these challenges is in the official repository of the Security UC Club but I decided to do them on my own to explain in detail the solution, also because I like to write writeups :). Let&rsquo;s go with the solutions!</p>
 <h1 id="8d">8=D</h1>
-<p>En este desafio nos entregan un archivo <code>chall.txt</code>.</p>
+<p>In this challenge we are given a <code>chall.txt</code> file.</p>
 <pre tabindex="0"><code>n = 24723635342804809549343474991665632383907004528814579329045175006158741799679280187383889884648816909850125418724614886347610572741987856318260958482537515380163981752789139740790485088768421733791505599143805861925981504311188295105843594305958532579905016628670437557977541253447605990122119727802971915005261554563223754924279425867318000052107838024586472564200747268589276283060479055180099465442314891167553801822304334255993921889180676067678318847925751462097910440470911497786282712062439502209742468410690868736570081382520169453168066539036655643157265327923486380977480734655598515824973068823953240726947
 e = 13595570174254973913584829590945804110919454685747406793925236779152880711493458312161531787226310291134344559639499112853274570716596047513337354494944461096355493739724535750217883584265890735612626007043653757634883556593523246074329325570245288884815558509689306257333719956807526505347696277374610434665146166905465410935885243371491854480617189527349501184779147171478122885149312572566011152096124442118622138532735382666071592885699751926022390797681947647711775678726388291193172725671569479686895202693313433442090737329320975571147566891673744790127731404253677189549225552259949324026493838950208954771043
 c = 4118657246649859099071739848157689051450046919408754038799628595316856754348487056113019527689988297486222666297832451558109462703702876792494899701169246095077692902913622655311261065953189840615051203742346255257299213136263471990935581321975141953685562578861772851409929022695020127666493175741044589756525403085094809702754705095796721470750158266809329002463346010548455093813077229976588304567007127999980647394240274504516870636342746300959697096683815766944688469941987821784479096197497985994244246864374486969871185099197122183782702061922249012406521278202629925831292453086583649034051058671694036311121
-</code></pre><p>Este archivo contiene los parametros utilizados en el criptosistema RSA, nos entregan la clave publica \(n\), el exponente publico \(e\) y el texto cifrado \(c\), para resolver este desafio debemos entender el funcionamiento de RSA.</p>
+</code></pre><p>This file contains the parameters used in the RSA cryptosystem, they give us the public key (n), the public exponent (e) and the ciphertext (c), to solve this challenge we must understand how RSA works.</p>
 <h2 id="rsa-context">RSA Context</h2>
 <p>RSA encrypts a message in decimal format \(m\) we can encrypt it with the following equation.</p>
 $$
@@ -192,19 +192,19 @@ m = c^{d} \text{ (mod } n \text{)}
 $$
 <p>For a Python implementation of RSA you can look at this:</p>
 <p><a href="https://github.com/abund4nt/rsa-implementation">https://github.com/abund4nt/rsa-implementation</a></p>
-<h2 id="vulnerabilidad">Vulnerabilidad</h2>
-<p>La vulnerabilidad en este desafio es que el exponente publico \(e\) es muy grande, esto lo hace vulnerable al ataque de Wiener&rsquo;s, este se explota cuando el exponente privado \(d\) es mas pequeño que \(n\), entonces es posible recuperar \(d\) utilizando fracciones continuas.</p>
-<p>Este ataque se basa en el siguiente teorema</p>
+<h2 id="vulnerability">Vulnerability</h2>
+<p>The vulnerability in this challenge is that the public exponent (e) is very large, this makes it vulnerable to Wiener&rsquo;s attack, this is exploited when the private exponent (d) is smaller than (n), then it is possible to recover (d) using continued fractions.</p>
+<p>This attack is based on the following theorem.</p>
 $$
 \begin{equation*}
 \text{ Let } n = pq \text{ with } q < p < 2q. \text{ Let } d < \frac{1}{3} \sqrt{n}. \text{ Given } n \text{ and } e \text{ with } ed \equiv 1 \text{ mod } \phi(n).
 \end{equation*}
 $$
-<p>Si quieren profundizar mas en esta vulnerabiliad les recomiendo visitar los siguientes recursos.</p>
+<p>If you want to go deeper into this vulnerability I recommend you to visit the following resources.</p>
 <p><a href="https://cryptohack.gitbook.io/cryptobook/untitled/low-private-component-attacks/wieners-attack">https://cryptohack.gitbook.io/cryptobook/untitled/low-private-component-attacks/wieners-attack</a>
 <a href="https://ir0nstone.gitbook.io/crypto/rsa/public-exponent-attacks/wieners-attack">https://ir0nstone.gitbook.io/crypto/rsa/public-exponent-attacks/wieners-attack</a></p>
 <h2 id="flag">Flag</h2>
-<p>Python tiene un libreria llamada <code>owiener</code> la cual automatiza este tipo de ataque, con el siguiente script resolvemos el desafio.</p>
+<p>Python has a library called <code>owiener</code> which automates this type of attack, with the following script we solve the challenge.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> owiener
 </span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> Crypto.Util.number <span style="color:#f92672">import</span> long_to_bytes
 </span></span><span style="display:flex;"><span>
@@ -216,28 +216,28 @@ $$
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>m <span style="color:#f92672">=</span> pow(c, d, n)
 </span></span><span style="display:flex;"><span>print(long_to_bytes(m)<span style="color:#f92672">.</span>decode())
-</span></span></code></pre></div><p>Al ejecutarlo obtenemos la flag.</p>
+</span></span></code></pre></div><p>When executed, we obtain the flag.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ python3 solve.py
 </span></span><span style="display:flex;"><span>hack.ing<span style="color:#f92672">{</span>wh4t_4_sm4ll_d!_1_0nly_t4k3_ds_b1gg3r_th4n_<span style="color:#f92672">(</span>1/3<span style="color:#f92672">)</span>n^0.25<span style="color:#f92672">}</span>
 </span></span></code></pre></div><h1 id="charsaquican">charsaquican</h1>
-<p>En este desafio nos entregan un archivo <code>charsaquican.txt</code> con el siguiente contenido.</p>
+<p>In this challenge we are given a file <code>charsaquican.txt</code> with the following content.</p>
 <pre tabindex="0"><code>23589271521001072374368718627024893561093580801610033478508827948392459573016304596713510122205170700776329300545303811110582812880932205696900044250916115452177137088837288193980317324454233163225878988984047402427919755477797155798118139908591110633880939831557325706459455289114634425952944366263660109827
 2679987676970149564616878518310844086845429007809172767753871068840180046532373340449234426392343821075940092162744867759082697717232505527099196311880820077270703223433014867381190902712937579240089074854538238883349417483415853061477477431042143997990930436977685029789360089768067533989553657019987245741348838784669507910337478824626012407301589750022270966490623747022291444464751196658356762904628652365572791079112432942082906806070796145171614677690264983554673511634542716630694640091490079378801981551488134577769391962535251275454705690403852071152933904346918948295565615483073600820020410534178776901057
 26912454534914684692347271970250467684125958386279982484877949708230105387196877615230982204120974552604105940044981708026017871002502171784267969916169352564661419772945925664427084503262326046246886229410146860306279296039917475863187941748240606680479765473216608599658674331299868396544173339814450533311972728280156712544934677975903842379957319445057896881271863704676844849952412432909517200148613677070082552257049349983990714242835075241602487337249303347365077215953890538265315285392317857673120521475471081602047249461247750560826423720092697353494692322984310685824559732475322339148790388952061808868
 140209548269958783990735186534502807950089471861294930697756608840184406759035904679275895002593384926996643270351950967655434865491186074413903406531302424845417619705875505242311619625675247358295031070283958304741266494705489777351082895167322166971215808118621457599148469842614741677868533554888398123203
-</code></pre><p>La descripcion del desafio era la siguiente.</p>
+</code></pre><p>The description of the challenge was as follows.</p>
 <blockquote>
 <p>Todos los ingredientes están mezclados! Es un charquicán.</p>
 </blockquote>
-<h2 id="solucion">Solucion</h2>
-<p>Para resolver este desafio basta con entender la descripcion del desafio, los valores entregados corresponden a los parametros del criptosistema RSA (\(p\), \(q\), \(e\) y \(n\)).</p>
-<p>Luego de un rato jugando con los valores pude determinar que el primer argumento (0) corresponde a \(p\) y el ultimo argumento (3) corresponde a \(q\), con la consola de Python pude calcular \(n\) ya que \(n = p \cdot q\).</p>
+<h2 id="solution">Solution</h2>
+<p>To solve this challenge it is enough to understand the description of the challenge, the values given correspond to the parameters of the RSA cryptosystem (p, q, e and n).</p>
+<p>After a while playing with the values I was able to determine that the first argument (0) corresponds to “p” and the last argument (3) corresponds to “q”, with the Python console I was able to calculate “n” since “n” = “p” or “q”.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ python3 -q
 </span></span><span style="display:flex;"><span>&gt;&gt;&gt; <span style="color:#ae81ff">23589271521001072374368718627024893561093580801610033478508827948392459573016304596713510122205170700776329300545303811110582812880932205696900044250916115452177137088837288193980317324454233163225878988984047402427919755477797155798118139908591110633880939831557325706459455289114634425952944366263660109827</span> * <span style="color:#ae81ff">140209548269958783990735186534502807950089471861294930697756608840184406759035904679275895002593384926996643270351950967655434865491186074413903406531302424845417619705875505242311619625675247358295031070283958304741266494705489777351082895167322166971215808118621457599148469842614741677868533554888398123203</span>
 </span></span><span style="display:flex;"><span><span style="color:#ae81ff">3307441103976963920162254584485872795261917762970581419107514466680078331379785922209654199353627542216290407880193778214955610882311440093580521781631012831502148183830398752703395378711543200712897666818730652336887443010142828451530005995748135567873071859901448926583784502168006966990685786760298736896645774705428304311016116064876708763904303861777276241874668730487731626724610193145353806497212083612153509045584500894412437220204405244673023078904147137526101798298046365668625369981087324229123830082992732202786703594426145528348716077859832628071160119620561939272135564140357625895582506189803657015881</span>
-</span></span></code></pre></div><p>Sabiendo cual es el valor de \(p\) y \(q\) podremos calcular \(\phi\) que es igual a \((p - 1) \cdot (q - 1)\), con este valor podremos calcular \(d\) y obtener la flag.</p>
+</span></span></code></pre></div><p>Knowing the value of \(p\) and \(q\) we can calculate \(\phi\) which is equal to \((p - 1) * (q - 1)\) , with this value we can calculate “d” and obtain the flag.</p>
 <h2 id="flag-1">Flag</h2>
-<p>Con el siguiente script se puede resolver el desafio, pude determinar cual era \(c\) y cual era \(d\) en base a prueba y error.</p>
+<p>With the following script you can solve the challenge, I was able to determine which one was \(c\) and which one was \(d\) based on trial and error.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> Crypto.Util.number <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
 </span></span><span style="display:flex;"><span>p <span style="color:#f92672">=</span> <span style="color:#ae81ff">23589271521001072374368718627024893561093580801610033478508827948392459573016304596713510122205170700776329300545303811110582812880932205696900044250916115452177137088837288193980317324454233163225878988984047402427919755477797155798118139908591110633880939831557325706459455289114634425952944366263660109827</span>
 </span></span><span style="display:flex;"><span>q <span style="color:#f92672">=</span> <span style="color:#ae81ff">140209548269958783990735186534502807950089471861294930697756608840184406759035904679275895002593384926996643270351950967655434865491186074413903406531302424845417619705875505242311619625675247358295031070283958304741266494705489777351082895167322166971215808118621457599148469842614741677868533554888398123203</span>
@@ -248,17 +248,17 @@ $$
 </span></span><span style="display:flex;"><span>c <span style="color:#f92672">=</span> <span style="color:#ae81ff">26912454534914684692347271970250467684125958386279982484877949708230105387196877615230982204120974552604105940044981708026017871002502171784267969916169352564661419772945925664427084503262326046246886229410146860306279296039917475863187941748240606680479765473216608599658674331299868396544173339814450533311972728280156712544934677975903842379957319445057896881271863704676844849952412432909517200148613677070082552257049349983990714242835075241602487337249303347365077215953890538265315285392317857673120521475471081602047249461247750560826423720092697353494692322984310685824559732475322339148790388952061808868</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>print(long_to_bytes(pow(c, d, n))<span style="color:#f92672">.</span>decode())
-</span></span></code></pre></div><p>Al ejecutar el script obtenemos la flag.</p>
+</span></span></code></pre></div><p>When executing the script we get the flag.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ python3 solve.py
 </span></span><span style="display:flex;"><span>hack.ing<span style="color:#f92672">{</span>s4b3s_1d3nt1f1c4r_1ngr3d13nt3s!_relleno_relleno_relleno_relleno_relleno_relleno_relleno_relleno_relleno_relleno_relleno_relleno_relleno_relleno_relleno_relleno_relleno_relleno_relleno_relleno_relleno<span style="color:#f92672">}</span>
 </span></span></code></pre></div><h1 id="hidden-message">Hidden Message</h1>
-<p>En este desafio se nos proporciona una instancia remota para conectarnos, al conectarnos nos entrenga la flag encriptada \(c\) mas su clave publica \(n\) y exponente publico \(e\).</p>
+<p>In this challenge we are provided with a remote instance to connect to, when we connect we get the encrypted flag \(c\) plus its public key \(n\) and public exponent \(e\).</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ nc 172.17.0.2 <span style="color:#ae81ff">8888</span>
 </span></span><span style="display:flex;"><span>Welcome to this challenge. Would you like to get the flag? <span style="color:#f92672">(</span>y/n<span style="color:#f92672">)</span> y
 </span></span><span style="display:flex;"><span><span style="color:#f92672">{</span><span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;11E0809B25AE8FC1F1FF1459A10CA43FCA8E2375AA20DFCA356EA8829A208F14234DE2EE91376F248DA5581F899B44246F64E8CFB46462DF66D37FDE662C06889931B7B6100AD8E0435F37FFB0B150F448A4AABF7F33E967CADC6ABE8700DD60301EB84C3E4D68B908FED74BDBA1AEB925C1E952144AFD6D4E0BA420D6C8A967&#34;</span>, <span style="color:#e6db74">&#34;pubkey&#34;</span>: <span style="color:#f92672">[</span><span style="color:#e6db74">&#34;6F48EF4905AD155E6659996AC53D910CCBA1D9BF52743EE022A62549051F497C074BD780CACB9E00D194C06D8EE0C1D4E037741EF38B9F788E06CDD2522075C942EFFEFAF58D4BA62DCA0E2C16ED25DD058E6C0D1B21EB98212154E636D4A75D452EDEE0417F32965E895948C24356F98F973FCB11EE4B7DF821E27BFF687957&#34;</span>, <span style="color:#e6db74">&#34;5&#34;</span><span style="color:#f92672">]}</span>
-</span></span></code></pre></div><p>Nuevamente estamos ante un criptosistema RSA.</p>
-<h2 id="vulnerabilidad-1">Vulnerabilidad</h2>
-<p>Al ser pequeño el exponente publico \(e\) y constante entre los mensajes podemos utilizar el teorema chino del resto para recuperar la flag en texto claro \(m\). Imagina que mantenemos siempre el exponente publico durante 3 veces.</p>
+</span></span></code></pre></div><p>Once again we are dealing with an RSA cryptosystem.</p>
+<h2 id="vulnerability-1">Vulnerability</h2>
+<p>Since the public exponent \(e\) is small and constant between messages we can use the Chinese remainder theorem to recover the flag in clear text \(m\). Imagine that we always keep the public exponent for 3 times.</p>
 $$
 \begin{equation*}
 m^{e} = C_{1} \text{ mod }N_{1}
@@ -274,10 +274,10 @@ $$
 m^{e} = C_{3} \text{ mod }N_{3}
 \end{equation*}
 $$
-<p>El teorema chino del resto nos permite resolver la congruencia \(\text{mod } N_{1}N_{2}N_{3}\) y al resolverla calculamos la raiz quinta del resultado y obtendremos la flag en texto plano. Si quieren aprender mas sobre el tema les recomiendo el siguiente articulo.</p>
+<p>The Chinese remainder theorem allows us to solve the congruence \(\text{mod } N_{1}N_{2}N_{3}\) and when we solve it we calculate the fifth root of the result and we will obtain the flag in plain text. If you want to learn more about the subject I recommend the following article.</p>
 <p><a href="https://es.wikipedia.org/wiki/Teorema_chino_del_resto">https://es.wikipedia.org/wiki/Teorema_chino_del_resto</a></p>
 <h2 id="flag-2">Flag</h2>
-<p>Con el siguiente script resolvemos el desafio.</p>
+<p>With the following script we solve the challenge.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> Crypto.Util.number <span style="color:#f92672">import</span> long_to_bytes
 </span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> libnum
 </span></span><span style="display:flex;"><span>
@@ -301,7 +301,7 @@ $$
 </span></span><span style="display:flex;"><span>flag <span style="color:#f92672">=</span> libnum<span style="color:#f92672">.</span>nroot(result_crt, <span style="color:#ae81ff">5</span>) <span style="color:#75715e"># e = 5</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>print(long_to_bytes(flag)<span style="color:#f92672">.</span>decode())
-</span></span></code></pre></div><p>Al ejecutar el script obtendremos la flag.</p>
+</span></span></code></pre></div><p>When executing the script we will obtain the flag.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ python3 solve.py
 </span></span><span style="display:flex;"><span>hack.ing<span style="color:#f92672">{</span>1_ShOuLd_h4v3_U$eD_@_b1693R_3xPONent<span style="color:#f92672">}</span>
 </span></span></code></pre></div><ul class="pa0">
