@@ -6,8 +6,15 @@
     <description>Recent content on abund4nt</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 16 Jul 2024 22:37:36 -0400</lastBuildDate>
+    <lastBuildDate>Wed, 17 Jul 2024 15:45:33 -0400</lastBuildDate>
     <atom:link href="https://abund4nt.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Hack.ING 2024 Challenges</title>
+      <link>https://abund4nt.github.io/crypto/hacking-challenges/</link>
+      <pubDate>Wed, 17 Jul 2024 15:45:33 -0400</pubDate>
+      <guid>https://abund4nt.github.io/crypto/hacking-challenges/</guid>
+      <description>Hi guys how are you, in this post I bring you the solution of the cryptographic challenges that were presented at the CTF Hack.ING 2024, which was held in person in Santiago de Chile. The event was very entertaining and I certainly had a great time. I attach a picture of the scoreboard, my team was called Delt4 and we got the top 9.&#xA;Thanks to neo, s4ori and Nik0Sec for being part of my team, we managed to get first blood in the Fintual web challenge and we got a prize.</description>
+    </item>
     <item>
       <title>clutter-overflow</title>
       <link>https://abund4nt.github.io/pwn/clutter-overflow/</link>

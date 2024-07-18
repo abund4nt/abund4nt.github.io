@@ -3,7 +3,17 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://abund4nt.github.io/</loc>
-    <lastmod>2024-07-16T22:37:36-04:00</lastmod>
+    <lastmod>2024-07-17T15:45:33-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>https://abund4nt.github.io/crypto/</loc>
+    <lastmod>2024-07-17T15:45:33-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>https://abund4nt.github.io/crypto/hacking-challenges/</loc>
+    <lastmod>2024-07-17T15:45:33-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
@@ -29,11 +39,6 @@
   </url><url>
     <loc>https://abund4nt.github.io/pwn/buffer-overflow-1/</loc>
     <lastmod>2024-07-15T13:19:09-04:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url><url>
-    <loc>https://abund4nt.github.io/crypto/</loc>
-    <lastmod>2024-07-13T20:19:40-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url><url>
