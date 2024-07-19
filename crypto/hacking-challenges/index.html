@@ -58,7 +58,7 @@
 <meta itemprop="name" content="Hack.ING 2024 Challenges">
 <meta itemprop="description" content="Writeup of cryptographic challenges in Hack.ING 2024 CTF"><meta itemprop="datePublished" content="2024-07-17T15:45:33-04:00" />
 <meta itemprop="dateModified" content="2024-07-17T15:45:33-04:00" />
-<meta itemprop="wordCount" content="947">
+<meta itemprop="wordCount" content="945">
 <meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Hack.ING 2024 Challenges"/>
 <meta name="twitter:description" content="Writeup of cryptographic challenges in Hack.ING 2024 CTF"/>
 
@@ -193,7 +193,7 @@ $$
 <p>For a Python implementation of RSA you can look at this:</p>
 <p><a href="https://github.com/abund4nt/rsa-implementation">https://github.com/abund4nt/rsa-implementation</a></p>
 <h2 id="vulnerability">Vulnerability</h2>
-<p>The vulnerability in this challenge is that the public exponent (e) is very large, this makes it vulnerable to Wiener&rsquo;s attack, this is exploited when the private exponent (d) is smaller than (n), then it is possible to recover (d) using continued fractions.</p>
+<p>The vulnerability in this challenge is that the public exponent (e) is very large, this makes it vulnerable to Wiener&rsquo;s attack.</p>
 <p>This attack is based on the following theorem.</p>
 $$
 \begin{equation*}
@@ -274,7 +274,17 @@ $$
 m^{e} = C_{3} \text{ mod }N_{3}
 \end{equation*}
 $$
-<p>The Chinese remainder theorem allows us to solve the congruence \(\text{mod } N_{1}N_{2}N_{3}\) and when we solve it we calculate the fifth root of the result and we will obtain the flag in plain text. If you want to learn more about the subject I recommend the following article.</p>
+$$
+\begin{equation*}
+m^{e} = C_{4} \text{ mod }N_{4}
+\end{equation*}
+$$
+$$
+\begin{equation*}
+m^{e} = C_{5} \text{ mod }N_{5}
+\end{equation*}
+$$
+<p>The Chinese remainder theorem allows us to solve the congruence \(\text{mod } N_{1}N_{2}N_{3}N_{4}N_{5}\) and when we solve it we calculate the fifth root of the result and we will obtain the flag in plain text. If you want to learn more about the subject I recommend the following article.</p>
 <p><a href="https://es.wikipedia.org/wiki/Teorema_chino_del_resto">https://es.wikipedia.org/wiki/Teorema_chino_del_resto</a></p>
 <h2 id="flag-2">Flag</h2>
 <p>With the following script we solve the challenge.</p>
