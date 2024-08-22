@@ -18,7 +18,7 @@ charsaquican | abund4nt
 
 
 
-<link href="/css/style.min.4428103181cde8fa0f7c1be0a3d109b67013f14b08aa412f9d8a9600f4cd2c5f.css" rel="stylesheet">
+<link href="/css/style.min.da152524d2c49189870e47c666d3d94ba1da3d6ea5b37c97fbef1eb875dc68d9.css" rel="stylesheet">
 
 
 
@@ -99,12 +99,12 @@ charsaquican | abund4nt
 <p>Todos los ingredientes están mezclados! Es un charquicán.</p>
 </blockquote>
 <h2 id="solution">Solution</h2>
-<p>To solve this challenge it is enough to understand the description of the challenge, the values given correspond to the parameters of the RSA cryptosystem (p, q, e and n).</p>
-<p>After a while playing with the values I was able to determine that the first argument (0) corresponds to $p$ and the last argument (3) corresponds to $q$, with the Python console I was able to calculate $n$ since $n$ = $p$ or $q$.</p>
+<p>To solve this challenge it is enough to understand the description of the challenge, the values given correspond to the parameters of the RSA cryptosystem ($p$, $q$, $e$ and $n$).</p>
+<p>After a while playing with the values I was able to determine that the first argument (0) corresponds to $p$ and the last argument $3$ corresponds to $q$, with the Python console I was able to calculate $n$ since $n$ = $p$ or $q$.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ python3 -q
 </span></span><span style="display:flex;"><span>&gt;&gt;&gt; <span style="color:#ae81ff">23589271521001072374368718627024893561093580801610033478508827948392459573016304596713510122205170700776329300545303811110582812880932205696900044250916115452177137088837288193980317324454233163225878988984047402427919755477797155798118139908591110633880939831557325706459455289114634425952944366263660109827</span> * <span style="color:#ae81ff">140209548269958783990735186534502807950089471861294930697756608840184406759035904679275895002593384926996643270351950967655434865491186074413903406531302424845417619705875505242311619625675247358295031070283958304741266494705489777351082895167322166971215808118621457599148469842614741677868533554888398123203</span>
 </span></span><span style="display:flex;"><span><span style="color:#ae81ff">3307441103976963920162254584485872795261917762970581419107514466680078331379785922209654199353627542216290407880193778214955610882311440093580521781631012831502148183830398752703395378711543200712897666818730652336887443010142828451530005995748135567873071859901448926583784502168006966990685786760298736896645774705428304311016116064876708763904303861777276241874668730487731626724610193145353806497212083612153509045584500894412437220204405244673023078904147137526101798298046365668625369981087324229123830082992732202786703594426145528348716077859832628071160119620561939272135564140357625895582506189803657015881</span>
-</span></span></code></pre></div><p>Knowing the value of $p$ and $q$ we can calculate $\phi$ which is equal to $(p - 1) \cdot (q - 1)$ , with this value we can calculate “d” and obtain the flag.</p>
+</span></span></code></pre></div><p>Knowing the value of $p$ and $q$ we can calculate $\phi$ which is equal to $(p - 1) \cdot (q - 1)$ , with this value we can calculate $d$ and obtain the flag.</p>
 <h2 id="flag">Flag</h2>
 <p>With the following script you can solve the challenge, I was able to determine which one was $c$ and which one was $d$ based on trial and error.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> Crypto.Util.number <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
