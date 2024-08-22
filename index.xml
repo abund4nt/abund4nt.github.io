@@ -32,13 +32,6 @@
       <description>Hidden Message In this challenge we are provided with a remote instance to connect to, when we connect we get the encrypted flag $c$ plus its public key $n$ and public exponent $e$.&#xA;$ nc 172.17.0.2 8888 Welcome to this challenge. Would you like to get the flag? (y/n) y {&amp;#34;message&amp;#34;: &amp;#34;11E0809B25AE8FC1F1FF1459A10CA43FCA8E2375AA20DFCA356EA8829A208F14234DE2EE91376F248DA5581F899B44246F64E8CFB46462DF66D37FDE662C06889931B7B6100AD8E0435F37FFB0B150F448A4AABF7F33E967CADC6ABE8700DD60301EB84C3E4D68B908FED74BDBA1AEB925C1E952144AFD6D4E0BA420D6C8A967&amp;#34;, &amp;#34;pubkey&amp;#34;: [&amp;#34;6F48EF4905AD155E6659996AC53D910CCBA1D9BF52743EE022A62549051F497C074BD780CACB9E00D194C06D8EE0C1D4E037741EF38B9F788E06CDD2522075C942EFFEFAF58D4BA62DCA0E2C16ED25DD058E6C0D1B21EB98212154E636D4A75D452EDEE0417F32965E895948C24356F98F973FCB11EE4B7DF821E27BFF687957&amp;#34;, &amp;#34;5&amp;#34;]} Once again we are dealing with an RSA cryptosystem.&#xA;Vulnerability Since the public exponent $e$ is small and constant between messages we can use the Chinese remainder theorem to recover the flag in clear text $m$.</description>
     </item>
     <item>
-      <title>About</title>
-      <link>https://abund4nt.github.io/about/</link>
-      <pubDate>Wed, 21 Aug 2024 00:00:00 +0000</pubDate><author>email@example.com (abund4nt)</author>
-      <guid>https://abund4nt.github.io/about/</guid>
-      <description>My name is Lukas and I am an 18 year old boy living in Chile.&#xA;I am currently working as a Pentester at NIVEL4 Cybersecurity and studying computer science. I&amp;rsquo;m interested in cryptography and mathematics.&#xA;I play CTF actively in my team nullgang.</description>
-    </item>
-    <item>
       <title>basic-mod1</title>
       <link>https://abund4nt.github.io/writeups/picoctf/basic-mod-1/</link>
       <pubDate>Wed, 10 Jul 2024 00:00:00 +0000</pubDate><author>email@example.com (abund4nt)</author>

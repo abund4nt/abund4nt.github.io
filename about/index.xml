@@ -2,12 +2,12 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>About on My New Hugo Site</title>
-    <link>http://localhost:1313/about/</link>
+    <link>https://abund4nt.github.io/about/</link>
     <description>Recent content in About on My New Hugo Site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <managingEditor>email@example.com (abund4nt)</managingEditor>
     <webMaster>email@example.com (abund4nt)</webMaster>
-    <atom:link href="http://localhost:1313/about/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://abund4nt.github.io/about/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>
