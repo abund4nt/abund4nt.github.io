@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>My New Hugo Site</title>
+    <link>https://abund4nt.github.io/</link>
+    <description>Recent content on My New Hugo Site</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <managingEditor>email@example.com (abund4nt)</managingEditor>
+    <webMaster>email@example.com (abund4nt)</webMaster>
+    <lastBuildDate>Wed, 21 Aug 2024 22:13:59 -0400</lastBuildDate>
+    <atom:link href="https://abund4nt.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>8=D</title>
+      <link>https://abund4nt.github.io/writeups/hacking-2024/8d/</link>
+      <pubDate>Wed, 21 Aug 2024 22:13:59 -0400</pubDate><author>email@example.com (abund4nt)</author>
+      <guid>https://abund4nt.github.io/writeups/hacking-2024/8d/</guid>
+      <description>In this challenge we are given a chall.txt file.&#xA;n = 24723635342804809549343474991665632383907004528814579329045175006158741799679280187383889884648816909850125418724614886347610572741987856318260958482537515380163981752789139740790485088768421733791505599143805861925981504311188295105843594305958532579905016628670437557977541253447605990122119727802971915005261554563223754924279425867318000052107838024586472564200747268589276283060479055180099465442314891167553801822304334255993921889180676067678318847925751462097910440470911497786282712062439502209742468410690868736570081382520169453168066539036655643157265327923486380977480734655598515824973068823953240726947 e = 13595570174254973913584829590945804110919454685747406793925236779152880711493458312161531787226310291134344559639499112853274570716596047513337354494944461096355493739724535750217883584265890735612626007043653757634883556593523246074329325570245288884815558509689306257333719956807526505347696277374610434665146166905465410935885243371491854480617189527349501184779147171478122885149312572566011152096124442118622138532735382666071592885699751926022390797681947647711775678726388291193172725671569479686895202693313433442090737329320975571147566891673744790127731404253677189549225552259949324026493838950208954771043 c = 4118657246649859099071739848157689051450046919408754038799628595316856754348487056113019527689988297486222666297832451558109462703702876792494899701169246095077692902913622655311261065953189840615051203742346255257299213136263471990935581321975141953685562578861772851409929022695020127666493175741044589756525403085094809702754705095796721470750158266809329002463346010548455093813077229976588304567007127999980647394240274504516870636342746300959697096683815766944688469941987821784479096197497985994244246864374486969871185099197122183782702061922249012406521278202629925831292453086583649034051058671694036311121 This file contains the parameters used in the RSA cryptosystem, they give us the public key (n), the public exponent (e) and the ciphertext (c), to solve this challenge we must understand how RSA works.&#xA;RSA Context RSA encrypts a message in decimal format $m$ we can encrypt it with the following equation.</description>
+    </item>
+    <item>
+      <title>charsaquican</title>
+      <link>https://abund4nt.github.io/writeups/hacking-2024/charsaquican/</link>
+      <pubDate>Wed, 21 Aug 2024 22:13:59 -0400</pubDate><author>email@example.com (abund4nt)</author>
+      <guid>https://abund4nt.github.io/writeups/hacking-2024/charsaquican/</guid>
+      <description>charsaquican In this challenge we are given a file charsaquican.txt with the following content.&#xA;23589271521001072374368718627024893561093580801610033478508827948392459573016304596713510122205170700776329300545303811110582812880932205696900044250916115452177137088837288193980317324454233163225878988984047402427919755477797155798118139908591110633880939831557325706459455289114634425952944366263660109827 2679987676970149564616878518310844086845429007809172767753871068840180046532373340449234426392343821075940092162744867759082697717232505527099196311880820077270703223433014867381190902712937579240089074854538238883349417483415853061477477431042143997990930436977685029789360089768067533989553657019987245741348838784669507910337478824626012407301589750022270966490623747022291444464751196658356762904628652365572791079112432942082906806070796145171614677690264983554673511634542716630694640091490079378801981551488134577769391962535251275454705690403852071152933904346918948295565615483073600820020410534178776901057 26912454534914684692347271970250467684125958386279982484877949708230105387196877615230982204120974552604105940044981708026017871002502171784267969916169352564661419772945925664427084503262326046246886229410146860306279296039917475863187941748240606680479765473216608599658674331299868396544173339814450533311972728280156712544934677975903842379957319445057896881271863704676844849952412432909517200148613677070082552257049349983990714242835075241602487337249303347365077215953890538265315285392317857673120521475471081602047249461247750560826423720092697353494692322984310685824559732475322339148790388952061808868 140209548269958783990735186534502807950089471861294930697756608840184406759035904679275895002593384926996643270351950967655434865491186074413903406531302424845417619705875505242311619625675247358295031070283958304741266494705489777351082895167322166971215808118621457599148469842614741677868533554888398123203 The description of the challenge was as follows.&#xA;Todos los ingredientes están mezclados! Es un charquicán.&#xA;Solution To solve this challenge it is enough to understand the description of the challenge, the values given correspond to the parameters of the RSA cryptosystem (p, q, e and n).&#xA;After a while playing with the values I was able to determine that the first argument (0) corresponds to $p$ and the last argument (3) corresponds to $q$, with the Python console I was able to calculate $n$ since $n$ = $p$ or $q$.</description>
+    </item>
+    <item>
+      <title>Hidden Message</title>
+      <link>https://abund4nt.github.io/writeups/hacking-2024/hidden-message/</link>
+      <pubDate>Wed, 21 Aug 2024 22:13:59 -0400</pubDate><author>email@example.com (abund4nt)</author>
+      <guid>https://abund4nt.github.io/writeups/hacking-2024/hidden-message/</guid>
+      <description>Hidden Message In this challenge we are provided with a remote instance to connect to, when we connect we get the encrypted flag $c$ plus its public key $n$ and public exponent $e$.&#xA;$ nc 172.17.0.2 8888 Welcome to this challenge. Would you like to get the flag? (y/n) y {&amp;#34;message&amp;#34;: &amp;#34;11E0809B25AE8FC1F1FF1459A10CA43FCA8E2375AA20DFCA356EA8829A208F14234DE2EE91376F248DA5581F899B44246F64E8CFB46462DF66D37FDE662C06889931B7B6100AD8E0435F37FFB0B150F448A4AABF7F33E967CADC6ABE8700DD60301EB84C3E4D68B908FED74BDBA1AEB925C1E952144AFD6D4E0BA420D6C8A967&amp;#34;, &amp;#34;pubkey&amp;#34;: [&amp;#34;6F48EF4905AD155E6659996AC53D910CCBA1D9BF52743EE022A62549051F497C074BD780CACB9E00D194C06D8EE0C1D4E037741EF38B9F788E06CDD2522075C942EFFEFAF58D4BA62DCA0E2C16ED25DD058E6C0D1B21EB98212154E636D4A75D452EDEE0417F32965E895948C24356F98F973FCB11EE4B7DF821E27BFF687957&amp;#34;, &amp;#34;5&amp;#34;]} Once again we are dealing with an RSA cryptosystem.&#xA;Vulnerability Since the public exponent $e$ is small and constant between messages we can use the Chinese remainder theorem to recover the flag in clear text $m$.</description>
+    </item>
+    <item>
+      <title>About</title>
+      <link>https://abund4nt.github.io/about/</link>
+      <pubDate>Wed, 21 Aug 2024 00:00:00 +0000</pubDate><author>email@example.com (abund4nt)</author>
+      <guid>https://abund4nt.github.io/about/</guid>
+      <description>My name is Lukas and I am an 18 year old boy living in Chile.&#xA;I am currently working as a Pentester at NIVEL4 Cybersecurity and studying computer science. I&amp;rsquo;m interested in cryptography and mathematics.&#xA;I play CTF actively in my team nullgang.</description>
+    </item>
+    <item>
+      <title>basic-mod1</title>
+      <link>https://abund4nt.github.io/writeups/picoctf/basic-mod-1/</link>
+      <pubDate>Wed, 10 Jul 2024 00:00:00 +0000</pubDate><author>email@example.com (abund4nt)</author>
+      <guid>https://abund4nt.github.io/writeups/picoctf/basic-mod-1/</guid>
+      <description>The challenge has the following description.&#xA;We found this weird message being passed around on the servers, we think we have a working decryption scheme. Download the message here. Take each number mod 37 and map it to the following character set: 0-25 is the alphabet (uppercase), 26-35 are the decimal digits, and 36 is an underscore. Wrap your decrypted message in the picoCTF flag format (i.e. picoCTF{decrypted_message}) In summary we are told that each letter of the message is encrypted module 27, and the dictionary has the capital letters from A to B, has the numbers from 0 to 9 and an underscore (_).</description>
+    </item>
+    <item>
+      <title>basic-mod2</title>
+      <link>https://abund4nt.github.io/writeups/picoctf/basic-mod2/</link>
+      <pubDate>Wed, 10 Jul 2024 00:00:00 +0000</pubDate><author>email@example.com (abund4nt)</author>
+      <guid>https://abund4nt.github.io/writeups/picoctf/basic-mod2/</guid>
+      <description>The challenge has the following description.&#xA;A new modular challenge! Download the message here. Take each number mod 41 and find the modular inverse for the result. Then map to the following character set: 1-26 are the alphabet, 27-36 are the decimal digits, and 37 is an underscore. Wrap your decrypted message in the picoCTF flag format (i.e. picoCTF{decrypted_message}) We are told that to solve the challenge we have to take each number modulo 41 and calculate the modular inverse to get the flag.</description>
+    </item>
+    <item>
+      <title>rsa-pop-quiz</title>
+      <link>https://abund4nt.github.io/writeups/picoctf/rsa-pop-quiz/</link>
+      <pubDate>Wed, 10 Jul 2024 00:00:00 +0000</pubDate><author>email@example.com (abund4nt)</author>
+      <guid>https://abund4nt.github.io/writeups/picoctf/rsa-pop-quiz/</guid>
+      <description>The following description is provided in the challenge.&#xA;Description Class, take your seats! It&amp;#39;s PRIME-time for a quiz... nc jupiter.challenges.picoctf.org 1981 A sentence inviting us to take a seat, supposedly they have a test prepared for us. We will use nc to connect to the remote server.&#xA;Good morning class! It&amp;#39;s me Ms. Adleman-Shamir-Rivest Today we will be taking a pop quiz, so I hope you studied. Cramming just will not do!</description>
+    </item>
+    <item>
+      <title>Math Typesetting</title>
+      <link>https://abund4nt.github.io/posts/math/</link>
+      <pubDate>Fri, 08 Mar 2019 00:00:00 +0000</pubDate><author>email@example.com (abund4nt)</author>
+      <guid>https://abund4nt.github.io/posts/math/</guid>
+      <description>&lt;p&gt;Mathematical notation in a Hugo project can be enabled by using third party JavaScript libraries.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

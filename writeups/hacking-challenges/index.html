@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <title>
+HackING Challenges | abund4nt
+</title>
+
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Challenges of hackING 2024">
+
+<meta name="generator" content="Hugo 0.123.7">
+
+
+<link rel="canonical" href="http://localhost:1313/writeups/hacking-challenges/" >
+
+
+
+
+<link href="/css/style.min.4428103181cde8fa0f7c1be0a3d109b67013f14b08aa412f9d8a9600f4cd2c5f.css" rel="stylesheet">
+
+
+
+
+</head>
+
+<body>
+
+    <div class="flexWrapper">
+        <header class="headerWrapper">
+    <div class="header">
+        <div>
+            <a class="terminal" href="http://localhost:1313/">
+                <span>abund4nt@cl.pub ~ $</span>
+            </a>
+        </div>
+        <input class="side-menu" type="checkbox" id="side-menu">
+        <label class="hamb" for="side-menu"><span class="hamb-line"></span></label>
+        <nav class="headerLinks">
+            <ul>
+                
+                <li>
+                    <a href="http://localhost:1313/about" title="" >
+                        ~/about</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:1313/posts" title="" >
+                        ~/posts</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:1313/writeups" title="" >
+                        ~/writeups</a>
+                </li>
+                
+            </ul>
+        </nav>
+    </div>
+</header>
+
+
+        <div class="content">
+            <main class="main">
+                
+<div class="postWrapper">
+    <h1>HackING Challenges</h1>
+    
+    	<p>Challenges of hackING 2024</p>
+    
+    
+    <section class="postMetadata">
+        <dl>
+            
+            
+            
+            
+                <dt>published</dt>
+                
+                <dd><time datetime="2024-08-21">August 21, 2024</time></dd>
+            
+            
+                <dt>reading time</dt>
+                <dd>5 minutes</dd>
+            
+        </dl>
+    </section>
+    
+    <div>
+        <p>Hi guys how are you, in this post I bring you the solution of the cryptographic challenges that were presented at the CTF Hack.ING 2024, which was held in person in Santiago de Chile. The event was very entertaining and I certainly had a great time. I attach a picture of the scoreboard, my team was called Delt4 and we got the top 9.</p>
+<p><img src="https://i.imgur.com/LpKYSmI.png" alt=""></p>
+<p>Thanks to <a href="https://github.com/taconeomental">neo</a>, <a href="https://github.com/s4orii">s4ori</a> and <a href="https://github.com/Nik0Sec">Nik0Sec</a> for being part of my team, we managed to get first blood in the Fintual web challenge and we got a prize.</p>
+<p>I know that the solution for these challenges is in the official repository of the Security UC Club but I decided to do them on my own to explain in detail the solution, also because I like to write writeups :). Let&rsquo;s go with the solutions!</p>
+<h1 id="8d">8=D</h1>
+<p>In this challenge we are given a <code>chall.txt</code> file.</p>
+<pre tabindex="0"><code>n = 24723635342804809549343474991665632383907004528814579329045175006158741799679280187383889884648816909850125418724614886347610572741987856318260958482537515380163981752789139740790485088768421733791505599143805861925981504311188295105843594305958532579905016628670437557977541253447605990122119727802971915005261554563223754924279425867318000052107838024586472564200747268589276283060479055180099465442314891167553801822304334255993921889180676067678318847925751462097910440470911497786282712062439502209742468410690868736570081382520169453168066539036655643157265327923486380977480734655598515824973068823953240726947
+e = 13595570174254973913584829590945804110919454685747406793925236779152880711493458312161531787226310291134344559639499112853274570716596047513337354494944461096355493739724535750217883584265890735612626007043653757634883556593523246074329325570245288884815558509689306257333719956807526505347696277374610434665146166905465410935885243371491854480617189527349501184779147171478122885149312572566011152096124442118622138532735382666071592885699751926022390797681947647711775678726388291193172725671569479686895202693313433442090737329320975571147566891673744790127731404253677189549225552259949324026493838950208954771043
+c = 4118657246649859099071739848157689051450046919408754038799628595316856754348487056113019527689988297486222666297832451558109462703702876792494899701169246095077692902913622655311261065953189840615051203742346255257299213136263471990935581321975141953685562578861772851409929022695020127666493175741044589756525403085094809702754705095796721470750158266809329002463346010548455093813077229976588304567007127999980647394240274504516870636342746300959697096683815766944688469941987821784479096197497985994244246864374486969871185099197122183782702061922249012406521278202629925831292453086583649034051058671694036311121
+</code></pre><p>This file contains the parameters used in the RSA cryptosystem, they give us the public key (n), the public exponent (e) and the ciphertext (c), to solve this challenge we must understand how RSA works.</p>
+<h2 id="rsa-context">RSA Context</h2>
+<p>RSA encrypts a message in decimal format (m) we can encrypt it with the following equation.</p>
+<p>$$
+\begin{equation*}
+c = m^{e} \text{ (mod } n \text{)}
+\end{equation*}
+$$</p>
+<p>The public key is formed by (n) and (e). (n = p \cdot q) which are two large prime numbers multiplied (these are stored as the private key).</p>
+<p>In order to decrypt the message you need the value (\phi)((n)) (=) ((p - 1)) (\cdot) ((q - 1)). Then.</p>
+<p>$$
+\begin{equation*}
+m = c^{d} \text{ (mod } n \text{)}
+\end{equation*}
+$$</p>
+<p>For a Python implementation of RSA you can look at this:</p>
+<p><a href="https://github.com/abund4nt/rsa-implementation">https://github.com/abund4nt/rsa-implementation</a></p>
+<h2 id="vulnerability">Vulnerability</h2>
+<p>The vulnerability in this challenge is that the public exponent (e) is very large, this makes it vulnerable to Wiener&rsquo;s attack.</p>
+<p>This attack is based on the following theorem.</p>
+<p>$$
+\begin{equation*}
+\text{ Let } n = pq \text{ with } q &lt; p &lt; 2q. \text{ Let } d &lt; \frac{1}{3} \sqrt{n}. \text{ Given } n \text{ and } e \text{ with } ed \equiv 1 \text{ mod } \phi(n).
+\end{equation*}
+$$</p>
+<p>If you want to go deeper into this vulnerability I recommend you to visit the following resources.</p>
+<p><a href="https://cryptohack.gitbook.io/cryptobook/untitled/low-private-component-attacks/wieners-attack">https://cryptohack.gitbook.io/cryptobook/untitled/low-private-component-attacks/wieners-attack</a>
+<a href="https://ir0nstone.gitbook.io/crypto/rsa/public-exponent-attacks/wieners-attack">https://ir0nstone.gitbook.io/crypto/rsa/public-exponent-attacks/wieners-attack</a></p>
+<h2 id="flag">Flag</h2>
+<p>Python has a library called <code>owiener</code> which automates this type of attack, with the following script we solve the challenge.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> owiener
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> Crypto.Util.number <span style="color:#f92672">import</span> long_to_bytes
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>n <span style="color:#f92672">=</span> <span style="color:#ae81ff">24723635342804809549343474991665632383907004528814579329045175006158741799679280187383889884648816909850125418724614886347610572741987856318260958482537515380163981752789139740790485088768421733791505599143805861925981504311188295105843594305958532579905016628670437557977541253447605990122119727802971915005261554563223754924279425867318000052107838024586472564200747268589276283060479055180099465442314891167553801822304334255993921889180676067678318847925751462097910440470911497786282712062439502209742468410690868736570081382520169453168066539036655643157265327923486380977480734655598515824973068823953240726947</span>
+</span></span><span style="display:flex;"><span>e <span style="color:#f92672">=</span> <span style="color:#ae81ff">13595570174254973913584829590945804110919454685747406793925236779152880711493458312161531787226310291134344559639499112853274570716596047513337354494944461096355493739724535750217883584265890735612626007043653757634883556593523246074329325570245288884815558509689306257333719956807526505347696277374610434665146166905465410935885243371491854480617189527349501184779147171478122885149312572566011152096124442118622138532735382666071592885699751926022390797681947647711775678726388291193172725671569479686895202693313433442090737329320975571147566891673744790127731404253677189549225552259949324026493838950208954771043</span>
+</span></span><span style="display:flex;"><span>c <span style="color:#f92672">=</span> <span style="color:#ae81ff">4118657246649859099071739848157689051450046919408754038799628595316856754348487056113019527689988297486222666297832451558109462703702876792494899701169246095077692902913622655311261065953189840615051203742346255257299213136263471990935581321975141953685562578861772851409929022695020127666493175741044589756525403085094809702754705095796721470750158266809329002463346010548455093813077229976588304567007127999980647394240274504516870636342746300959697096683815766944688469941987821784479096197497985994244246864374486969871185099197122183782702061922249012406521278202629925831292453086583649034051058671694036311121</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>d <span style="color:#f92672">=</span> owiener<span style="color:#f92672">.</span>attack(e, n)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>m <span style="color:#f92672">=</span> pow(c, d, n)
+</span></span><span style="display:flex;"><span>print(long_to_bytes(m)<span style="color:#f92672">.</span>decode())
+</span></span></code></pre></div><p>When executed, we obtain the flag.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ python3 solve.py
+</span></span><span style="display:flex;"><span>hack.ing<span style="color:#f92672">{</span>wh4t_4_sm4ll_d!_1_0nly_t4k3_ds_b1gg3r_th4n_<span style="color:#f92672">(</span>1/3<span style="color:#f92672">)</span>n^0.25<span style="color:#f92672">}</span>
+</span></span></code></pre></div><h1 id="charsaquican">charsaquican</h1>
+<p>In this challenge we are given a file <code>charsaquican.txt</code> with the following content.</p>
+<pre tabindex="0"><code>23589271521001072374368718627024893561093580801610033478508827948392459573016304596713510122205170700776329300545303811110582812880932205696900044250916115452177137088837288193980317324454233163225878988984047402427919755477797155798118139908591110633880939831557325706459455289114634425952944366263660109827
+2679987676970149564616878518310844086845429007809172767753871068840180046532373340449234426392343821075940092162744867759082697717232505527099196311880820077270703223433014867381190902712937579240089074854538238883349417483415853061477477431042143997990930436977685029789360089768067533989553657019987245741348838784669507910337478824626012407301589750022270966490623747022291444464751196658356762904628652365572791079112432942082906806070796145171614677690264983554673511634542716630694640091490079378801981551488134577769391962535251275454705690403852071152933904346918948295565615483073600820020410534178776901057
+26912454534914684692347271970250467684125958386279982484877949708230105387196877615230982204120974552604105940044981708026017871002502171784267969916169352564661419772945925664427084503262326046246886229410146860306279296039917475863187941748240606680479765473216608599658674331299868396544173339814450533311972728280156712544934677975903842379957319445057896881271863704676844849952412432909517200148613677070082552257049349983990714242835075241602487337249303347365077215953890538265315285392317857673120521475471081602047249461247750560826423720092697353494692322984310685824559732475322339148790388952061808868
+140209548269958783990735186534502807950089471861294930697756608840184406759035904679275895002593384926996643270351950967655434865491186074413903406531302424845417619705875505242311619625675247358295031070283958304741266494705489777351082895167322166971215808118621457599148469842614741677868533554888398123203
+</code></pre><p>The description of the challenge was as follows.</p>
+<blockquote>
+<p>Todos los ingredientes están mezclados! Es un charquicán.</p>
+</blockquote>
+<h2 id="solution">Solution</h2>
+<p>To solve this challenge it is enough to understand the description of the challenge, the values given correspond to the parameters of the RSA cryptosystem (p, q, e and n).</p>
+<p>After a while playing with the values I was able to determine that the first argument (0) corresponds to (p) and the last argument (3) corresponds to (q), with the Python console I was able to calculate (n) since (n) = (p) or (q).</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ python3 -q
+</span></span><span style="display:flex;"><span>&gt;&gt;&gt; <span style="color:#ae81ff">23589271521001072374368718627024893561093580801610033478508827948392459573016304596713510122205170700776329300545303811110582812880932205696900044250916115452177137088837288193980317324454233163225878988984047402427919755477797155798118139908591110633880939831557325706459455289114634425952944366263660109827</span> * <span style="color:#ae81ff">140209548269958783990735186534502807950089471861294930697756608840184406759035904679275895002593384926996643270351950967655434865491186074413903406531302424845417619705875505242311619625675247358295031070283958304741266494705489777351082895167322166971215808118621457599148469842614741677868533554888398123203</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">3307441103976963920162254584485872795261917762970581419107514466680078331379785922209654199353627542216290407880193778214955610882311440093580521781631012831502148183830398752703395378711543200712897666818730652336887443010142828451530005995748135567873071859901448926583784502168006966990685786760298736896645774705428304311016116064876708763904303861777276241874668730487731626724610193145353806497212083612153509045584500894412437220204405244673023078904147137526101798298046365668625369981087324229123830082992732202786703594426145528348716077859832628071160119620561939272135564140357625895582506189803657015881</span>
+</span></span></code></pre></div><p>Knowing the value of (p) and (q) we can calculate (\phi) which is equal to ((p - 1) \cdot (q - 1)) , with this value we can calculate “d” and obtain the flag.</p>
+<h2 id="flag-1">Flag</h2>
+<p>With the following script you can solve the challenge, I was able to determine which one was (c) and which one was (d) based on trial and error.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> Crypto.Util.number <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">=</span> <span style="color:#ae81ff">23589271521001072374368718627024893561093580801610033478508827948392459573016304596713510122205170700776329300545303811110582812880932205696900044250916115452177137088837288193980317324454233163225878988984047402427919755477797155798118139908591110633880939831557325706459455289114634425952944366263660109827</span>
+</span></span><span style="display:flex;"><span>q <span style="color:#f92672">=</span> <span style="color:#ae81ff">140209548269958783990735186534502807950089471861294930697756608840184406759035904679275895002593384926996643270351950967655434865491186074413903406531302424845417619705875505242311619625675247358295031070283958304741266494705489777351082895167322166971215808118621457599148469842614741677868533554888398123203</span>
+</span></span><span style="display:flex;"><span>n <span style="color:#f92672">=</span> p <span style="color:#f92672">*</span> q
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>d <span style="color:#f92672">=</span> <span style="color:#ae81ff">2679987676970149564616878518310844086845429007809172767753871068840180046532373340449234426392343821075940092162744867759082697717232505527099196311880820077270703223433014867381190902712937579240089074854538238883349417483415853061477477431042143997990930436977685029789360089768067533989553657019987245741348838784669507910337478824626012407301589750022270966490623747022291444464751196658356762904628652365572791079112432942082906806070796145171614677690264983554673511634542716630694640091490079378801981551488134577769391962535251275454705690403852071152933904346918948295565615483073600820020410534178776901057</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>c <span style="color:#f92672">=</span> <span style="color:#ae81ff">26912454534914684692347271970250467684125958386279982484877949708230105387196877615230982204120974552604105940044981708026017871002502171784267969916169352564661419772945925664427084503262326046246886229410146860306279296039917475863187941748240606680479765473216608599658674331299868396544173339814450533311972728280156712544934677975903842379957319445057896881271863704676844849952412432909517200148613677070082552257049349983990714242835075241602487337249303347365077215953890538265315285392317857673120521475471081602047249461247750560826423720092697353494692322984310685824559732475322339148790388952061808868</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(long_to_bytes(pow(c, d, n))<span style="color:#f92672">.</span>decode())
+</span></span></code></pre></div><p>When executing the script we get the flag.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ python3 solve.py
+</span></span><span style="display:flex;"><span>hack.ing<span style="color:#f92672">{</span>s4b3s_1d3nt1f1c4r_1ngr3d13nt3s!_relleno_relleno_relleno_relleno_relleno_relleno_relleno_relleno_relleno_relleno_relleno_relleno_relleno_relleno_relleno_relleno_relleno_relleno_relleno_relleno_relleno<span style="color:#f92672">}</span>
+</span></span></code></pre></div><h1 id="hidden-message">Hidden Message</h1>
+<p>In this challenge we are provided with a remote instance to connect to, when we connect we get the encrypted flag (c) plus its public key (n) and public exponent (e).</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ nc 172.17.0.2 <span style="color:#ae81ff">8888</span>
+</span></span><span style="display:flex;"><span>Welcome to this challenge. Would you like to get the flag? <span style="color:#f92672">(</span>y/n<span style="color:#f92672">)</span> y
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span><span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;11E0809B25AE8FC1F1FF1459A10CA43FCA8E2375AA20DFCA356EA8829A208F14234DE2EE91376F248DA5581F899B44246F64E8CFB46462DF66D37FDE662C06889931B7B6100AD8E0435F37FFB0B150F448A4AABF7F33E967CADC6ABE8700DD60301EB84C3E4D68B908FED74BDBA1AEB925C1E952144AFD6D4E0BA420D6C8A967&#34;</span>, <span style="color:#e6db74">&#34;pubkey&#34;</span>: <span style="color:#f92672">[</span><span style="color:#e6db74">&#34;6F48EF4905AD155E6659996AC53D910CCBA1D9BF52743EE022A62549051F497C074BD780CACB9E00D194C06D8EE0C1D4E037741EF38B9F788E06CDD2522075C942EFFEFAF58D4BA62DCA0E2C16ED25DD058E6C0D1B21EB98212154E636D4A75D452EDEE0417F32965E895948C24356F98F973FCB11EE4B7DF821E27BFF687957&#34;</span>, <span style="color:#e6db74">&#34;5&#34;</span><span style="color:#f92672">]}</span>
+</span></span></code></pre></div><p>Once again we are dealing with an RSA cryptosystem.</p>
+<h2 id="vulnerability-1">Vulnerability</h2>
+<p>Since the public exponent (e) is small and constant between messages we can use the Chinese remainder theorem to recover the flag in clear text (m). Imagine that we always keep the public exponent for 3 times.</p>
+<p>$$
+\begin{equation*}
+m^{e} = C_{1} \text{ mod }N_{1}
+\end{equation*}
+$$
+$$
+\begin{equation*}
+m^{e} = C_{2} \text{ mod }N_{2}
+\end{equation*}
+$$
+$$
+\begin{equation*}
+m^{e} = C_{3} \text{ mod }N_{3}
+\end{equation*}
+$$
+$$
+\begin{equation*}
+m^{e} = C_{4} \text{ mod }N_{4}
+\end{equation*}
+$$
+$$
+\begin{equation*}
+m^{e} = C_{5} \text{ mod }N_{5}
+\end{equation*}
+$$</p>
+<p>The Chinese remainder theorem allows us to solve the congruence (\text{mod } N_{1}N_{2}N_{3}N_{4}N_{5}) and when we solve it we calculate the fifth root of the result and we will obtain the flag in plain text. If you want to learn more about the subject I recommend the following article.</p>
+<p><a href="https://es.wikipedia.org/wiki/Teorema_chino_del_resto">https://es.wikipedia.org/wiki/Teorema_chino_del_resto</a></p>
+<h2 id="flag-2">Flag</h2>
+<p>With the following script we solve the challenge.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> Crypto.Util.number <span style="color:#f92672">import</span> long_to_bytes
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> libnum
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>c1 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xAC6820EEAAA26E49FBCFB56749137A216CBC0B8985EBF55C80E621BD14871EB85D7C805924FD6C69FDED8759AD992EA8AC2099A351D03BB86511471ACB2F3B80ED13B2913D21D356E289A47768B0BB0584F131044D191D345DF6BB9BE4C47D03ED754F2626398D6B020566FC3DE03CEA0825F20FF792E75FF3E3BA58D3E4EE0E</span>
+</span></span><span style="display:flex;"><span>c2 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x6F04B9BEF07B95C424E476BBE4B081B551CCBFF07533590E12BA61D898EA5008492066604EBFC40E1BCE493676D025DE93DE87237EB45870B39DFD5D6C44247468A04FF9CC58F1D1477714DF8323AFCC27A0DB393CB764FD40295D779D8AA4B4AAFB4D3123131804A9B31E41E42D6C2A42BF4C2527FA2F3DF0EAF7610C96FC73</span>
+</span></span><span style="display:flex;"><span>c3 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x758DAFD63F9816B7318FE314D5D402BFBE1071C208C009566436C4C2C29ACB59A88E2FA714DE608D7506358EE1ACBC822F4212560D639EBC60E6CCF3BB52BF7AF92A10397B0296053E18ABE97FCD803C42C608FBA7B93B299D3DA5A5FEADDC6C1E75591CF2312F00AF6DD57866585803C7D337A9433972F7249953E69CC1B7</span>
+</span></span><span style="display:flex;"><span>c4 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x612643B86F0E5190A61668681B76FF406E5E7F8AC2C0AA19817DFB1126DA352828A19C82E8CFFEA7D1685B2B81A7B23675005E52C8D75FD3A9EA4D8BB1E961BC8854B974F169FCD30F9946C7A4E5BE0DC00E660999F16EA47A4D92CA38D0854BB4EBAC537702CB184B855E60BD17EA3A220AB3ECC381D76E36F26C69646E2773</span>
+</span></span><span style="display:flex;"><span>c5 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x5385264CF7774A60320BFCDBEF8AF7FC13FE754A7D338187CB90915A5C916E45368763742293967B6638F7538D23F60F539CE09212D0F7FB3DCCF1A26C556BF4083161B6DDF3A84032564770EC824B1D3192CFDDFCE5297A25C6B6A5B43D52804A93D482B31E20D1BCFC21E8F72E381FCA57850A708C9DDBF33C8A01BA290DDD</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>n1 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xFB4E30EA1C63FA6558A103A8646D3B11289EC1DEBF876DA4837A1E3005BD141308BCDCB312E48AB1B9A4498FE5D37BE7ADF6DD01F0C2DECFB5C5262E58E41C0C8DEA2EC2F3E6C67B68B204D280E8A629DAEC2C9B1843901FEF4480B831FEB17C65516E8CEAB8F877253D2C7CD2214C99A69420E183E92AE616452EAEDECC8015</span>
+</span></span><span style="display:flex;"><span>n2 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x8D7234EECD58733271010CB407EBDCCA8404E87B5DC1493E37A74C547C2D94361B7F87CD1F11A2C0BEACF1B6BABBA303FB7F04C298C89FF4B01D13E13CCC28FD817765524DCC419690BB738E08A0D72908CFEFFD2989252D6DF343F1FCAF771EC1641ABFA3C32728D81F807B3973088CB12D9012CD482F3FAFCF76B963F440BD</span>
+</span></span><span style="display:flex;"><span>n3 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xCA02D25C43A2C584A3448047B5A2E19BAA1A7CCCE9B0A60C794B97F748E6B5F4E56D2A819232309263CB8A615B417C2845FFCF7C794CBE84D844D6C6CB67C1C0F6E3C94B9F85BA14D3D66AC6ACF26EF96A812F0D19AA533EC745EEBC85EFFFC5998374D2C22D0BA5DD44EE4C5B04000F03E29D009B69F2E3D772B2AC7E3F2FA5</span>
+</span></span><span style="display:flex;"><span>n4 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xC6F4C4512DF50CDFBFA932F6AE95F46D4E3EE62A5085B53D45684066995232CAE4800B79014614671E132508010A84A8F7B4871B23369C3A364E8D8AE7075C3FB59684AABF59FF93324B4F41E1BD6631817AEA25B6F8E1B760D6FC7BC9C9D72C74F098093F5A61C98B126D1052B0F3EC6E0285DDEC1F73C73E8D461538F6F719</span>
+</span></span><span style="display:flex;"><span>n5 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xB43A9EBA4C15B586AC7AE6C1EBB4F1AC240BA488A87608784EC0359FEBCDF60AFC5C41A2967C3F9752338E6DDC41A0EDFDB8B289201345D85F185DA58FCB67F4682172F5ED3BFB0AFA02429AA9639A752D508C9C3D1CDED79A11892AC30121FE0D06B7C1B350DB25721A9DB0C146DE073F3284C52AFD9F2D920AB5BDA190118F</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>r <span style="color:#f92672">=</span> [c1, c2, c3, c4, c5]
+</span></span><span style="display:flex;"><span>m <span style="color:#f92672">=</span> [n1, n2, n3, n4, n5]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>result_crt <span style="color:#f92672">=</span> libnum<span style="color:#f92672">.</span>solve_crt(r, m)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>flag <span style="color:#f92672">=</span> libnum<span style="color:#f92672">.</span>nroot(result_crt, <span style="color:#ae81ff">5</span>) <span style="color:#75715e"># e = 5</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(long_to_bytes(flag)<span style="color:#f92672">.</span>decode())
+</span></span></code></pre></div><p>When executing the script we will obtain the flag.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ python3 solve.py
+</span></span><span style="display:flex;"><span>hack.ing<span style="color:#f92672">{</span>1_ShOuLd_h4v3_U$eD_@_b1693R_3xPONent<span style="color:#f92672">}</span>
+</span></span></code></pre></div>
+    </div>
+</div>
+
+            </main>
+        </div>
+
+
+        <footer class="footer">
+    
+    
+</footer>
+    </div>
+
+    
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<script>
+  MathJax = {
+    tex: {
+      displayMath: [['$$', '$$']],  
+      inlineMath: [['$', '$']]                  
+    }
+  };
+</script>
+    
+
+</body>
+
+</html>

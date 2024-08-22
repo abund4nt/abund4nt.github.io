@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <title>
+Hidden Message | abund4nt
+</title>
+
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="RSA cryptosystem, Chinese remainder theorem, small public exponent.">
+
+<meta name="generator" content="Hugo 0.123.7">
+
+
+<link rel="canonical" href="https://abund4nt.github.io/writeups/hacking-2024/hidden-message/" >
+
+
+
+
+<link href="/css/style.min.4428103181cde8fa0f7c1be0a3d109b67013f14b08aa412f9d8a9600f4cd2c5f.css" rel="stylesheet">
+
+
+
+
+</head>
+
+<body>
+
+    <div class="flexWrapper">
+        <header class="headerWrapper">
+    <div class="header">
+        <div>
+            <a class="terminal" href="https://abund4nt.github.io/">
+                <span>abund4nt@tryharder ~ $</span>
+            </a>
+        </div>
+        <input class="side-menu" type="checkbox" id="side-menu">
+        <label class="hamb" for="side-menu"><span class="hamb-line"></span></label>
+        <nav class="headerLinks">
+            <ul>
+                
+                <li>
+                    <a href="https://abund4nt.github.io/about" title="" >
+                        ~/about</a>
+                </li>
+                
+                <li>
+                    <a href="https://abund4nt.github.io/posts" title="" >
+                        ~/posts</a>
+                </li>
+                
+                <li>
+                    <a href="https://abund4nt.github.io/writeups" title="" >
+                        ~/writeups</a>
+                </li>
+                
+            </ul>
+        </nav>
+    </div>
+</header>
+
+
+        <div class="content">
+            <main class="main">
+                
+<div class="postWrapper">
+    <h1>Hidden Message</h1>
+    
+    	<p>RSA cryptosystem, Chinese remainder theorem, small public exponent.</p>
+    
+    
+    <section class="postMetadata">
+        <dl>
+            
+            
+            
+            
+                <dt>published</dt>
+                
+                <dd><time datetime="2024-08-21">August 21, 2024</time></dd>
+            
+            
+                <dt>reading time</dt>
+                <dd>2 minutes</dd>
+            
+        </dl>
+    </section>
+    
+    <div>
+        <h1 id="hidden-message">Hidden Message</h1>
+<p>In this challenge we are provided with a remote instance to connect to, when we connect we get the encrypted flag $c$ plus its public key $n$ and public exponent $e$.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ nc 172.17.0.2 <span style="color:#ae81ff">8888</span>
+</span></span><span style="display:flex;"><span>Welcome to this challenge. Would you like to get the flag? <span style="color:#f92672">(</span>y/n<span style="color:#f92672">)</span> y
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span><span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;11E0809B25AE8FC1F1FF1459A10CA43FCA8E2375AA20DFCA356EA8829A208F14234DE2EE91376F248DA5581F899B44246F64E8CFB46462DF66D37FDE662C06889931B7B6100AD8E0435F37FFB0B150F448A4AABF7F33E967CADC6ABE8700DD60301EB84C3E4D68B908FED74BDBA1AEB925C1E952144AFD6D4E0BA420D6C8A967&#34;</span>, <span style="color:#e6db74">&#34;pubkey&#34;</span>: <span style="color:#f92672">[</span><span style="color:#e6db74">&#34;6F48EF4905AD155E6659996AC53D910CCBA1D9BF52743EE022A62549051F497C074BD780CACB9E00D194C06D8EE0C1D4E037741EF38B9F788E06CDD2522075C942EFFEFAF58D4BA62DCA0E2C16ED25DD058E6C0D1B21EB98212154E636D4A75D452EDEE0417F32965E895948C24356F98F973FCB11EE4B7DF821E27BFF687957&#34;</span>, <span style="color:#e6db74">&#34;5&#34;</span><span style="color:#f92672">]}</span>
+</span></span></code></pre></div><p>Once again we are dealing with an RSA cryptosystem.</p>
+<h2 id="vulnerability">Vulnerability</h2>
+<p>Since the public exponent $e$ is small and constant between messages we can use the Chinese remainder theorem to recover the flag in clear text $m$. Imagine that we always keep the public exponent for 3 times.</p>
+<p>$$
+\begin{equation*}
+m^{e} = C_{1} \text{ mod }N_{1}
+\end{equation*}
+$$
+$$
+\begin{equation*}
+m^{e} = C_{2} \text{ mod }N_{2}
+\end{equation*}
+$$
+$$
+\begin{equation*}
+m^{e} = C_{3} \text{ mod }N_{3}
+\end{equation*}
+$$
+$$
+\begin{equation*}
+m^{e} = C_{4} \text{ mod }N_{4}
+\end{equation*}
+$$
+$$
+\begin{equation*}
+m^{e} = C_{5} \text{ mod }N_{5}
+\end{equation*}
+$$</p>
+<p>The Chinese remainder theorem allows us to solve the congruence $\text{mod } N_{1}N_{2}N_{3}N_{4}N_{5}$ and when we solve it we calculate the fifth root of the result and we will obtain the flag in plain text. If you want to learn more about the subject I recommend the following article.</p>
+<p><a href="https://es.wikipedia.org/wiki/Teorema_chino_del_resto">https://es.wikipedia.org/wiki/Teorema_chino_del_resto</a></p>
+<h2 id="flag">Flag</h2>
+<p>With the following script we solve the challenge.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> Crypto.Util.number <span style="color:#f92672">import</span> long_to_bytes
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> libnum
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>c1 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xAC6820EEAAA26E49FBCFB56749137A216CBC0B8985EBF55C80E621BD14871EB85D7C805924FD6C69FDED8759AD992EA8AC2099A351D03BB86511471ACB2F3B80ED13B2913D21D356E289A47768B0BB0584F131044D191D345DF6BB9BE4C47D03ED754F2626398D6B020566FC3DE03CEA0825F20FF792E75FF3E3BA58D3E4EE0E</span>
+</span></span><span style="display:flex;"><span>c2 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x6F04B9BEF07B95C424E476BBE4B081B551CCBFF07533590E12BA61D898EA5008492066604EBFC40E1BCE493676D025DE93DE87237EB45870B39DFD5D6C44247468A04FF9CC58F1D1477714DF8323AFCC27A0DB393CB764FD40295D779D8AA4B4AAFB4D3123131804A9B31E41E42D6C2A42BF4C2527FA2F3DF0EAF7610C96FC73</span>
+</span></span><span style="display:flex;"><span>c3 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x758DAFD63F9816B7318FE314D5D402BFBE1071C208C009566436C4C2C29ACB59A88E2FA714DE608D7506358EE1ACBC822F4212560D639EBC60E6CCF3BB52BF7AF92A10397B0296053E18ABE97FCD803C42C608FBA7B93B299D3DA5A5FEADDC6C1E75591CF2312F00AF6DD57866585803C7D337A9433972F7249953E69CC1B7</span>
+</span></span><span style="display:flex;"><span>c4 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x612643B86F0E5190A61668681B76FF406E5E7F8AC2C0AA19817DFB1126DA352828A19C82E8CFFEA7D1685B2B81A7B23675005E52C8D75FD3A9EA4D8BB1E961BC8854B974F169FCD30F9946C7A4E5BE0DC00E660999F16EA47A4D92CA38D0854BB4EBAC537702CB184B855E60BD17EA3A220AB3ECC381D76E36F26C69646E2773</span>
+</span></span><span style="display:flex;"><span>c5 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x5385264CF7774A60320BFCDBEF8AF7FC13FE754A7D338187CB90915A5C916E45368763742293967B6638F7538D23F60F539CE09212D0F7FB3DCCF1A26C556BF4083161B6DDF3A84032564770EC824B1D3192CFDDFCE5297A25C6B6A5B43D52804A93D482B31E20D1BCFC21E8F72E381FCA57850A708C9DDBF33C8A01BA290DDD</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>n1 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xFB4E30EA1C63FA6558A103A8646D3B11289EC1DEBF876DA4837A1E3005BD141308BCDCB312E48AB1B9A4498FE5D37BE7ADF6DD01F0C2DECFB5C5262E58E41C0C8DEA2EC2F3E6C67B68B204D280E8A629DAEC2C9B1843901FEF4480B831FEB17C65516E8CEAB8F877253D2C7CD2214C99A69420E183E92AE616452EAEDECC8015</span>
+</span></span><span style="display:flex;"><span>n2 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x8D7234EECD58733271010CB407EBDCCA8404E87B5DC1493E37A74C547C2D94361B7F87CD1F11A2C0BEACF1B6BABBA303FB7F04C298C89FF4B01D13E13CCC28FD817765524DCC419690BB738E08A0D72908CFEFFD2989252D6DF343F1FCAF771EC1641ABFA3C32728D81F807B3973088CB12D9012CD482F3FAFCF76B963F440BD</span>
+</span></span><span style="display:flex;"><span>n3 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xCA02D25C43A2C584A3448047B5A2E19BAA1A7CCCE9B0A60C794B97F748E6B5F4E56D2A819232309263CB8A615B417C2845FFCF7C794CBE84D844D6C6CB67C1C0F6E3C94B9F85BA14D3D66AC6ACF26EF96A812F0D19AA533EC745EEBC85EFFFC5998374D2C22D0BA5DD44EE4C5B04000F03E29D009B69F2E3D772B2AC7E3F2FA5</span>
+</span></span><span style="display:flex;"><span>n4 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xC6F4C4512DF50CDFBFA932F6AE95F46D4E3EE62A5085B53D45684066995232CAE4800B79014614671E132508010A84A8F7B4871B23369C3A364E8D8AE7075C3FB59684AABF59FF93324B4F41E1BD6631817AEA25B6F8E1B760D6FC7BC9C9D72C74F098093F5A61C98B126D1052B0F3EC6E0285DDEC1F73C73E8D461538F6F719</span>
+</span></span><span style="display:flex;"><span>n5 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xB43A9EBA4C15B586AC7AE6C1EBB4F1AC240BA488A87608784EC0359FEBCDF60AFC5C41A2967C3F9752338E6DDC41A0EDFDB8B289201345D85F185DA58FCB67F4682172F5ED3BFB0AFA02429AA9639A752D508C9C3D1CDED79A11892AC30121FE0D06B7C1B350DB25721A9DB0C146DE073F3284C52AFD9F2D920AB5BDA190118F</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>r <span style="color:#f92672">=</span> [c1, c2, c3, c4, c5]
+</span></span><span style="display:flex;"><span>m <span style="color:#f92672">=</span> [n1, n2, n3, n4, n5]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>result_crt <span style="color:#f92672">=</span> libnum<span style="color:#f92672">.</span>solve_crt(r, m)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>flag <span style="color:#f92672">=</span> libnum<span style="color:#f92672">.</span>nroot(result_crt, <span style="color:#ae81ff">5</span>) <span style="color:#75715e"># e = 5</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(long_to_bytes(flag)<span style="color:#f92672">.</span>decode())
+</span></span></code></pre></div><p>When executing the script we will obtain the flag.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ python3 solve.py
+</span></span><span style="display:flex;"><span>hack.ing<span style="color:#f92672">{</span>1_ShOuLd_h4v3_U$eD_@_b1693R_3xPONent<span style="color:#f92672">}</span>
+</span></span></code></pre></div>
+    </div>
+</div>
+
+            </main>
+        </div>
+
+
+        <footer class="footer">
+    
+    
+</footer>
+    </div>
+
+    
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<script>
+  MathJax = {
+    tex: {
+      displayMath: [['$$', '$$']],  
+      inlineMath: [['$', '$']]                  
+    }
+  };
+</script>
+    
+
+</body>
+
+</html>
