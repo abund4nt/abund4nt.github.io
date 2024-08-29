@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <title>
+Compress and Attack | abund4nt
+</title>
+
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="picoCTF 2021, Salsa20, oracle, compressive properties.">
+
+<meta name="generator" content="Hugo 0.123.7">
+
+
+<link rel="canonical" href="https://abund4nt.github.io/writeups/picoctf/compress-and-attack/" >
+
+
+
+
+<link href="/css/style.min.e22e1ef80ea19d08625444757176e07586bc5f332072f7ec355fae587dea40c9.css" rel="stylesheet">
+
+
+
+
+</head>
+
+<body>
+
+    <div class="flexWrapper">
+        <header class="headerWrapper">
+    <div class="header">
+        <div>
+            <a class="terminal" href="https://abund4nt.github.io/">
+                <span>abund4nt@tryharder ~ $</span>
+            </a>
+        </div>
+        <input class="side-menu" type="checkbox" id="side-menu">
+        <label class="hamb" for="side-menu"><span class="hamb-line"></span></label>
+        <nav class="headerLinks">
+            <ul>
+                
+                <li>
+                    <a href="https://abund4nt.github.io/about" title="" >
+                        ~/about</a>
+                </li>
+                
+                <li>
+                    <a href="https://abund4nt.github.io/posts" title="" >
+                        ~/posts</a>
+                </li>
+                
+                <li>
+                    <a href="https://abund4nt.github.io/writeups" title="" >
+                        ~/writeups</a>
+                </li>
+                
+            </ul>
+        </nav>
+    </div>
+</header>
+
+
+        <div class="content">
+            <main class="main">
+                
+<div class="postWrapper">
+    <h1>Compress and Attack</h1>
+    
+    	<p>picoCTF 2021, Salsa20, oracle, compressive properties.</p>
+    
+    
+    <section class="postMetadata">
+        <dl>
+            
+            
+            
+            
+                <dt>published</dt>
+                
+                <dd><time datetime="2024-08-28">August 28, 2024</time></dd>
+            
+            
+                <dt>reading time</dt>
+                <dd>3 minutes</dd>
+            
+        </dl>
+    </section>
+    
+    <div>
+        <p>They provide us with a remote instance to connect to and the source code that encrypts the flag. To solve the challenge we must retrieve the value of the flag.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/python3 -u</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> zlib
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> random <span style="color:#f92672">import</span> randint
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> os
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> Crypto.Cipher <span style="color:#f92672">import</span> Salsa20
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>flag <span style="color:#f92672">=</span> open(<span style="color:#e6db74">&#34;./flag&#34;</span>)<span style="color:#f92672">.</span>read()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">compress</span>(text):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> zlib<span style="color:#f92672">.</span>compress(bytes(text<span style="color:#f92672">.</span>encode(<span style="color:#e6db74">&#34;utf-8&#34;</span>)))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">encrypt</span>(plaintext):
+</span></span><span style="display:flex;"><span>    secret <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>urandom(<span style="color:#ae81ff">32</span>)
+</span></span><span style="display:flex;"><span>    cipher <span style="color:#f92672">=</span> Salsa20<span style="color:#f92672">.</span>new(key<span style="color:#f92672">=</span>secret)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> cipher<span style="color:#f92672">.</span>nonce <span style="color:#f92672">+</span> cipher<span style="color:#f92672">.</span>encrypt(plaintext)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
+</span></span><span style="display:flex;"><span>        usr_input <span style="color:#f92672">=</span> input(<span style="color:#e6db74">&#34;Enter your text to be encrypted: &#34;</span>)
+</span></span><span style="display:flex;"><span>        compressed_text <span style="color:#f92672">=</span> compress(flag <span style="color:#f92672">+</span> usr_input)
+</span></span><span style="display:flex;"><span>        encrypted <span style="color:#f92672">=</span> encrypt(compressed_text)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        nonce <span style="color:#f92672">=</span> encrypted[:<span style="color:#ae81ff">8</span>]
+</span></span><span style="display:flex;"><span>        encrypted_text <span style="color:#f92672">=</span>  encrypted[<span style="color:#ae81ff">8</span>:]
+</span></span><span style="display:flex;"><span>        print(nonce)
+</span></span><span style="display:flex;"><span>        print(encrypted_text)
+</span></span><span style="display:flex;"><span>        print(len(encrypted_text))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;__main__&#39;</span>:
+</span></span><span style="display:flex;"><span>    main() 
+</span></span></code></pre></div><h2 id="source-code-analysis">Source code analysis</h2>
+<p>Create a <code>compress()</code> function that takes care of compressing text using <code>zlib</code>. This function will be relevant later to understand the script that solves the challenge.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">compress</span>(text):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> zlib<span style="color:#f92672">.</span>compress(bytes(text<span style="color:#f92672">.</span>encode(<span style="color:#e6db74">&#34;utf-8&#34;</span>)))
+</span></span></code></pre></div><p>Then it creates an <code>encrypt()</code> function that uses a 32-bit secret as key and encrypts with the Salsa20 cryptosystem, this function returns the nonce of the cipher plus the encrypted text.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">encrypt</span>(plaintext):
+</span></span><span style="display:flex;"><span>    secret <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>urandom(<span style="color:#ae81ff">32</span>)
+</span></span><span style="display:flex;"><span>    cipher <span style="color:#f92672">=</span> Salsa20<span style="color:#f92672">.</span>new(key<span style="color:#f92672">=</span>secret)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> cipher<span style="color:#f92672">.</span>nonce <span style="color:#f92672">+</span> cipher<span style="color:#f92672">.</span>encrypt(plaintext)
+</span></span></code></pre></div><p>Finally it creates a <code>main()</code> function where it asks the user to enter a text, this text that is entered will be encrypted together with the flag using the <code>compress()</code> function, this encrypted text plus the nonce and the length of the encrypted text will be returned to us. When connecting to the remote instance we can check this.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ nc mercury.picoctf.net <span style="color:#ae81ff">50899</span>
+</span></span><span style="display:flex;"><span>Enter your text to be encrypted: test
+</span></span><span style="display:flex;"><span>b<span style="color:#e6db74">&#39;\x03p\x98?\xca\x03^c&#39;</span>
+</span></span><span style="display:flex;"><span>b<span style="color:#e6db74">&#39;_\x8f&lt;\xc3\xfd\xab\x14\xa0p\xb1\x7f\xfc\xb4\xba@\x9f\xe2\x9f\x98\xe7\xfaE\xcb0!\xde\xe2\x8e\xbbG\xde,\x18CY\xb7\x1f!&gt;M-j\xc6\xf6@\x03\xa8\x7f\x90&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">49</span>
+</span></span><span style="display:flex;"><span>Enter your text to be encrypted: test2
+</span></span><span style="display:flex;"><span>b<span style="color:#e6db74">&#39;\xde\xe7g\x8c\xd6\x90s\x99&#39;</span>
+</span></span><span style="display:flex;"><span>b<span style="color:#e6db74">&#39;1\x1bT\x01\xf7\xcaP\n\xb3\x7f\x9c\xa3\xe5\xa0zM/oJ\xd0wi\xeeV\x7f\xf3\x00\xce\xf0_\x03\x03\xde^5\x9c2b\x98\n`\xda\r\x80\x12\xe0\xe7\xfc\x8aP&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">50</span>
+</span></span><span style="display:flex;"><span>Enter your text to be encrypted: test3
+</span></span><span style="display:flex;"><span>b<span style="color:#e6db74">&#39;X\xb8\nC\t\xedS\xd0&#39;</span>
+</span></span><span style="display:flex;"><span>b<span style="color:#e6db74">&#39;\xc0\xe4\x0f\xb6\xa4ua\x86\xa0\x8f\xc4\x96o\x82@\xe4Y\xc7%\x99\xddK\xee1\xde\xc3\x90\x8f\x04\xb7\x16T\xcc\xca:\xdaq\x88\xee]Hh\xd7BD\x8b\xdcM\x12\x91&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">50</span>
+</span></span><span style="display:flex;"><span>Enter your text to be encrypted: test4
+</span></span><span style="display:flex;"><span>b<span style="color:#e6db74">&#39;V\xd9f\x8dw\x10\xe0\xad&#39;</span>
+</span></span><span style="display:flex;"><span>b<span style="color:#e6db74">&#39;\xb4A\x04\x8e\xa59\x96\x87\x10\xe2\x8el2\xf8\x10\xf5_\xe4Q8\x88\x12\xc0\xb6\xa3\x8d\xa4\x8c9\x81/\x1fgv\xb5B\xccp5\xab\x15\x08\xee\x9b\x8c.\x16)\xad\x8d&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">50</span>
+</span></span></code></pre></div><h2 id="encryption-and-compression-properties">Encryption and compression properties</h2>
+<p>We can see that the text is compressed using <code>compress(flag + usr_input)</code> which is the flag plus the input entered by us, this is a vulnerability because the length of the text can be predictable depending on the content.</p>
+<p>We know that Salsa20 is a stream cipher, so if the cipher text has the same length for different inputs, the original text has the same length of the compression, which will allow us to recover the flag by brute force.</p>
+<p>If we enter the known flag text which is <code>picoCTF{</code> (8 characters) the server will tell us that the length of the encrypted text is 48, on the other hand if we enter 8 random characters like <code>abcdefgh</code> it tells us that the length of the cipher text is 53.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ nc mercury.picoctf.net <span style="color:#ae81ff">50899</span>
+</span></span><span style="display:flex;"><span>Enter your text to be encrypted: picoCTF<span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>b<span style="color:#e6db74">&#39;\xc1f\x1d\xa9\x08\x9bL\t&#39;</span>
+</span></span><span style="display:flex;"><span>b<span style="color:#e6db74">&#34;\x89\x80\xd7Xf:\xf9\xc5&lt;1\xcf\x86\xba&#39;\xd7\xb0\x11\xc5\x89d.\x9f(%wAq\xda\xc8\xdd&#39;\xa3%Q\xb3\x9aL\x87f&gt;\x99U\xf2B\xe8?\x1b\xf8&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">48</span>
+</span></span><span style="display:flex;"><span>Enter your text to be encrypted: abcdefgh
+</span></span><span style="display:flex;"><span>b<span style="color:#e6db74">&#39;k\x08\x83C\xff\xb5N\xbe&#39;</span>
+</span></span><span style="display:flex;"><span>b<span style="color:#e6db74">&#34;\xc2\xf2U\xbe\xb3*\xcf\x19\x84?\xc4\xf5\xa2v&#39;\xfb\x13@\x97\x92\xa5dut-\xd6\xfe\xc9U?\xf7V\xa1\xd7&amp;\x1cM\x04\xc0\xe7\xfb\xc3\xeb?+\xeb\xabp(\xd4o\xad[&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">53</span>
+</span></span></code></pre></div><p>This is because <code>zlib</code> compression produces variable length results based on the content; <code>picoCTF{</code> text is compressed more efficiently than <code>abcdefgh</code>, resulting in a shorter compressed length and thus a shorter ciphertext. Based on this principle we can recover the flag.</p>
+<h2 id="solution">Solution</h2>
+<p>Using this script we solve the challenge.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> string
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> sys
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Global variable</span>
+</span></span><span style="display:flex;"><span>dictionary <span style="color:#f92672">=</span> string<span style="color:#f92672">.</span>ascii_letters <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;_&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_process</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> len(sys<span style="color:#f92672">.</span>argv) <span style="color:#f92672">!=</span> <span style="color:#ae81ff">2</span>:
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">&#39;Usage: python3 script.py &lt;ip:port&gt;&#39;</span>)
+</span></span><span style="display:flex;"><span>        exit(<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>    host, port <span style="color:#f92672">=</span> sys<span style="color:#f92672">.</span>argv[<span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#39;:&#39;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> remote(host, int(port))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">oracle</span>(text, r):
+</span></span><span style="display:flex;"><span>    r<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;encrypted:&#39;</span>)
+</span></span><span style="display:flex;"><span>    r<span style="color:#f92672">.</span>sendline(text<span style="color:#f92672">.</span>encode())
+</span></span><span style="display:flex;"><span>    r<span style="color:#f92672">.</span>recvline()
+</span></span><span style="display:flex;"><span>    r<span style="color:#f92672">.</span>recvline()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> int(r<span style="color:#f92672">.</span>recvline()<span style="color:#f92672">.</span>decode())
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main</span>():
+</span></span><span style="display:flex;"><span>    r <span style="color:#f92672">=</span> get_process()
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    known <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;picoCTF{&#39;</span>
+</span></span><span style="display:flex;"><span>    length <span style="color:#f92672">=</span> oracle(known, r)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    current <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> current <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#39;}&#39;</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> c <span style="color:#f92672">in</span> dictionary:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> oracle(known <span style="color:#f92672">+</span> c, r) <span style="color:#f92672">==</span> length:
+</span></span><span style="display:flex;"><span>                known <span style="color:#f92672">+=</span> c
+</span></span><span style="display:flex;"><span>                current <span style="color:#f92672">=</span> c
+</span></span><span style="display:flex;"><span>                print(c, end<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>)
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">break</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;__main__&#39;</span>:
+</span></span><span style="display:flex;"><span>    main()
+</span></span></code></pre></div><h2 id="flag">Flag</h2>
+<p>By executing the script we solve the challenge.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ python3 solve.py mercury.picoctf.net:50899
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Opening connection to mercury.picoctf.net on port 50899: Done
+</span></span><span style="display:flex;"><span>sheriff_you_solved_the_crime
+</span></span></code></pre></div><p>This is the flag.</p>
+<pre tabindex="0"><code>picoCTF{sheriff_you_solved_the_crime}
+</code></pre>
+    </div>
+</div>
+
+            </main>
+        </div>
+
+
+        <footer class="footer">
+    
+    
+</footer>
+    </div>
+
+    
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<script>
+  MathJax = {
+    tex: {
+      displayMath: [['$$', '$$']],  
+      inlineMath: [['$', '$']]                  
+    }
+  };
+</script>
+    
+
+</body>
+
+</html>
