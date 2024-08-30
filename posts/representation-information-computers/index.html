@@ -82,16 +82,86 @@ How computers represent information | abund4nt
             
             
                 <dt>reading time</dt>
-                <dd>1 minute</dd>
+                <dd>4 minutes</dd>
             
         </dl>
     </section>
     
     <div>
-        <p>Este articulo tiene la finalidad explicar de que manera una computadora representa la informacion.</p>
+        <p>Este articulo tiene la finalidad explicar de que manera una computadora representa la informacion, entender esto es de suma importancia a la hora de sumergirse en el mundo de la informatica.</p>
 <h2 id="sistema-de-numeracion-decimal">Sistema de numeracion decimal</h2>
+<p>El sistema de numeracion decimal es un sistema de numeracion posicional en el que las cantidades se representan utilizando como base aritmetica el numero $10$, el conjunto de simbolo utilizado se compone de las siguientes cifras.</p>
+<p>$$1, 2, 3, 4, 5, 6, 7, 8, 9$$</p>
+<p>Al ser posicional, cada valor de cada digito depende de su posicion dentro del numero. Para numeros enteros, comenzando de derecha a izquierda el primer digito le corresponde a las unidades ($10^{0} = 1$), el siguiente digito corresponde a las decenas ($10^{1} = 10$), el siguiente a las centenas ($10^{2} = 100$), el siguiente a las unidades de millar ($10^{3} = 1000$) y así sucesivamente. A continuacion se presenta una representacion grafica de este sistema.</p>
+<p><img src="https://i.imgur.com/u14YmqB.png" alt=""></p>
 <h2 id="bit-y-byte">Bit y Byte</h2>
-<h2 id="sistema-binario">Sistema Binario</h2>
+<h3 id="bit">Bit</h3>
+<p>El <strong>bit</strong> corresponde a un digito del sistema de numeracion binario y representa la unidad de informacion mas pequeña, por eso es la base de todas las unidades de informacion mayores de la tecnologia digital. Un bit puede representar un estado de 0 o 1, podriamos decir que un bit es el recipiente mas pequeño que existe en el que se puede almacenar informacion.</p>
+<p><img src="https://i.imgur.com/kriOgAS.png" alt=""></p>
+<p>En el sistema decimal el digito 5 puede valer 5 si esta en la posicion de las unidades, pero vale 50 si esta en la posicion de las decenas. El sistema binario funciona similarmente, excepto que cada vez que un digito binario (bit) se desplaza una posición hacia la izquierda vale el doble, y hacia la derecha vale la mitad. Por lo tanto el numero 19 (en binario $10011$) puede representarse de la siguiente manera.</p>
+<p>$$10011_{2} = 1 \cdot 2^{4} + 0 \cdot 2^{3} + 0 \cdot 2^{2} + 1 \cdot 2^{1} + 1 \cdot 2^{0} = 16 +2 + 1 = 19$$</p>
+<h3 id="byte">Byte</h3>
+<p>Un byte es la unidad de informacion base utilizada en la computacion compuesta por un conjunto ordenado de ocho bits, esta es la cantidad minima necesaria para codificar 256 valores distintos. Este bloque de datos es crucial por que es la base para la representacion de caracteres, numeros y otro tipo de informacion en las computadoras.</p>
+<p><img src="https://i.imgur.com/1zhbHv1.png" alt=""></p>
+<p>Por ejemplo para representar la palabra <code>hola</code> en bytes, primero necesitamos convertir cada caracter a su correspondiente codigo en ASCII, luego convertimos esos codigos en bytes. La palabra <code>hola</code> se compone de los siguientes caracteres.</p>
+<ul>
+<li><code>h</code> = 104</li>
+<li><code>o</code> = 111</li>
+<li><code>l</code> = 108</li>
+<li><code>a</code> = 97</li>
+</ul>
+<p>En formato hexadecimal estos valores se representan como.</p>
+<ul>
+<li><code>h</code> = 0x68</li>
+<li><code>o</code> = 0x6F</li>
+<li><code>l</code> = 0x6C</li>
+<li><code>a</code> = 0x61</li>
+</ul>
+<p>Podemos utilizar python para ver esta representacion.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ python3 -q
+</span></span><span style="display:flex;"><span>&gt;&gt;&gt; ord<span style="color:#f92672">(</span><span style="color:#e6db74">&#39;h&#39;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">104</span>
+</span></span><span style="display:flex;"><span>&gt;&gt;&gt; ord<span style="color:#f92672">(</span><span style="color:#e6db74">&#39;o&#39;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">111</span>
+</span></span><span style="display:flex;"><span>&gt;&gt;&gt; ord<span style="color:#f92672">(</span><span style="color:#e6db74">&#39;l&#39;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">108</span>
+</span></span><span style="display:flex;"><span>&gt;&gt;&gt; ord<span style="color:#f92672">(</span><span style="color:#e6db74">&#39;a&#39;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">97</span>
+</span></span><span style="display:flex;"><span>&gt;&gt;&gt; hex<span style="color:#f92672">(</span>104<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;0x68&#39;</span>
+</span></span><span style="display:flex;"><span>&gt;&gt;&gt; hex<span style="color:#f92672">(</span>111<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;0x6f&#39;</span>
+</span></span><span style="display:flex;"><span>&gt;&gt;&gt; hex<span style="color:#f92672">(</span>108<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;0x6c&#39;</span>
+</span></span><span style="display:flex;"><span>&gt;&gt;&gt; hex<span style="color:#f92672">(</span>97<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;0x61&#39;</span>
+</span></span></code></pre></div><p>Entonces la representacion en bytes de <code>hola</code> es.</p>
+<pre tabindex="0"><code>68 6F 6C 61
+</code></pre><p>Acabamos de representar los bytes en formato hexadecimal (que lo explicaremos mas adelante), pero estos pueden ser representados de diferentes formas como en binario, hexadecimal, decimal, octal, ASCII, etcetera. Por ejemplo la palabra <code>hola</code> en binario seria.</p>
+<ul>
+<li><code>h</code> = 01101000</li>
+<li><code>o</code> = 01101111</li>
+<li><code>l</code> = 01101100</li>
+<li><code>a</code> = 01100001</li>
+</ul>
+<pre tabindex="0"><code>01101000 01101111 01101100 01100001
+</code></pre><p>Se programo el siguiente script en Python para convertir texto a binario.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>phrase <span style="color:#f92672">=</span> list(input(<span style="color:#e6db74">&#39;Enter the phrase: &#39;</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>phrase_in_bytes <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> char <span style="color:#f92672">in</span> phrase:
+</span></span><span style="display:flex;"><span>    binary_representation <span style="color:#f92672">=</span> bin(ord(char))[<span style="color:#ae81ff">2</span>:]
+</span></span><span style="display:flex;"><span>    padded_binary <span style="color:#f92672">=</span> binary_representation<span style="color:#f92672">.</span>zfill(<span style="color:#ae81ff">8</span>)
+</span></span><span style="display:flex;"><span>    phrase_in_bytes <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#39;0b&#39;</span> <span style="color:#f92672">+</span> padded_binary <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39; &#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>phrase_in_bytes <span style="color:#f92672">=</span> phrase_in_bytes<span style="color:#f92672">.</span>strip()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(phrase_in_bytes)
+</span></span></code></pre></div><p>Al ejecutarlo vemos su funcionamiento.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ python3 text-to-binary.py 
+</span></span><span style="display:flex;"><span>Enter the phrase: hola
+</span></span><span style="display:flex;"><span>0b01101000 0b01101111 0b01101100 0b01100001
+</span></span></code></pre></div><h2 id="sistema-binario">Sistema Binario</h2>
 <h2 id="sistema-hexadecimal-hex">Sistema Hexadecimal (hex)</h2>
 <p>El sistema hexadecimal es un sistema de enumeracion posicional que tiene como base el $16$, las operaciones de la CPU suelen usar el byte como unidad basica de memoria, debido a que un byte representa $2^{8}$ valores posibles y esto puede representarse como $2^{8} = 2^{4} \cdot 2^{4} = 16 \cdot 16 = 1 \cdot 16^{2} + 0 \cdot 16^{1} + 0 \cdot 16^{0}$, que equivale al numero en base 16, dos digitos hexadecimales corresponden exactamente a un byte.</p>
 <p>Dado que el sistema usual de numeracion es de base decimal (solo se dispone de dies digitos), se adopto la convencion de usar las seis priemras letras del alfabeto latino para suplir los digitos que faltan.</p>

@@ -8,8 +8,15 @@
     <language>en-us</language>
     <managingEditor>email@example.com (abund4nt)</managingEditor>
     <webMaster>email@example.com (abund4nt)</webMaster>
-    <lastBuildDate>Wed, 28 Aug 2024 22:16:53 -0400</lastBuildDate>
+    <lastBuildDate>Fri, 30 Aug 2024 15:13:22 -0400</lastBuildDate>
     <atom:link href="https://abund4nt.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Pentesting Mobile Setup</title>
+      <link>https://abund4nt.github.io/posts/mobile-setup/</link>
+      <pubDate>Fri, 30 Aug 2024 15:13:22 -0400</pubDate><author>email@example.com (abund4nt)</author>
+      <guid>https://abund4nt.github.io/posts/mobile-setup/</guid>
+      <description>Introduction The purpose of this post is to teach you how to set up a working environment from 0 to audit Android applications. We will start by installing Genymotion in our system, which will be our application emulator (it&amp;rsquo;s like having a phone inside your computer), we will configure the certificate with openssl and adb (to tunnel and intercept traffic with Burpsuite), then we will install Frida and we will bypass Instagram&amp;rsquo;s SSL Pinning using Frida.</description>
+    </item>
     <item>
       <title>Compress and Attack</title>
       <link>https://abund4nt.github.io/writeups/picoctf/compress-and-attack/</link>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <title>
+Pentesting Mobile Setup | abund4nt
+</title>
+
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Step-by-step tutorial on how to create an environment for auditing mobile applications.">
+
+<meta name="generator" content="Hugo 0.123.7">
+
+
+<link rel="canonical" href="https://abund4nt.github.io/posts/mobile-setup/" >
+
+
+
+
+<link href="/css/style.min.e22e1ef80ea19d08625444757176e07586bc5f332072f7ec355fae587dea40c9.css" rel="stylesheet">
+
+
+
+
+</head>
+
+<body>
+
+    <div class="flexWrapper">
+        <header class="headerWrapper">
+    <div class="header">
+        <div>
+            <a class="terminal" href="https://abund4nt.github.io/">
+                <span>abund4nt@tryharder ~ $</span>
+            </a>
+        </div>
+        <input class="side-menu" type="checkbox" id="side-menu">
+        <label class="hamb" for="side-menu"><span class="hamb-line"></span></label>
+        <nav class="headerLinks">
+            <ul>
+                
+                <li>
+                    <a href="https://abund4nt.github.io/about" title="" >
+                        ~/about</a>
+                </li>
+                
+                <li>
+                    <a href="https://abund4nt.github.io/posts" title="" >
+                        ~/posts</a>
+                </li>
+                
+                <li>
+                    <a href="https://abund4nt.github.io/writeups" title="" >
+                        ~/writeups</a>
+                </li>
+                
+            </ul>
+        </nav>
+    </div>
+</header>
+
+
+        <div class="content">
+            <main class="main">
+                
+<div class="postWrapper">
+    <h1>Pentesting Mobile Setup</h1>
+    
+    	<p>Step-by-step tutorial on how to create an environment for auditing mobile applications.</p>
+    
+    
+    <section class="postMetadata">
+        <dl>
+            
+            
+            
+            
+                <dt>published</dt>
+                
+                <dd><time datetime="2024-08-30">August 30, 2024</time></dd>
+            
+            
+                <dt>reading time</dt>
+                <dd>9 minutes</dd>
+            
+        </dl>
+    </section>
+    
+    <div>
+        <h1 id="introduction">Introduction</h1>
+<p>The purpose of this post is to teach you how to set up a working environment from 0 to audit Android applications. We will start by installing Genymotion in our system, which will be our application emulator (it&rsquo;s like having a phone inside your computer), we will configure the certificate with openssl and adb (to tunnel and intercept traffic with Burpsuite), then we will install <a href="https://frida.re/">Frida</a> and we will bypass Instagram&rsquo;s SSL Pinning using Frida. In addition, I will explain what the tools we are going to use in detail.</p>
+<p>The process that I explained above is a summary of what we will do, since we will have to install several things and do many more steps.</p>
+<p>To start you must have installed.</p>
+<ul>
+<li>adb</li>
+<li>Genymotion</li>
+<li>openssl</li>
+<li>Burpsuite</li>
+<li>Frida</li>
+</ul>
+<p>But before we begin, we need to understand a couple of things.</p>
+<h1 id="installation-and-explanation-of-tools">Installation and explanation of tools</h1>
+<h2 id="adb">ADB</h2>
+<p>ADB, or Android Debug Bridge, is a command line tool that functions as a communication interface between an Android device and a host computer. Through ADB, we can establish a connection to an Android device, allowing us to perform a variety of technical actions crucial for application pentesting. These include installing and uninstalling applications, accessing the system shell, transferring files between the computer and the device, capturing logs, and executing specific commands. In addition, ADB provides the ability to perform security tests, such as exploiting vulnerabilities and inspecting network traffic, making it an essential tool for evaluating Android applications.</p>
+<p>To check if we have adb installed on our system we must run the following command.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>adb --version
+</span></span></code></pre></div><p>If we get this output it is because we have adb installed.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ adb --version       
+</span></span><span style="display:flex;"><span>Android Debug Bridge version 1.0.41
+</span></span><span style="display:flex;"><span>Version 34.0.4-debian
+</span></span><span style="display:flex;"><span>Installed as /usr/lib/android-sdk/platform-tools/adb
+</span></span><span style="display:flex;"><span>Running on Linux 6.8.0-41-generic <span style="color:#f92672">(</span>x86_64<span style="color:#f92672">)</span>
+</span></span></code></pre></div><h2 id="genymotion">Genymotion</h2>
+<p>Genymotion is a highly configurable Android device emulation environment. It uses advanced virtualization technology to create virtual instances of Android devices on a host computer. Unlike standard Android emulators, Genymotion offers superior performance and a wide range of hardware and software configurations, allowing pentesters to simulate a variety of Android devices with different operating system versions, screen resolutions and hardware capabilities. This is essential for testing applications in a variety of scenarios and for identifying potential vulnerabilities that may arise in different environments.</p>
+<p>To install Genymotion we must go to its <a href="https://www.genymotion.com/product-desktop/download/">web</a> site and download the <code>.bin</code>.</p>
+<p><img src="https://i.imgur.com/tzdp7vv.png" alt=""></p>
+<p>We give it permission to run and install genymotion.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ ./genymotion-3.7.1-linux_x64.bin 
+</span></span><span style="display:flex;"><span>Installing <span style="color:#66d9ef">for</span> current user only. To install <span style="color:#66d9ef">for</span> all users, restart this installer as root.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Installing to folder <span style="color:#f92672">[</span>/home/abund4nt/Downloads/genymotion<span style="color:#f92672">]</span>. Are you sure <span style="color:#f92672">[</span>y/n<span style="color:#f92672">]</span> ? y
+</span></span></code></pre></div><h2 id="openssl">openssl</h2>
+<p>OpenSSL is an open source library that provides implementations of security protocols such as SSL (Secure Sockets Layer) and TLS (Transport Layer Security), as well as utilities for digital certificate management and cryptographic operations. This tool is widely used in the field of computer security and in the development of applications that require secure communications over networks, such as data encryption during transmission. OpenSSL provides a set of industry-standard cryptographic algorithms and security protocols, making it a fundamental piece in building secure systems and protecting the confidentiality and integrity of online information.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ sudo apt install openssl
+</span></span></code></pre></div><h2 id="frida">Frida</h2>
+<p>Frida is a reverse engineering and application manipulation tool that is primarily used for dynamic software analysis and modification. It is extremely versatile and can be employed in a wide range of scenarios, from security testing and pentesting to software development and debugging. What sets Frida apart is its ability to inject scripts written in various languages (such as JavaScript, Python or C) into running processes, making it easy to observe and modify the execution of an application in real time. This makes it a valuable tool, we will use it later to bypass instagram&rsquo;s SSL Pinning.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ pip install frida-tools
+</span></span></code></pre></div><h2 id="ssl-pinning">SSL Pinning</h2>
+<p>SSL Pinning, also known as SSL Certificate Pinning, is a fundamental security measure used in mobile applications to strengthen server authentication and secure communications. It consists of encoding in the application a digital certificate specific to the server to which it is expected to connect. This means that even if an attacker tries to present a fake certificate, the application will only accept the connection if the certificate presented exactly matches the certificate predefined in the application. This process prevents man-in-the-middle attacks, such as Man-in-the-Middle, where an attacker attempts to intercept and manipulate communications between the application and the server. SSL Pinning provides an additional layer of security, ensuring that the application only trusts secure, authenticated connections to known, trusted servers. This is especially critical in applications that handle sensitive information or financial transactions.</p>
+<p><img src="https://i.imgur.com/KLUt5Mo.png" alt=""></p>
+<h1 id="creation-of-the-working-environment">Creation of the working environment.</h1>
+<p>We will start by opening Genymotion and adding a new device, in this case we will use the <strong>Google Pixel 3 XL</strong> and leave the default settings, next next next next and next. Once installed it should look like this.</p>
+<p><img src="https://i.imgur.com/I2HTuia.png" alt=""></p>
+<p>Now we will open Burpsuite and go to download the certificate using wget.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ curl localhost:8080/cert -o cert.der
+</span></span></code></pre></div><p>Now let&rsquo;s pass the <code>.der</code> certificate to <code>.pem</code> format using openssl, since <code>.pem</code> files use base64 encoding, which makes them readable and easily manipulated by humans. This facilitates manual inspection and editing if necessary.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ openssl x509 -inform der -in cert.der -out burp.pem
+</span></span></code></pre></div><p>With the following command we are going to generate a hash of the certificate and we are going to keep the first line, in my case <code>9a5ba575</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ openssl x509 -inform PEM -subject_hash_old -in burp.pem
+</span></span></code></pre></div><p>We will change the name of the <code>burp.pem</code> to <code>9a5ba575.0</code>. We do this because <code>9a5ba575</code>, is a unique representation of the certificate content and can be used in certain contexts where a unique identifier is required. And by renaming the file to <code>9a5ba575.0</code>, you are assigning a name that is directly related to the hash of the certificate, which makes it easier to identify and associate the certificate with its unique hash. This can be especially useful in situations where multiple certificates are managed and you need to have a quick and accurate reference to a specific certificate through its hash.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ mv burp.pem 9a5ba575.0
+</span></span></code></pre></div><p>Once this is done, let&rsquo;s start the mobile device from Genymotion and when it is booted, we will use adb to list the device and see if it lists it correctly.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ adb devices
+</span></span><span style="display:flex;"><span>List of devices attached
+</span></span><span style="display:flex;"><span>192.168.56.104:5555    device
+</span></span></code></pre></div><p>If in the device we go to <strong>Settings -&gt; Security -&gt; Encryption &amp; Credentials -&gt; Trusted Credentials</strong>, we will see that there are all the certificates installed on the device sorted alphabetically, what we must do now is to install the certificate on the device.</p>
+<p>But first, you must understand that with <code>adb shell</code> we can spawn an interactive shell of the Android device and execute commands, think as if it were a Linux system but on phone. We will run the following command to install the certificate in its corresponding directory.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ adb push 9a5ba575.0 /system/etc/security/cacerts/
+</span></span></code></pre></div><p>If they get an error they should execute the following command sequence.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ adb shell
+</span></span><span style="display:flex;"><span>$ su
+</span></span><span style="display:flex;"><span>$ mount -o remount, rw /
+</span></span><span style="display:flex;"><span>$ exit
+</span></span><span style="display:flex;"><span>$ exit
+</span></span></code></pre></div><p>With that error the system informed us that it could not copy the file because the target location (<code>/system/etc/security/cacerts/</code>) was marked as read-only, which means that no changes could be made to that directory. Then, by running <code>mount -o remount,rw /</code>, you temporarily changed the file system from read-only to read-write, which allowed the file to be copied successfully. This is similar to changing a read-only slate to a slate that you can write to and erase from. This situation can occur on Android systems because certain areas of the file system are protected to prevent accidental changes that could cause problems in the operation of the device. Therefore, it is sometimes necessary to perform a remote mount operation to temporarily change these permissions and allow file modification.</p>
+<p>Now we run the command again and it will let us upload it without any problem.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ adb push 9a5ba575.0 /system/etc/security/cacerts/
+</span></span></code></pre></div><p>Now, if we go back to <strong>Trusted credentials</strong> we can see that the certificate is installed correctly.</p>
+<p><img src="https://i.imgur.com/VMkPCld.png" alt=""></p>
+<p>Now we are going to use adb to use our IP as a Global Proxy.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ adb shell settings put global http_proxy 192.168.1.96:8080
+</span></span></code></pre></div><p>Good! now we can intercept traffic from applications that do not use SSL Pinning, but first we must make a small modification in the Burpsuite, this is to leave it listening on all interfaces.</p>
+<p><img src="https://i.imgur.com/eOyK58q.png" alt=""></p>
+<p>After this, we can intercept the request we want.</p>
+<p>The problem comes when we want to intercept the request of an application that uses SSL Pinning (explained above), to do this we have to evade this security measure by doing function hooking. Function hooking with Frida in mobile applications involves intercepting and dynamically modifying function calls at runtime. Frida facilitates this process by injecting JavaScript code into the context of an application, which allows accessing and manipulating variables and functions in memory.</p>
+<p>What we will do, will be to bypass Instagram&rsquo;s SSL Pinning to intercept requests.</p>
+<p>Let&rsquo;s download Google Play by pressing <strong>Open GApps</strong>, restart the device, log into Google Play and download Instagram.</p>
+<p><img src="https://i.imgur.com/O45z9zj.png" alt=""></p>
+<p>If we try to intercept Login requests it will give us an error, it will not let us. This is because the SSL Pinning of the application blocks our traffic.</p>
+<p>Now we have to set up a server in Frida to be able to bypass the login later, we are going to download it from the following <a href="https://github.com/frida/frida/releases">releases</a>. To know which one to download you have to see the processor architecture, for this you spawn a shell with <code>adb shell</code> and do <code>uname -a</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ adb shell
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># uname -a</span>
+</span></span><span style="display:flex;"><span>x86_54
+</span></span></code></pre></div><p>We have to download the <code>x86_64</code> version. Once downloaded, we bring it to our directory and unzip it.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ 7z x archive.tar.xz
+</span></span></code></pre></div><p>Now, we will execute the following commands and leave the server running.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ adb push frida-server /data/local/tmp/
+</span></span><span style="display:flex;"><span>$ adb shell <span style="color:#e6db74">&#34;chmod 755 /data/local/tmp/frida-server&#34;</span>
+</span></span><span style="display:flex;"><span>$ adb shell <span style="color:#e6db74">&#34;/data/local/tmp/frida-server &amp;&#34;</span> 
+</span></span></code></pre></div><p>Done! we will use the script from the following <a href="https://github.com/Eltion/Instagram-SSL-Pinning-Bypass">repository</a> to bypass the SSL Pinning. We will bring the <code>.js</code> to our current directory and execute the following command.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ frida -U -l ./instagram-ssl-pinning-bypass.js -f com.instagram.android
+</span></span></code></pre></div><p>After this, we will be able to bypass the SSL Pinning and intercept traffic without problems.</p>
+<p><img src="https://i.imgur.com/Ha14VEZ.png" alt=""></p>
+<p>Thanks for reading.</p>
+
+    </div>
+</div>
+
+            </main>
+        </div>
+
+
+        <footer class="footer">
+    
+    
+</footer>
+    </div>
+
+    
+
+</body>
+
+</html>

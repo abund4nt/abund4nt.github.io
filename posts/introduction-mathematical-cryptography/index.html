@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <title>
+Introduction Mathematical Cryptography | abund4nt
+</title>
+
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+
+<meta name="generator" content="Hugo 0.123.7">
+
+
+<link rel="canonical" href="http://localhost:1313/posts/introduction-mathematical-cryptography/" >
+
+
+
+
+<link href="/css/style.min.e22e1ef80ea19d08625444757176e07586bc5f332072f7ec355fae587dea40c9.css" rel="stylesheet">
+
+
+
+
+</head>
+
+<body>
+
+    <div class="flexWrapper">
+        <header class="headerWrapper">
+    <div class="header">
+        <div>
+            <a class="terminal" href="http://localhost:1313/">
+                <span>abund4nt@tryharder ~ $</span>
+            </a>
+        </div>
+        <input class="side-menu" type="checkbox" id="side-menu">
+        <label class="hamb" for="side-menu"><span class="hamb-line"></span></label>
+        <nav class="headerLinks">
+            <ul>
+                
+                <li>
+                    <a href="http://localhost:1313/about" title="" >
+                        ~/about</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:1313/posts" title="" >
+                        ~/posts</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:1313/writeups" title="" >
+                        ~/writeups</a>
+                </li>
+                
+            </ul>
+        </nav>
+    </div>
+</header>
+
+
+        <div class="content">
+            <main class="main">
+                
+<div class="postWrapper">
+    <h1>Introduction Mathematical Cryptography</h1>
+    
+    
+    <section class="postMetadata">
+        <dl>
+            
+            
+            
+            
+                <dt>published</dt>
+                
+                <dd><time datetime="2024-08-29">August 29, 2024</time></dd>
+            
+            
+                <dt>reading time</dt>
+                <dd>2 minutes</dd>
+            
+        </dl>
+    </section>
+    
+    <div>
+        <p>Notas del libro <code>An Introduction Mathematical Cryptography</code>.</p>
+<p><img src="https://i.imgur.com/D6zVdcC.png" alt=""></p>
+<h2 id="divisibilidad">Divisibilidad</h2>
+<p>Sean $a$ y $b$ numeros enteros con $b \neq 0$. Se dice que $b$ divide $a$ si existe un entero $c$ que.</p>
+<p>$$a = bc$$</p>
+<p>Se escribe $b \mid a$ para indicar que $b$ divide $a$. Si $b$ no divide $a$ entonces se escribe $b \nmid a$.</p>
+<p>Ejemplo: Tenemos $847 \mid 485331$ por que $485331 = 847 \cdot 573$. Por otro lado tenemos $355 \nmid 259943$ por que si intentamos dividir $259943$ en $355$ obtenemos un resto de $83$, para ser precisos $259943 = 355 \cdot 732 + 83$, entonces $259943$ no es un multiplco exacto de $355$.</p>
+<h2 id="maximo-comun-divisor">Maximo comun divisor</h2>
+<p>El maximo comun divisor entre $a$ y $b$ es el entero positivo mas largo $d$ que $d \mid a$ y $d \mid b$, esto se denota como $gcd(a, b)$.</p>
+<p>Ejemplo: El maximo comun divisor entre $12$ y $18$ es $6$, por que $6 \mid 12$ y $6 \mid 18$, tambien.</p>
+<p>$$gcd(748, 2024) = 44$$</p>
+<p>Lista de los divisores de 748 y 2024.</p>
+<p>$$\text{Divisores de 748 }= 1, 2, 4, 11, 17, 22, 34, 44, 68, 187, 374, 74 $$
+$$\text{Divisores de 2024 }= 1, 2, 4, 8, 11, 22, 23, 44, 46, 88, 92, 184, 253, 506, 1012, 2024$$</p>
+<p>Un algoritmo eficiente para calcular el maximo comun divisor entre dos numeros es el algoritmo de euclides, esta es su implementacion en Python.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">gcd</span>(a, b):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> a <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> b
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> gcd(b <span style="color:#f92672">%</span> a, a)
+</span></span></code></pre></div>
+    </div>
+</div>
+
+            </main>
+        </div>
+
+
+        <footer class="footer">
+    
+    
+</footer>
+    </div>
+
+    
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<script>
+  MathJax = {
+    tex: {
+      displayMath: [['$$', '$$']],  
+      inlineMath: [['$', '$']]                  
+    }
+  };
+</script>
+    
+
+</body>
+
+</html>
