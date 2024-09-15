@@ -8,6 +8,21 @@
     <language>en-us</language>
     <managingEditor>email@example.com (abund4nt)</managingEditor>
     <webMaster>email@example.com (abund4nt)</webMaster>
+    <lastBuildDate>Sat, 14 Sep 2024 21:33:22 -0300</lastBuildDate>
     <atom:link href="https://abund4nt.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Pwn</title>
+      <link>https://abund4nt.github.io/tags/pwn/</link>
+      <pubDate>Sat, 14 Sep 2024 21:33:22 -0300</pubDate><author>email@example.com (abund4nt)</author>
+      <guid>https://abund4nt.github.io/tags/pwn/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Crypto</title>
+      <link>https://abund4nt.github.io/tags/crypto/</link>
+      <pubDate>Wed, 28 Aug 2024 22:16:53 -0400</pubDate><author>email@example.com (abund4nt)</author>
+      <guid>https://abund4nt.github.io/tags/crypto/</guid>
+      <description></description>
+    </item>
   </channel>
 </rss>

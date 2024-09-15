@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Writeups (crypto/pwn) on My New Hugo Site</title>
-    <link>https://abund4nt.github.io/writeups/</link>
-    <description>Recent content in Writeups (crypto/pwn) on My New Hugo Site</description>
+    <title>TryHackMe on My New Hugo Site</title>
+    <link>https://abund4nt.github.io/writeups/tryhackme/</link>
+    <description>Recent content in TryHackMe on My New Hugo Site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <managingEditor>email@example.com (abund4nt)</managingEditor>
     <webMaster>email@example.com (abund4nt)</webMaster>
     <lastBuildDate></lastBuildDate>
-    <atom:link href="https://abund4nt.github.io/writeups/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://abund4nt.github.io/writeups/tryhackme/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>

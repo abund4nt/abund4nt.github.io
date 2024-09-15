@@ -1,43 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>My New Hugo Site</title>
-    <link>https://abund4nt.github.io/</link>
-    <description>Recent content on My New Hugo Site</description>
+    <title>Crypto on My New Hugo Site</title>
+    <link>https://abund4nt.github.io/tags/crypto/</link>
+    <description>Recent content in Crypto on My New Hugo Site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <managingEditor>email@example.com (abund4nt)</managingEditor>
     <webMaster>email@example.com (abund4nt)</webMaster>
-    <lastBuildDate>Sat, 14 Sep 2024 21:33:22 -0300</lastBuildDate>
-    <atom:link href="https://abund4nt.github.io/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>You know 0xDiablos</title>
-      <link>https://abund4nt.github.io/writeups/hackthebox/youknow0xdiablos/</link>
-      <pubDate>Sat, 14 Sep 2024 21:33:22 -0300</pubDate><author>email@example.com (abund4nt)</author>
-      <guid>https://abund4nt.github.io/writeups/hackthebox/youknow0xdiablos/</guid>
-      <description>We are provided with a vuln binary and a remote instance to connect to, the binary has the following protections.&#xA;Arch: i386-32-little RELRO: Partial RELRO Stack: No canary found NX: NX unknown - GNU_STACK missing PIE: No PIE (0x8048000) Stack: Executable RWX: Has RWX segments When it is executed it asks for an input and this is reflected when pressing enter.&#xA;$ ./vuln You know who are 0xDiablos: test test Reverse engineering If we use cutter we will be able to obtain the code of the main function.</description>
-    </item>
-    <item>
-      <title>TryOverflowMe 1</title>
-      <link>https://abund4nt.github.io/writeups/tryhackme/trypwnme-one/tryoverflowme1/</link>
-      <pubDate>Wed, 11 Sep 2024 23:46:04 -0300</pubDate><author>email@example.com (abund4nt)</author>
-      <guid>https://abund4nt.github.io/writeups/tryhackme/trypwnme-one/tryoverflowme1/</guid>
-      <description>We are provided with a 64-bit binary, its source code and a remote instance to connect to.&#xA;int main(){ setup(); banner(); int admin = 0; char buf[0x10]; puts(&amp;#34;PLease go ahead and leave a comment :&amp;#34;); gets(buf); if (admin){ const char* filename = &amp;#34;flag.txt&amp;#34;; FILE* file = fopen(filename, &amp;#34;r&amp;#34;); char ch; while ((ch = fgetc(file)) != EOF) { putchar(ch); } fclose(file); } else{ puts(&amp;#34;Bye bye\n&amp;#34;); exit(1); } } The binary has the following protections.</description>
-    </item>
-    <item>
-      <title>TryOverflowMe 2</title>
-      <link>https://abund4nt.github.io/writeups/tryhackme/trypwnme-one/tryoverflowme2/</link>
-      <pubDate>Wed, 11 Sep 2024 23:46:04 -0300</pubDate><author>email@example.com (abund4nt)</author>
-      <guid>https://abund4nt.github.io/writeups/tryhackme/trypwnme-one/tryoverflowme2/</guid>
-      <description>Se nos proporciona un binario, el codigo fuente y una instancia remota para conectarnos.&#xA;int read_flag(){ const char* filename = &amp;#34;flag.txt&amp;#34;; FILE* file = fopen(filename, &amp;#34;r&amp;#34;); if(!file){ puts(&amp;#34;the file flag.txt is not in the current directory, please contact support\n&amp;#34;); exit(1); } char ch; while ((ch = fgetc(file)) != EOF) { putchar(ch); } fclose(file); } int main(){ setup(); banner(); int admin = 0; int guess = 1; int check = 0; char buf[64]; puts(&amp;#34;Please Go ahead and leave a comment :&amp;#34;); gets(buf); if (admin==0x59595959){ read_flag(); } else{ puts(&amp;#34;Bye bye\n&amp;#34;); exit(1); } } El binario cuenta con las siguientes protecciones.</description>
-    </item>
-    <item>
-      <title>Pentesting Mobile Setup</title>
-      <link>https://abund4nt.github.io/posts/mobile-setup/</link>
-      <pubDate>Fri, 30 Aug 2024 15:13:22 -0400</pubDate><author>email@example.com (abund4nt)</author>
-      <guid>https://abund4nt.github.io/posts/mobile-setup/</guid>
-      <description>Introduction The purpose of this post is to teach you how to set up a working environment from 0 to audit Android applications. We will start by installing Genymotion in our system, which will be our application emulator (it&amp;rsquo;s like having a phone inside your computer), we will configure the certificate with openssl and adb (to tunnel and intercept traffic with Burpsuite), then we will install Frida and we will bypass Instagram&amp;rsquo;s SSL Pinning using Frida.</description>
-    </item>
+    <lastBuildDate>Wed, 28 Aug 2024 22:16:53 -0400</lastBuildDate>
+    <atom:link href="https://abund4nt.github.io/tags/crypto/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Compress and Attack</title>
       <link>https://abund4nt.github.io/writeups/picoctf/compress-and-attack/</link>
@@ -86,13 +58,6 @@
       <pubDate>Wed, 10 Jul 2024 00:00:00 +0000</pubDate><author>email@example.com (abund4nt)</author>
       <guid>https://abund4nt.github.io/writeups/picoctf/rsa-pop-quiz/</guid>
       <description>The following description is provided in the challenge.&#xA;Description Class, take your seats! It&amp;#39;s PRIME-time for a quiz... nc jupiter.challenges.picoctf.org 1981 A sentence inviting us to take a seat, supposedly they have a test prepared for us. We will use nc to connect to the remote server.&#xA;Good morning class! It&amp;#39;s me Ms. Adleman-Shamir-Rivest Today we will be taking a pop quiz, so I hope you studied. Cramming just will not do!</description>
-    </item>
-    <item>
-      <title>Math Typesetting</title>
-      <link>https://abund4nt.github.io/posts/math/</link>
-      <pubDate>Fri, 08 Mar 2019 00:00:00 +0000</pubDate><author>email@example.com (abund4nt)</author>
-      <guid>https://abund4nt.github.io/posts/math/</guid>
-      <description>&lt;p&gt;Mathematical notation in a Hugo project can be enabled by using third party JavaScript libraries.&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

