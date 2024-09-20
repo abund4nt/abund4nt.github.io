@@ -11,6 +11,13 @@
     <lastBuildDate>Wed, 11 Sep 2024 23:46:04 -0300</lastBuildDate>
     <atom:link href="https://abund4nt.github.io/writeups/tryhackme/trypwnme-one/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>TryExecMe</title>
+      <link>https://abund4nt.github.io/writeups/tryhackme/trypwnme-one/tryexecme/</link>
+      <pubDate>Wed, 11 Sep 2024 23:46:04 -0300</pubDate><author>email@example.com (abund4nt)</author>
+      <guid>https://abund4nt.github.io/writeups/tryhackme/trypwnme-one/tryexecme/</guid>
+      <description>We are given a binary, its source code and a remote instance to connect to.&#xA;int main(){ setup(); banner(); char *buf[128]; puts(&amp;#34;\nGive me your shell, and I will execute it: &amp;#34;); read(0,buf,sizeof(buf)); puts(&amp;#34;\nExecuting Spell...\n&amp;#34;); ( ( void (*) () ) buf) (); } The binary has the following protections.&#xA;Arch: amd64-64-little RELRO: Partial RELRO Stack: No canary found NX: NX unknown - GNU_STACK missing PIE: No PIE (0x400000) Stack: Executable RWX: Has RWX segments Source code analysis In the main function it declares a 128 byte buffer and reads our input using read.</description>
+    </item>
+    <item>
       <title>TryOverflowMe 1</title>
       <link>https://abund4nt.github.io/writeups/tryhackme/trypwnme-one/tryoverflowme1/</link>
       <pubDate>Wed, 11 Sep 2024 23:46:04 -0300</pubDate><author>email@example.com (abund4nt)</author>
@@ -22,7 +29,7 @@
       <link>https://abund4nt.github.io/writeups/tryhackme/trypwnme-one/tryoverflowme2/</link>
       <pubDate>Wed, 11 Sep 2024 23:46:04 -0300</pubDate><author>email@example.com (abund4nt)</author>
       <guid>https://abund4nt.github.io/writeups/tryhackme/trypwnme-one/tryoverflowme2/</guid>
-      <description>Se nos proporciona un binario, el codigo fuente y una instancia remota para conectarnos.&#xA;int read_flag(){ const char* filename = &amp;#34;flag.txt&amp;#34;; FILE* file = fopen(filename, &amp;#34;r&amp;#34;); if(!file){ puts(&amp;#34;the file flag.txt is not in the current directory, please contact support\n&amp;#34;); exit(1); } char ch; while ((ch = fgetc(file)) != EOF) { putchar(ch); } fclose(file); } int main(){ setup(); banner(); int admin = 0; int guess = 1; int check = 0; char buf[64]; puts(&amp;#34;Please Go ahead and leave a comment :&amp;#34;); gets(buf); if (admin==0x59595959){ read_flag(); } else{ puts(&amp;#34;Bye bye\n&amp;#34;); exit(1); } } El binario cuenta con las siguientes protecciones.</description>
+      <description>We are provided with a binary, the source code and a remote instance to connect to.&#xA;int read_flag(){ const char* filename = &amp;#34;flag.txt&amp;#34;; FILE* file = fopen(filename, &amp;#34;r&amp;#34;); if(!file){ puts(&amp;#34;the file flag.txt is not in the current directory, please contact support\n&amp;#34;); exit(1); } char ch; while ((ch = fgetc(file)) != EOF) { putchar(ch); } fclose(file); } int main(){ setup(); banner(); int admin = 0; int guess = 1; int check = 0; char buf[64]; puts(&amp;#34;Please Go ahead and leave a comment :&amp;#34;); gets(buf); if (admin==0x59595959){ read_flag(); } else{ puts(&amp;#34;Bye bye\n&amp;#34;); exit(1); } } The binary has the following protections.</description>
     </item>
   </channel>
 </rss>
