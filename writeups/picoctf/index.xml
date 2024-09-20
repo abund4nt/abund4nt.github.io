@@ -8,35 +8,7 @@
     <language>en-us</language>
     <managingEditor>email@example.com (abund4nt)</managingEditor>
     <webMaster>email@example.com (abund4nt)</webMaster>
-    <lastBuildDate>Wed, 28 Aug 2024 22:16:53 -0400</lastBuildDate>
+    <lastBuildDate></lastBuildDate>
     <atom:link href="https://abund4nt.github.io/writeups/picoctf/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Compress and Attack</title>
-      <link>https://abund4nt.github.io/writeups/picoctf/compress-and-attack/</link>
-      <pubDate>Wed, 28 Aug 2024 22:16:53 -0400</pubDate><author>email@example.com (abund4nt)</author>
-      <guid>https://abund4nt.github.io/writeups/picoctf/compress-and-attack/</guid>
-      <description>They provide us with a remote instance to connect to and the source code that encrypts the flag. To solve the challenge we must retrieve the value of the flag.&#xA;#!/usr/bin/python3 -u import zlib from random import randint import os from Crypto.Cipher import Salsa20 flag = open(&amp;#34;./flag&amp;#34;).read() def compress(text): return zlib.compress(bytes(text.encode(&amp;#34;utf-8&amp;#34;))) def encrypt(plaintext): secret = os.urandom(32) cipher = Salsa20.new(key=secret) return cipher.nonce + cipher.encrypt(plaintext) def main(): while True: usr_input = input(&amp;#34;Enter your text to be encrypted: &amp;#34;) compressed_text = compress(flag + usr_input) encrypted = encrypt(compressed_text) nonce = encrypted[:8] encrypted_text = encrypted[8:] print(nonce) print(encrypted_text) print(len(encrypted_text)) if __name__ == &amp;#39;__main__&amp;#39;: main() Source code analysis Create a compress() function that takes care of compressing text using zlib.</description>
-    </item>
-    <item>
-      <title>basic-mod1</title>
-      <link>https://abund4nt.github.io/writeups/picoctf/basic-mod-1/</link>
-      <pubDate>Wed, 10 Jul 2024 00:00:00 +0000</pubDate><author>email@example.com (abund4nt)</author>
-      <guid>https://abund4nt.github.io/writeups/picoctf/basic-mod-1/</guid>
-      <description>The challenge has the following description.&#xA;We found this weird message being passed around on the servers, we think we have a working decryption scheme. Download the message here. Take each number mod 37 and map it to the following character set: 0-25 is the alphabet (uppercase), 26-35 are the decimal digits, and 36 is an underscore. Wrap your decrypted message in the picoCTF flag format (i.e. picoCTF{decrypted_message}) In summary we are told that each letter of the message is encrypted module 27, and the dictionary has the capital letters from A to B, has the numbers from 0 to 9 and an underscore (_).</description>
-    </item>
-    <item>
-      <title>basic-mod2</title>
-      <link>https://abund4nt.github.io/writeups/picoctf/basic-mod2/</link>
-      <pubDate>Wed, 10 Jul 2024 00:00:00 +0000</pubDate><author>email@example.com (abund4nt)</author>
-      <guid>https://abund4nt.github.io/writeups/picoctf/basic-mod2/</guid>
-      <description>The challenge has the following description.&#xA;A new modular challenge! Download the message here. Take each number mod 41 and find the modular inverse for the result. Then map to the following character set: 1-26 are the alphabet, 27-36 are the decimal digits, and 37 is an underscore. Wrap your decrypted message in the picoCTF flag format (i.e. picoCTF{decrypted_message}) We are told that to solve the challenge we have to take each number modulo 41 and calculate the modular inverse to get the flag.</description>
-    </item>
-    <item>
-      <title>rsa-pop-quiz</title>
-      <link>https://abund4nt.github.io/writeups/picoctf/rsa-pop-quiz/</link>
-      <pubDate>Wed, 10 Jul 2024 00:00:00 +0000</pubDate><author>email@example.com (abund4nt)</author>
-      <guid>https://abund4nt.github.io/writeups/picoctf/rsa-pop-quiz/</guid>
-      <description>The following description is provided in the challenge.&#xA;Description Class, take your seats! It&amp;#39;s PRIME-time for a quiz... nc jupiter.challenges.picoctf.org 1981 A sentence inviting us to take a seat, supposedly they have a test prepared for us. We will use nc to connect to the remote server.&#xA;Good morning class! It&amp;#39;s me Ms. Adleman-Shamir-Rivest Today we will be taking a pop quiz, so I hope you studied. Cramming just will not do!</description>
-    </item>
   </channel>
 </rss>

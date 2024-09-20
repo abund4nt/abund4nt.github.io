@@ -8,8 +8,15 @@
     <language>en-us</language>
     <managingEditor>email@example.com (abund4nt)</managingEditor>
     <webMaster>email@example.com (abund4nt)</webMaster>
-    <lastBuildDate>Sat, 14 Sep 2024 21:33:22 -0300</lastBuildDate>
+    <lastBuildDate>Wed, 18 Sep 2024 01:27:13 -0300</lastBuildDate>
     <atom:link href="https://abund4nt.github.io/tags/pwn/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>two-sum</title>
+      <link>https://abund4nt.github.io/writeups/picoctf/pwn/two-sum/</link>
+      <pubDate>Wed, 18 Sep 2024 01:27:13 -0300</pubDate><author>email@example.com (abund4nt)</author>
+      <guid>https://abund4nt.github.io/writeups/picoctf/pwn/two-sum/</guid>
+      <description>We are provided with a remote installation to connect to and the source code. When connecting we are asked for two numbers that satisfy the operation $n1 &amp;gt; n1 + n2 \text{ or } n2 &amp;gt; n1 + n2$. When entering random numbers it shows No overflow.&#xA;$ nc saturn.picoctf.net 52830 n1 &amp;gt; n1 + n2 OR n2 &amp;gt; n1 + n2 What two positive numbers can make this possible: 1 1 You entered 1 and 1 No overflow Source code analysis #include &amp;lt;stdio.</description>
+    </item>
     <item>
       <title>You know 0xDiablos</title>
       <link>https://abund4nt.github.io/writeups/hackthebox/youknow0xdiablos/</link>
