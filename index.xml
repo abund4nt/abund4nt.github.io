@@ -8,8 +8,15 @@
     <language>en-us</language>
     <managingEditor>email@example.com (abund4nt)</managingEditor>
     <webMaster>email@example.com (abund4nt)</webMaster>
-    <lastBuildDate>Wed, 18 Sep 2024 01:27:13 -0300</lastBuildDate>
+    <lastBuildDate>Fri, 20 Sep 2024 20:44:40 -0300</lastBuildDate>
     <atom:link href="https://abund4nt.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Bit-O-Asm-1/2/3/4</title>
+      <link>https://abund4nt.github.io/writeups/picoctf/rev/bit-o-asm1234/</link>
+      <pubDate>Fri, 20 Sep 2024 20:44:40 -0300</pubDate><author>email@example.com (abund4nt)</author>
+      <guid>https://abund4nt.github.io/writeups/picoctf/rev/bit-o-asm1234/</guid>
+      <description>Bit-O-Asm-1 We are provided with a disassembler-dump0_a.txt file.&#xA;&amp;lt;+0&amp;gt;: endbr64 &amp;lt;+4&amp;gt;: push rbp &amp;lt;+5&amp;gt;: mov rbp,rsp &amp;lt;+8&amp;gt;: mov DWORD PTR [rbp-0x4],edi &amp;lt;+11&amp;gt;: mov QWORD PTR [rbp-0x10],rsi &amp;lt;+15&amp;gt;: mov eax,0x30 &amp;lt;+20&amp;gt;: pop rbp &amp;lt;+21&amp;gt;: ret Also the description helps us to better understand how to solve the challenge. (For all the following challenges it is the same, so I won&amp;rsquo;t put it again).&#xA;Can you figure out what is in the eax register?</description>
+    </item>
     <item>
       <title>two-sum</title>
       <link>https://abund4nt.github.io/writeups/picoctf/pwn/two-sum/</link>
@@ -19,9 +26,9 @@
     </item>
     <item>
       <title>You know 0xDiablos</title>
-      <link>https://abund4nt.github.io/writeups/hackthebox/youknow0xdiablos/</link>
+      <link>https://abund4nt.github.io/writeups/hackthebox/pwn/youknow0xdiablos/</link>
       <pubDate>Sat, 14 Sep 2024 21:33:22 -0300</pubDate><author>email@example.com (abund4nt)</author>
-      <guid>https://abund4nt.github.io/writeups/hackthebox/youknow0xdiablos/</guid>
+      <guid>https://abund4nt.github.io/writeups/hackthebox/pwn/youknow0xdiablos/</guid>
       <description>We are provided with a vuln binary and a remote instance to connect to, the binary has the following protections.&#xA;Arch: i386-32-little RELRO: Partial RELRO Stack: No canary found NX: NX unknown - GNU_STACK missing PIE: No PIE (0x8048000) Stack: Executable RWX: Has RWX segments When it is executed it asks for an input and this is reflected when pressing enter.&#xA;$ ./vuln You know who are 0xDiablos: test test Reverse engineering If we use cutter we will be able to obtain the code of the main function.</description>
     </item>
     <item>

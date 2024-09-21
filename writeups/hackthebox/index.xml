@@ -8,14 +8,7 @@
     <language>en-us</language>
     <managingEditor>email@example.com (abund4nt)</managingEditor>
     <webMaster>email@example.com (abund4nt)</webMaster>
-    <lastBuildDate>Sat, 14 Sep 2024 21:33:22 -0300</lastBuildDate>
+    <lastBuildDate></lastBuildDate>
     <atom:link href="https://abund4nt.github.io/writeups/hackthebox/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>You know 0xDiablos</title>
-      <link>https://abund4nt.github.io/writeups/hackthebox/youknow0xdiablos/</link>
-      <pubDate>Sat, 14 Sep 2024 21:33:22 -0300</pubDate><author>email@example.com (abund4nt)</author>
-      <guid>https://abund4nt.github.io/writeups/hackthebox/youknow0xdiablos/</guid>
-      <description>We are provided with a vuln binary and a remote instance to connect to, the binary has the following protections.&#xA;Arch: i386-32-little RELRO: Partial RELRO Stack: No canary found NX: NX unknown - GNU_STACK missing PIE: No PIE (0x8048000) Stack: Executable RWX: Has RWX segments When it is executed it asks for an input and this is reflected when pressing enter.&#xA;$ ./vuln You know who are 0xDiablos: test test Reverse engineering If we use cutter we will be able to obtain the code of the main function.</description>
-    </item>
   </channel>
 </rss>
