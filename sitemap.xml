@@ -2,25 +2,25 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://abund4nt.github.io/writeups/picoctf/rev/bit-o-asm1234/</loc>
-    <lastmod>2024-09-20T20:44:40-03:00</lastmod>
-  </url><url>
     <loc>https://abund4nt.github.io/</loc>
-    <lastmod>2024-09-20T20:44:40-03:00</lastmod>
+    <lastmod>2024-09-22T18:32:40-03:00</lastmod>
   </url><url>
     <loc>https://abund4nt.github.io/writeups/picoctf/</loc>
+    <lastmod>2024-09-22T18:32:40-03:00</lastmod>
+  </url><url>
+    <loc>https://abund4nt.github.io/writeups/picoctf/rev/</loc>
+    <lastmod>2024-09-22T18:32:40-03:00</lastmod>
+  </url><url>
+    <loc>https://abund4nt.github.io/writeups/</loc>
+    <lastmod>2024-09-22T18:32:40-03:00</lastmod>
+  </url><url>
+    <loc>https://abund4nt.github.io/writeups/picoctf/rev/bit-o-asm1234/</loc>
     <lastmod>2024-09-20T20:44:40-03:00</lastmod>
   </url><url>
     <loc>https://abund4nt.github.io/tags/rev/</loc>
     <lastmod>2024-09-20T20:44:40-03:00</lastmod>
   </url><url>
-    <loc>https://abund4nt.github.io/writeups/picoctf/rev/</loc>
-    <lastmod>2024-09-20T20:44:40-03:00</lastmod>
-  </url><url>
     <loc>https://abund4nt.github.io/tags/</loc>
-    <lastmod>2024-09-20T20:44:40-03:00</lastmod>
-  </url><url>
-    <loc>https://abund4nt.github.io/writeups/</loc>
     <lastmod>2024-09-20T20:44:40-03:00</lastmod>
   </url><url>
     <loc>https://abund4nt.github.io/tags/pwn/</loc>
@@ -41,20 +41,20 @@
     <loc>https://abund4nt.github.io/writeups/hackthebox/pwn/youknow0xdiablos/</loc>
     <lastmod>2024-09-14T21:33:22-03:00</lastmod>
   </url><url>
-    <loc>https://abund4nt.github.io/writeups/tryhackme/trypwnme-one/tryexecme/</loc>
-    <lastmod>2024-09-11T23:46:04-03:00</lastmod>
-  </url><url>
     <loc>https://abund4nt.github.io/writeups/tryhackme/</loc>
-    <lastmod>2024-09-11T23:46:04-03:00</lastmod>
+    <lastmod>2024-09-13T23:46:04-03:00</lastmod>
   </url><url>
     <loc>https://abund4nt.github.io/writeups/tryhackme/trypwnme-one/tryoverflowme1/</loc>
-    <lastmod>2024-09-11T23:46:04-03:00</lastmod>
-  </url><url>
-    <loc>https://abund4nt.github.io/writeups/tryhackme/trypwnme-one/tryoverflowme2/</loc>
-    <lastmod>2024-09-11T23:46:04-03:00</lastmod>
+    <lastmod>2024-09-13T23:46:04-03:00</lastmod>
   </url><url>
     <loc>https://abund4nt.github.io/writeups/tryhackme/trypwnme-one/</loc>
-    <lastmod>2024-09-11T23:46:04-03:00</lastmod>
+    <lastmod>2024-09-13T23:46:04-03:00</lastmod>
+  </url><url>
+    <loc>https://abund4nt.github.io/writeups/tryhackme/trypwnme-one/tryoverflowme2/</loc>
+    <lastmod>2024-09-12T23:46:04-05:00</lastmod>
+  </url><url>
+    <loc>https://abund4nt.github.io/writeups/tryhackme/trypwnme-one/tryexecme/</loc>
+    <lastmod>2024-09-11T23:46:04-06:00</lastmod>
   </url><url>
     <loc>https://abund4nt.github.io/posts/mobile-setup/</loc>
     <lastmod>2024-08-30T15:13:22-04:00</lastmod>

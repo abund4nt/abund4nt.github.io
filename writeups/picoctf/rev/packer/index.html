@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <title>
+Packer | abund4nt
+</title>
+
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="picoCTF 2024, x86_64 Binary, UPX decompress.">
+
+<meta name="generator" content="Hugo 0.123.7">
+
+
+<link rel="canonical" href="http://localhost:1313/writeups/picoctf/rev/packer/" >
+
+
+
+
+<link href="/css/style.min.e22e1ef80ea19d08625444757176e07586bc5f332072f7ec355fae587dea40c9.css" rel="stylesheet">
+
+
+
+
+</head>
+
+<body>
+
+    <div class="flexWrapper">
+        <header class="headerWrapper">
+    <div class="header">
+        <div>
+            <a class="terminal" href="http://localhost:1313/">
+                <span>abund4nt@tryharder ~ $</span>
+            </a>
+        </div>
+        <input class="side-menu" type="checkbox" id="side-menu">
+        <label class="hamb" for="side-menu"><span class="hamb-line"></span></label>
+        <nav class="headerLinks">
+            <ul>
+                
+                <li>
+                    <a href="http://localhost:1313/about" title="" >
+                        ~/about</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:1313/posts" title="" >
+                        ~/posts</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:1313/writeups" title="" >
+                        ~/writeups</a>
+                </li>
+                
+            </ul>
+        </nav>
+    </div>
+</header>
+
+
+        <div class="content">
+            <main class="main">
+                
+<div class="postWrapper">
+    <h1>Packer</h1>
+    
+    	<p>picoCTF 2024, x86_64 Binary, UPX decompress.</p>
+    
+    
+    <section class="postMetadata">
+        <dl>
+            
+                
+<dt>tags</dt>
+<dd><span></span>
+    <a href="/tags/rev/">#Rev</a></dd>
+            
+            
+            
+            
+                <dt>reading time</dt>
+                <dd>3 minutes</dd>
+            
+        </dl>
+    </section>
+    
+    <div>
+        <p>We are provided with an <code>out</code> binary that when executed asks for a password, if we enter random strings it shows <code>Access denied</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ ./out 
+</span></span><span style="display:flex;"><span>Enter the password to unlock this file: test
+</span></span><span style="display:flex;"><span>You entered: test
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Access denied
+</span></span></code></pre></div><p>By using <code>strings</code> to search for strings, we can see that the binary was compressed using UPX.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ strings out
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>$Info: This file is packed with the UPX executable packer http://upx.sf.net $                  
+</span></span><span style="display:flex;"><span>$Id: UPX 3.95 Copyright <span style="color:#f92672">(</span>C<span style="color:#f92672">)</span> 1996-2018 the UPX Team. All Rights Reserved. $
+</span></span><span style="display:flex;"><span>...
+</span></span></code></pre></div><p>UPX is a tool used to reduce the size of executables using compression algorithms, it compresses the original executable and stores it in a format that can be decompressed at runtime. So if it is packed with <code>upx</code> we will not be able to reverse engineer it using Ghidra, we must use <code>upx -d</code> to unpack the binary.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ upx -d out 
+</span></span><span style="display:flex;"><span>                       Ultimate Packer <span style="color:#66d9ef">for</span> eXecutables
+</span></span><span style="display:flex;"><span>                          Copyright <span style="color:#f92672">(</span>C<span style="color:#f92672">)</span> <span style="color:#ae81ff">1996</span> - <span style="color:#ae81ff">2024</span>
+</span></span><span style="display:flex;"><span>UPX 4.2.2       Markus Oberhumer, Laszlo Molnar &amp; John Reiser    Jan 3rd <span style="color:#ae81ff">2024</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        File size         Ratio      Format      Name
+</span></span><span style="display:flex;"><span>   --------------------   ------   -----------   -----------
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>WARNING<span style="color:#f92672">]</span> bad b_info at 0x4b718
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>WARNING<span style="color:#f92672">]</span> ... recovery at 0x4b714
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">877724</span> &lt;-    <span style="color:#ae81ff">336520</span>   38.34%   linux/amd64   out
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Unpacked <span style="color:#ae81ff">1</span> file.
+</span></span></code></pre></div><p>Once unzipped, if we open it in Ghidra we will see the following function <code>main</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>undefined8 <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">void</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">size_t</span> sVar1;
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>pcVar2;
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> iVar3;
+</span></span><span style="display:flex;"><span> undefined <span style="color:#f92672">*</span>puVar4;
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">long</span> in_FS_OFFSET;
+</span></span><span style="display:flex;"><span> undefined auStack_a8 [<span style="color:#ae81ff">8</span>];
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">size_t</span> local_a0;
+</span></span><span style="display:flex;"><span> undefined8 local_98;
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>local_90;
+</span></span><span style="display:flex;"><span> undefined8 local_88;
+</span></span><span style="display:flex;"><span> undefined8 local_80;
+</span></span><span style="display:flex;"><span> undefined8 local_78;
+</span></span><span style="display:flex;"><span> undefined8 local_70;
+</span></span><span style="display:flex;"><span> undefined8 local_68;
+</span></span><span style="display:flex;"><span> undefined8 local_60;
+</span></span><span style="display:flex;"><span> undefined8 local_58;
+</span></span><span style="display:flex;"><span> undefined8 local_50;
+</span></span><span style="display:flex;"><span> undefined8 local_48;
+</span></span><span style="display:flex;"><span> undefined8 local_40;
+</span></span><span style="display:flex;"><span> undefined8 local_38;
+</span></span><span style="display:flex;"><span> undefined8 local_30;
+</span></span><span style="display:flex;"><span> undefined4 local_28;
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">long</span> local_20;
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span> local_20 <span style="color:#f92672">=</span> <span style="color:#f92672">*</span>(<span style="color:#66d9ef">long</span> <span style="color:#f92672">*</span>)(in_FS_OFFSET <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x28</span>);
+</span></span><span style="display:flex;"><span> local_a0 <span style="color:#f92672">=</span> <span style="color:#ae81ff">100</span>;
+</span></span><span style="display:flex;"><span> local_98 <span style="color:#f92672">=</span> <span style="color:#ae81ff">99</span>;
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">for</span> (puVar4 <span style="color:#f92672">=</span> auStack_a8; puVar4 <span style="color:#f92672">!=</span> auStack_a8; puVar4 <span style="color:#f92672">=</span> puVar4 <span style="color:#f92672">+</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">0x1000</span>) {
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">*</span>(undefined8 <span style="color:#f92672">*</span>)(puVar4 <span style="color:#f92672">+</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">8</span>) <span style="color:#f92672">=</span> <span style="color:#f92672">*</span>(undefined8 <span style="color:#f92672">*</span>)(puVar4 <span style="color:#f92672">+</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">8</span>);
+</span></span><span style="display:flex;"><span> }
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">*</span>(undefined8 <span style="color:#f92672">*</span>)(puVar4 <span style="color:#f92672">+</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">8</span>) <span style="color:#f92672">=</span> <span style="color:#f92672">*</span>(undefined8 <span style="color:#f92672">*</span>)(puVar4 <span style="color:#f92672">+</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">8</span>);
+</span></span><span style="display:flex;"><span> local_88 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x6636333639363037</span>;
+</span></span><span style="display:flex;"><span> local_80 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x6237363434353334</span>;
+</span></span><span style="display:flex;"><span> local_78 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x6635383539333535</span>;
+</span></span><span style="display:flex;"><span> local_70 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x3433303565363535</span>;
+</span></span><span style="display:flex;"><span> local_68 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x6534313362363336</span>;
+</span></span><span style="display:flex;"><span> local_60 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x3133323466353633</span>;
+</span></span><span style="display:flex;"><span> local_58 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x3936323534336536</span>;
+</span></span><span style="display:flex;"><span> local_50 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x3536663533353333</span>;
+</span></span><span style="display:flex;"><span> local_48 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x3336303339333133</span>;
+</span></span><span style="display:flex;"><span> local_40 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x6437333336363333</span>;
+</span></span><span style="display:flex;"><span> local_38 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span> local_30 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span> local_28 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span> local_90 <span style="color:#f92672">=</span> puVar4 <span style="color:#f92672">+</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">0x70</span>;
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">*</span>(undefined8 <span style="color:#f92672">*</span>)(puVar4 <span style="color:#f92672">+</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">0x78</span>) <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x401eee</span>;
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;Enter the password to unlock this file: &#34;</span>);
+</span></span><span style="display:flex;"><span> pcVar2 <span style="color:#f92672">=</span> local_90;
+</span></span><span style="display:flex;"><span> sVar1 <span style="color:#f92672">=</span> local_a0;
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">*</span>(undefined8 <span style="color:#f92672">*</span>)(puVar4 <span style="color:#f92672">+</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">0x78</span>) <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x401f0f</span>;
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">fgets</span>(pcVar2,(<span style="color:#66d9ef">int</span>)sVar1,(FILE <span style="color:#f92672">*</span>)stdin);
+</span></span><span style="display:flex;"><span> pcVar2 <span style="color:#f92672">=</span> local_90;
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">*</span>(undefined8 <span style="color:#f92672">*</span>)(puVar4 <span style="color:#f92672">+</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">0x78</span>) <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x401f2a</span>;
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;You entered: %s</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,pcVar2);
+</span></span><span style="display:flex;"><span> pcVar2 <span style="color:#f92672">=</span> local_90;
+</span></span><span style="display:flex;"><span> sVar1 <span style="color:#f92672">=</span> local_a0;
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">*</span>(undefined8 <span style="color:#f92672">*</span>)(puVar4 <span style="color:#f92672">+</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">0x78</span>) <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x401f47</span>;
+</span></span><span style="display:flex;"><span> iVar3 <span style="color:#f92672">=</span> <span style="color:#a6e22e">strncmp</span>(pcVar2,(<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>)<span style="color:#f92672">&amp;</span>local_88,sVar1);
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">if</span> (iVar3 <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>) {
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">*</span>(undefined8 <span style="color:#f92672">*</span>)(puVar4 <span style="color:#f92672">+</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">0x78</span>) <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x401f57</span>;
+</span></span><span style="display:flex;"><span>   <span style="color:#a6e22e">puts</span>(
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">&#34;Password correct, please see flag: 7069636f4354467b5539585f556e5034636b314e365f42316e345269 33535f65313930633366337d&#34;</span>
+</span></span><span style="display:flex;"><span>      );
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">*</span>(undefined8 <span style="color:#f92672">*</span>)(puVar4 <span style="color:#f92672">+</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">0x78</span>) <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x401f63</span>;
+</span></span><span style="display:flex;"><span>   <span style="color:#a6e22e">puts</span>((<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>)<span style="color:#f92672">&amp;</span>local_88);
+</span></span><span style="display:flex;"><span> }
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">*</span>(undefined8 <span style="color:#f92672">*</span>)(puVar4 <span style="color:#f92672">+</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">0x78</span>) <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x401f71</span>;
+</span></span><span style="display:flex;"><span>   <span style="color:#a6e22e">puts</span>(<span style="color:#e6db74">&#34;Access denied&#34;</span>);
+</span></span><span style="display:flex;"><span> }
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">if</span> (local_20 <span style="color:#f92672">==</span> <span style="color:#f92672">*</span>(<span style="color:#66d9ef">long</span> <span style="color:#f92672">*</span>)(in_FS_OFFSET <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x28</span>)) {
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span> }
+</span></span><span style="display:flex;"><span>                 <span style="color:#75715e">/* WARNING: Subroutine does not return */</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">__stack_chk_fail</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The flag is shown in the conditional if.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (iVar3 <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>) {
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">*</span>(undefined8 <span style="color:#f92672">*</span>)(puVar4 <span style="color:#f92672">+</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">0x78</span>) <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x401f57</span>;
+</span></span><span style="display:flex;"><span>   <span style="color:#a6e22e">puts</span>(
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">&#34;Password correct, please see flag: 7069636f4354467b5539585f556e5034636b314e365f42316e345269 33535f65313930633366337d&#34;</span>
+</span></span><span style="display:flex;"><span>      );
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">*</span>(undefined8 <span style="color:#f92672">*</span>)(puVar4 <span style="color:#f92672">+</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">0x78</span>) <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x401f63</span>;
+</span></span><span style="display:flex;"><span>   <span style="color:#a6e22e">puts</span>((<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>)<span style="color:#f92672">&amp;</span>local_88);
+</span></span><span style="display:flex;"><span> }
+</span></span></code></pre></div><p>Using Python we can obtain it in plain text.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>python3 -q
+</span></span><span style="display:flex;"><span>&gt;&gt;&gt; bytes.fromhex<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;7069636f4354467b5539585f556e5034636b314e365f42316e34526933535f65313930633366337d&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>b<span style="color:#e6db74">&#39;picoCTF{U9X_UnP4ck1N6_B1n4Ri3S_e190c3f3}&#39;</span>
+</span></span></code></pre></div><h2 id="flag">Flag</h2>
+<p>The flag is <code>picoCTF{U9X_UnP4ck1N6_B1n4Ri3S_e190c3f3}</code>.</p>
+
+    </div>
+</div>
+
+            </main>
+        </div>
+
+
+        <footer class="footer">
+    
+    
+</footer>
+    </div>
+
+    
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<script>
+  MathJax = {
+    tex: {
+      displayMath: [['$$', '$$']],  
+      inlineMath: [['$', '$']]                  
+    }
+  };
+</script>
+    
+
+</body>
+
+</html>
