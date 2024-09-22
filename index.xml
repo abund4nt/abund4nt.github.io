@@ -8,8 +8,15 @@
     <language>en-us</language>
     <managingEditor>email@example.com (abund4nt)</managingEditor>
     <webMaster>email@example.com (abund4nt)</webMaster>
-    <lastBuildDate>Fri, 20 Sep 2024 20:44:40 -0300</lastBuildDate>
+    <lastBuildDate>Sun, 22 Sep 2024 18:32:40 -0300</lastBuildDate>
     <atom:link href="https://abund4nt.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>packer</title>
+      <link>https://abund4nt.github.io/writeups/picoctf/rev/packer/</link>
+      <pubDate>Sun, 22 Sep 2024 18:32:40 -0300</pubDate><author>email@example.com (abund4nt)</author>
+      <guid>https://abund4nt.github.io/writeups/picoctf/rev/packer/</guid>
+      <description>We are provided with an out binary that when executed asks for a password, if we enter random strings it shows Access denied.&#xA;$ ./out Enter the password to unlock this file: test You entered: test Access denied By using strings to search for strings, we can see that the binary was compressed using UPX.&#xA;$ strings out ... $Info: This file is packed with the UPX executable packer http://upx.sf.net $ $Id: UPX 3.</description>
+    </item>
     <item>
       <title>Bit-O-Asm-1/2/3/4</title>
       <link>https://abund4nt.github.io/writeups/picoctf/rev/bit-o-asm1234/</link>
