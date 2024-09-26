@@ -31,5 +31,12 @@
       <guid>https://abund4nt.github.io/writeups/tryhackme/trypwnme-one/tryexecme/</guid>
       <description>We are given a binary, its source code and a remote instance to connect to.&#xA;int main(){ setup(); banner(); char *buf[128]; puts(&amp;#34;\nGive me your shell, and I will execute it: &amp;#34;); read(0,buf,sizeof(buf)); puts(&amp;#34;\nExecuting Spell...\n&amp;#34;); ( ( void (*) () ) buf) (); } The binary has the following protections.&#xA;Arch: amd64-64-little RELRO: Partial RELRO Stack: No canary found NX: NX unknown - GNU_STACK missing PIE: No PIE (0x400000) Stack: Executable RWX: Has RWX segments Source code analysis In the main function it declares a 128 byte buffer and reads our input using read.</description>
     </item>
+    <item>
+      <title>TryRetMe</title>
+      <link>https://abund4nt.github.io/writeups/tryhackme/trypwnme-one/tryretme/</link>
+      <pubDate>Wed, 11 Sep 2024 23:46:04 -0600</pubDate><author>email@example.com (abund4nt)</author>
+      <guid>https://abund4nt.github.io/writeups/tryhackme/trypwnme-one/tryretme/</guid>
+      <description>We are given a binary, its source code and a remote instance to connect to.&#xA;int win(){ system(&amp;#34;/bin/sh&amp;#34;); } void vuln(){ char *buf[0x20]; puts(&amp;#34;Return to where? : &amp;#34;); read(0, buf, 0x200); puts(&amp;#34;\nok, let&amp;#39;s go!\n&amp;#34;); } int main(){ setup(); vuln(); } The binary has the following protections.&#xA;Arch: amd64-64-little RELRO: Partial RELRO Stack: No canary found NX: NX enabled PIE: No PIE (0x400000) Source code analysis A buffer of 32 pointers is defined in the vuln function, but it is allowed to read up to 512 bytes.</description>
+    </item>
   </channel>
 </rss>

