@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>abund4nt Blog&#39;s</title>
-    <link>https://examplesite.com/</link>
+    <link>https://abund4nt.github.io/</link>
     <description>Recent content on abund4nt Blog&#39;s</description>
     <image>
       <title>abund4nt Blog&#39;s</title>
-      <url>https://examplesite.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
-      <link>https://examplesite.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+      <url>https://abund4nt.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://abund4nt.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
     </image>
     <generator>Hugo -- 0.135.0</generator>
     <language>en</language>
-    <atom:link href="https://examplesite.com/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://abund4nt.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Pentesting Mobile Setup</title>
-      <link>https://examplesite.com/posts/pentesting-mobile/</link>
+      <link>https://abund4nt.github.io/posts/pentesting-mobile/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://examplesite.com/posts/pentesting-mobile/</guid>
+      <guid>https://abund4nt.github.io/posts/pentesting-mobile/</guid>
       <description>&lt;p&gt;The purpose of this article is to guide in the creation of an environment to perform dynamic audits of mobile applications using Frida. Upon completion, it will demonstrate how to bypass SSL Pinning on Instagram as a practical example. The following tools must be installed.&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;adb&lt;/li&gt;
