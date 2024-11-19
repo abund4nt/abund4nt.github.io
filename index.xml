@@ -13,6 +13,21 @@
     <language>en</language>
     <atom:link href="https://abund4nt.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>Multiples of 3 or 5 - Codewars</title>
+      <link>https://abund4nt.github.io/posts/codewars-multiples-of-3-or-5/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://abund4nt.github.io/posts/codewars-multiples-of-3-or-5/</guid>
+      <description>&lt;p&gt;The description of the kata reads as follows.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;If we list all the natural numbers below 10 that are multiples of 3 or 5, we get 3, 5, 6 and 9. The sum of these multiples is 23.
+
+Finish the solution so that it returns the sum of all the multiples of 3 or 5 below the number passed in.
+
+Additionally, if the number is negative, return 0.
+
+Note: If the number is a multiple of both 3 and 5, only count it once.
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Then starting from the provided natural number, we must follow the following steps to obtain the correct result. First, we list all the natural numbers that are less than the number entered. Then, we identify which of these numbers are multiples of 3 or 5. Finally, we add these multiples to obtain the final result.&lt;/p&gt;</description>
+    </item>
+    <item>
       <title>Pentesting Mobile Setup</title>
       <link>https://abund4nt.github.io/posts/pentesting-mobile/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
