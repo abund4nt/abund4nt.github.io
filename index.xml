@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>abund4nt Blog&#39;s</title>
+    <link>https://examplesite.com/</link>
+    <description>Recent content on abund4nt Blog&#39;s</description>
+    <image>
+      <title>abund4nt Blog&#39;s</title>
+      <url>https://examplesite.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://examplesite.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+    </image>
+    <generator>Hugo -- 0.135.0</generator>
+    <language>en</language>
+    <atom:link href="https://examplesite.com/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Pentesting Mobile Setup</title>
+      <link>https://examplesite.com/posts/pentesting-mobile/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://examplesite.com/posts/pentesting-mobile/</guid>
+      <description>&lt;p&gt;The purpose of this article is to guide in the creation of an environment to perform dynamic audits of mobile applications using Frida. Upon completion, it will demonstrate how to bypass SSL Pinning on Instagram as a practical example. The following tools must be installed.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;adb&lt;/li&gt;
+&lt;li&gt;Genymotion (emulador de Android)&lt;/li&gt;
+&lt;li&gt;Burpsuite (proxy para interceptar trafico)&lt;/li&gt;
+&lt;li&gt;Frida&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;creation-of-the-working-environment&#34;&gt;Creation of the working environment.&lt;/h2&gt;
+&lt;p&gt;We will start by opening Genymotion and adding a new device, in this case we will use the &lt;strong&gt;Google Pixel 3 XL&lt;/strong&gt; and leave the default settings, next next next next and next. Once installed it should look like this.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
