@@ -46,7 +46,15 @@
       
       <guid>https://abund4nt.github.io/posts/rop-emporium-solutions/rop-emporium-solutions/</guid>
       
-      <description>&lt;p&gt;Soon&amp;hellip;&lt;/p&gt;</description>
+      <description>&lt;p&gt;In this post I will be uploading the solution to the challenges of the &lt;a href=&#34;https://ropemporium.com/&#34;&gt;ROP Emporium&lt;/a&gt; platform that I am solving during the time on the &lt;code&gt;x86_64&lt;/code&gt; architecture.&lt;/p&gt;
+&lt;h1 id=&#34;ret2win&#34;&gt;ret2win&lt;/h1&gt;
+&lt;p&gt;We are provided with a 64-bit executable &lt;code&gt;ELF&lt;/code&gt; binary. The binary has the following protections.&lt;/p&gt;
+&lt;pre&gt;    Arch:     amd64-64-little
+    RELRO:    &lt;font color=&#34;#B58900&#34;&gt;Partial RELRO&lt;/font&gt;
+    Stack:    &lt;font color=&#34;#DC322F&#34;&gt;No canary found&lt;/font&gt;
+    NX:       &lt;font color=&#34;#859900&#34;&gt;NX enabled&lt;/font&gt;
+    PIE:      &lt;font color=&#34;#DC322F&#34;&gt;No PIE (0x400000)&lt;/font&gt;&lt;/pre&gt;
+&lt;p&gt;When it is executed it shows a message and allows us to enter an input, when we enter a random string and press enter it displays the word &lt;code&gt;Exiting&lt;/code&gt; and ends the program.&lt;/p&gt;</description>
       
     </item>
     
