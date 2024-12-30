@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>writeups 🖥️ on </title>
+    <link>https://your_domain.com/writeups/</link>
+    <description>Recent content in writeups 🖥️ on </description>
+    <generator>Hugo -- 0.138.0</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 30 Dec 2024 15:35:11 -0300</lastBuildDate>
+    <atom:link href="https://your_domain.com/writeups/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>aplet123 - pwn</title>
+      <link>https://your_domain.com/writeups/aplet123-lactf2024/</link>
+      <pubDate>Mon, 30 Dec 2024 15:35:11 -0300</pubDate>
+      <guid>https://your_domain.com/writeups/aplet123-lactf2024/</guid>
+      <description>pwn challenge of LACTF2024 where we must exfiltrate the canary + ret2win</description>
+    </item>
+    <item>
+      <title>PWN de Pascua Writeups</title>
+      <link>https://your_domain.com/writeups/pwn-de-pascua-writeups/</link>
+      <pubDate>Sat, 21 Dec 2024 22:37:45 +0530</pubDate>
+      <guid>https://your_domain.com/writeups/pwn-de-pascua-writeups/</guid>
+      <description>Writeups of the CTF “Pwn de Pascua” challenges organized by Q4 Hacking Sessions</description>
+    </item>
+  </channel>
+</rss>

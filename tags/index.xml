@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Tags on </title>
+    <link>https://your_domain.com/tags/</link>
+    <description>Recent content in Tags on </description>
+    <generator>Hugo -- 0.138.0</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 30 Dec 2024 15:35:11 -0300</lastBuildDate>
+    <atom:link href="https://your_domain.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Pwn</title>
+      <link>https://your_domain.com/tags/pwn/</link>
+      <pubDate>Mon, 30 Dec 2024 15:35:11 -0300</pubDate>
+      <guid>https://your_domain.com/tags/pwn/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Ret2win</title>
+      <link>https://your_domain.com/tags/ret2win/</link>
+      <pubDate>Mon, 30 Dec 2024 15:35:11 -0300</pubDate>
+      <guid>https://your_domain.com/tags/ret2win/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Stack Canary</title>
+      <link>https://your_domain.com/tags/stack-canary/</link>
+      <pubDate>Mon, 30 Dec 2024 15:35:11 -0300</pubDate>
+      <guid>https://your_domain.com/tags/stack-canary/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Crypto</title>
+      <link>https://your_domain.com/tags/crypto/</link>
+      <pubDate>Sat, 21 Dec 2024 22:37:45 +0530</pubDate>
+      <guid>https://your_domain.com/tags/crypto/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Forensics</title>
+      <link>https://your_domain.com/tags/forensics/</link>
+      <pubDate>Sat, 21 Dec 2024 22:37:45 +0530</pubDate>
+      <guid>https://your_domain.com/tags/forensics/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Jail</title>
+      <link>https://your_domain.com/tags/jail/</link>
+      <pubDate>Sat, 21 Dec 2024 22:37:45 +0530</pubDate>
+      <guid>https://your_domain.com/tags/jail/</guid>
+      <description></description>
+    </item>
+  </channel>
+</rss>
