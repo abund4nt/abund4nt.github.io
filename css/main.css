@@ -104,6 +104,7 @@ pre {
   padding: 0.5em;
   background: black;
   border-radius: 5.5px;
+  overflow: auto;
 }
 
 pre code {

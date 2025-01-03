@@ -6,8 +6,15 @@
     <description>Recent content in writeups 🖥️ on </description>
     <generator>Hugo -- 0.138.0</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 30 Dec 2024 15:35:11 -0300</lastBuildDate>
+    <lastBuildDate>Thu, 02 Jan 2025 18:35:34 -0300</lastBuildDate>
     <atom:link href="https://your_domain.com/writeups/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>PWN101 Room - Tryhackme</title>
+      <link>https://your_domain.com/writeups/pwn101-tryhackme/</link>
+      <pubDate>Thu, 02 Jan 2025 18:35:34 -0300</pubDate>
+      <guid>https://your_domain.com/writeups/pwn101-tryhackme/</guid>
+      <description>Writeups of TryHackMe PWN101 Room challenges</description>
+    </item>
     <item>
       <title>aplet123 - pwn</title>
       <link>https://your_domain.com/writeups/aplet123-lactf2024/</link>
