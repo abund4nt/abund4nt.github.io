@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>ROP on </title>
+    <link>http://localhost:1313/tags/rop/</link>
+    <description>Recent content in ROP on </description>
+    <generator>Hugo -- 0.138.0</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 10 Jan 2025 17:10:02 -0300</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/rop/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Rop Emporium Challenges</title>
+      <link>http://localhost:1313/writeups/rop-emporium-challenges/</link>
+      <pubDate>Fri, 10 Jan 2025 17:10:02 -0300</pubDate>
+      <guid>http://localhost:1313/writeups/rop-emporium-challenges/</guid>
+      <description>test</description>
+    </item>
+  </channel>
+</rss>

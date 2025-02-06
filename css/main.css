@@ -5,6 +5,10 @@ html {
   scroll-behavior:smooth
 }
 
+p {
+  text-align: justify;
+}
+
 body {
   font-family: var(--ff);
   background: var(--secondary-color);

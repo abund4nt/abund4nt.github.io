@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://your_domain.com/tags/pwn/</loc>
+    <lastmod>2025-02-03T14:40:35-03:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://your_domain.com/tags/</loc>
+    <lastmod>2025-02-03T14:40:35-03:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://your_domain.com/writeups/trypwnmeone-tryhackme/</loc>
+    <lastmod>2025-02-03T14:40:35-03:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://your_domain.com/writeups/pwn101-tryhackme/</loc>
     <lastmod>2025-01-02T18:35:34-03:00</lastmod>
     <changefreq>daily</changefreq>
@@ -13,12 +31,6 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://your_domain.com/tags/pwn/</loc>
-    <lastmod>2024-12-30T15:35:11-03:00</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
     <loc>https://your_domain.com/tags/ret2win/</loc>
     <lastmod>2024-12-30T15:35:11-03:00</lastmod>
     <changefreq>daily</changefreq>
@@ -26,12 +38,6 @@
   </url>
   <url>
     <loc>https://your_domain.com/tags/stack-canary/</loc>
-    <lastmod>2024-12-30T15:35:11-03:00</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://your_domain.com/tags/</loc>
     <lastmod>2024-12-30T15:35:11-03:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>

@@ -6,8 +6,15 @@
     <description>Recent content on </description>
     <generator>Hugo -- 0.138.0</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 02 Jan 2025 18:35:34 -0300</lastBuildDate>
+    <lastBuildDate>Mon, 03 Feb 2025 14:40:35 -0300</lastBuildDate>
     <atom:link href="https://your_domain.com/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>TryPwnMe One - TryHackMe</title>
+      <link>https://your_domain.com/writeups/trypwnmeone-tryhackme/</link>
+      <pubDate>Mon, 03 Feb 2025 14:40:35 -0300</pubDate>
+      <guid>https://your_domain.com/writeups/trypwnmeone-tryhackme/</guid>
+      <description>Binary exploitation challenge room</description>
+    </item>
     <item>
       <title>PWN101 Room - Tryhackme</title>
       <link>https://your_domain.com/writeups/pwn101-tryhackme/</link>
