@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Stack Canary on </title>
-    <link>https://your_domain.com/tags/stack-canary/</link>
+    <link>http://localhost:1313/tags/stack-canary/</link>
     <description>Recent content in Stack Canary on </description>
     <generator>Hugo -- 0.138.0</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 30 Dec 2024 15:35:11 -0300</lastBuildDate>
-    <atom:link href="https://your_domain.com/tags/stack-canary/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/stack-canary/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>aplet123 - pwn</title>
-      <link>https://your_domain.com/writeups/aplet123-lactf2024/</link>
+      <link>http://localhost:1313/writeups/aplet123-lactf2024/</link>
       <pubDate>Mon, 30 Dec 2024 15:35:11 -0300</pubDate>
-      <guid>https://your_domain.com/writeups/aplet123-lactf2024/</guid>
+      <guid>http://localhost:1313/writeups/aplet123-lactf2024/</guid>
       <description>pwn challenge of LACTF2024 where we must exfiltrate the canary + ret2win</description>
     </item>
   </channel>

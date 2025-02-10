@@ -13,14 +13,7 @@
       <link>https://your_domain.com/writeups/trypwnmeone-tryhackme/</link>
       <pubDate>Mon, 03 Feb 2025 14:40:35 -0300</pubDate>
       <guid>https://your_domain.com/writeups/trypwnmeone-tryhackme/</guid>
-      <description>Binary exploitation challenge room</description>
-    </item>
-    <item>
-      <title>aplet123 - pwn</title>
-      <link>https://your_domain.com/writeups/aplet123-lactf2024/</link>
-      <pubDate>Mon, 30 Dec 2024 15:35:11 -0300</pubDate>
-      <guid>https://your_domain.com/writeups/aplet123-lactf2024/</guid>
-      <description>pwn challenge of LACTF2024 where we must exfiltrate the canary + ret2win</description>
+      <description>Room with binary exploitation challenges, 64-bit.</description>
     </item>
     <item>
       <title>PWN de Pascua Writeups</title>

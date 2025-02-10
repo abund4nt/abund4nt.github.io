@@ -6,28 +6,21 @@
     <description>Recent content in writeups 🖥️ on </description>
     <generator>Hugo -- 0.138.0</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 03 Feb 2025 14:40:35 -0300</lastBuildDate>
+    <lastBuildDate>Fri, 07 Feb 2025 19:36:35 -0300</lastBuildDate>
     <atom:link href="https://your_domain.com/writeups/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>HTB Console - HackTheBox</title>
+      <link>https://your_domain.com/writeups/htb-console-htb/</link>
+      <pubDate>Fri, 07 Feb 2025 19:36:35 -0300</pubDate>
+      <guid>https://your_domain.com/writeups/htb-console-htb/</guid>
+      <description>64-bit binary. Buffer Overflow. ret2libc.</description>
+    </item>
     <item>
       <title>TryPwnMe One - TryHackMe</title>
       <link>https://your_domain.com/writeups/trypwnmeone-tryhackme/</link>
       <pubDate>Mon, 03 Feb 2025 14:40:35 -0300</pubDate>
       <guid>https://your_domain.com/writeups/trypwnmeone-tryhackme/</guid>
-      <description>Binary exploitation challenge room</description>
-    </item>
-    <item>
-      <title>PWN101 Room - Tryhackme</title>
-      <link>https://your_domain.com/writeups/pwn101-tryhackme/</link>
-      <pubDate>Thu, 02 Jan 2025 18:35:34 -0300</pubDate>
-      <guid>https://your_domain.com/writeups/pwn101-tryhackme/</guid>
-      <description>Writeups of TryHackMe PWN101 Room challenges</description>
-    </item>
-    <item>
-      <title>aplet123 - pwn</title>
-      <link>https://your_domain.com/writeups/aplet123-lactf2024/</link>
-      <pubDate>Mon, 30 Dec 2024 15:35:11 -0300</pubDate>
-      <guid>https://your_domain.com/writeups/aplet123-lactf2024/</guid>
-      <description>pwn challenge of LACTF2024 where we must exfiltrate the canary + ret2win</description>
+      <description>Room with binary exploitation challenges, 64-bit.</description>
     </item>
     <item>
       <title>PWN de Pascua Writeups</title>

