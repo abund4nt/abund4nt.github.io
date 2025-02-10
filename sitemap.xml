@@ -55,6 +55,12 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://your_domain.com/friends-blogs/</loc>
+    <lastmod>2024-07-20T22:37:45+05:30</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://your_domain.com/writeups/</loc>
     <lastmod>2024-07-20T22:37:45+05:30</lastmod>
     <changefreq>daily</changefreq>
