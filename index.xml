@@ -6,8 +6,15 @@
     <description>Recent content on </description>
     <generator>Hugo -- 0.138.0</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 07 Feb 2025 19:36:35 -0300</lastBuildDate>
+    <lastBuildDate>Tue, 11 Mar 2025 22:12:36 -0300</lastBuildDate>
     <atom:link href="https://your_domain.com/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>write4 - ROP Emporium</title>
+      <link>https://your_domain.com/writeups/write4-ropemporium/</link>
+      <pubDate>Tue, 11 Mar 2025 22:12:36 -0300</pubDate>
+      <guid>https://your_domain.com/writeups/write4-ropemporium/</guid>
+      <description>64-bit binary. ROP. Overwriting of .bss. Buffer Overflow.</description>
+    </item>
     <item>
       <title>HTB Console - HackTheBox</title>
       <link>https://your_domain.com/writeups/htb-console-htb/</link>
