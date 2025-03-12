@@ -497,7 +497,6 @@ nth paddr      vaddr      len size section type  string
 0   0x000006b4 0x004006b4 11  12   .rodata ascii nonexistent</pre>
 <p>Dado que no contamos con la cadena flag.txt en el binario (como en los desafios mas faciles de ROP Emporium), será necesario escribirla manualmente en una región de memoria controlable, como la sección .bss, y luego pasar su dirección como argumento a print_file(). Pero antes de hacer esto, ya que estamos, me gustaria explicar algunos conceptos.</p>
 <p>Al compilar un binario en Linux, este se transforma en un Executable and Linkable Format (ELF), el formato estándar para archivos ejecutables en sistemas UNIX. Este formato organiza el binario en distintas secciones de memoria, cada una con un propósito específico.</p>
-<img src="/images/elfctm.png">
 <p>
 
 
@@ -515,19 +514,12 @@ nth paddr      vaddr      len size section type  string
 
 
 
-
-  
-  
-  
-    
-  
-
-  
-
+  <img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Program_memory_layout.pdf/page1-350px-Program_memory_layout.pdf.jpg" alt="" />
 
 
 
 </p>
+<p>.</p>
 <p>Entre estas secciones, algunas permiten escritura, como la .bss. Esta sección es utilizada para almacenar variables no inicializadas en tiempo de compilación y se encuentra vacía (solo ocupando espacio lógico) hasta que el programa se ejecuta. Su principal ventaja es que cuenta con permisos de lectura/escritura (rw), lo que la convierte en un excelente objetivo para inyectar datos controlados durante la explotación. Verifcamos esto con <code>readelf</code>.</p>
 <pre><font color="#CC0000"><b>$</b></font> readelf -S write4 | grep bss -B 1
        0000000000000010  0000000000000000  WA       0     0     8
