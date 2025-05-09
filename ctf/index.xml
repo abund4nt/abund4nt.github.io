@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>CTF Writeups on Lukas Gaete</title>
+    <link>https://blog.lukas.re/ctf/</link>
+    <description>Recent content in CTF Writeups on Lukas Gaete</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 03 Feb 2025 14:40:35 -0300</lastBuildDate>
+    <atom:link href="https://blog.lukas.re/ctf/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>TryPwnMe One - TryHackMe</title>
+      <link>https://blog.lukas.re/ctf/trypwnmeone-tryhackme/</link>
+      <pubDate>Mon, 03 Feb 2025 14:40:35 -0300</pubDate>
+      <guid>https://blog.lukas.re/ctf/trypwnmeone-tryhackme/</guid>
+      <description>Room with binary exploitation challenges, 64-bit.</description>
+    </item>
+    <item>
+      <title>PWN de Pascua Writeups</title>
+      <link>https://blog.lukas.re/ctf/pwn-de-pascua-writeups/</link>
+      <pubDate>Sat, 21 Dec 2024 22:37:45 +0530</pubDate>
+      <guid>https://blog.lukas.re/ctf/pwn-de-pascua-writeups/</guid>
+      <description>Writeups of the CTF “Pwn de Pascua” challenges organized by Q4 Hacking Sessions</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Home on Lukas Gaete</title>
+    <link>https://blog.lukas.re/</link>
+    <description>Recent content in Home on Lukas Gaete</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 03 Feb 2025 14:40:35 -0300</lastBuildDate>
+    <atom:link href="https://blog.lukas.re/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>TryPwnMe One - TryHackMe</title>
+      <link>https://blog.lukas.re/ctf/trypwnmeone-tryhackme/</link>
+      <pubDate>Mon, 03 Feb 2025 14:40:35 -0300</pubDate>
+      <guid>https://blog.lukas.re/ctf/trypwnmeone-tryhackme/</guid>
+      <description>Room with binary exploitation challenges, 64-bit.</description>
+    </item>
+    <item>
+      <title>PWN de Pascua Writeups</title>
+      <link>https://blog.lukas.re/ctf/pwn-de-pascua-writeups/</link>
+      <pubDate>Sat, 21 Dec 2024 22:37:45 +0530</pubDate>
+      <guid>https://blog.lukas.re/ctf/pwn-de-pascua-writeups/</guid>
+      <description>Writeups of the CTF “Pwn de Pascua” challenges organized by Q4 Hacking Sessions</description>
+    </item>
+    <item>
+      <title>About</title>
+      <link>https://blog.lukas.re/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://blog.lukas.re/about/</guid>
+      <description>&lt;p&gt;I am Lukas Gaete 🇨🇱, a 19-year-old Security Researcher with a strong passion for cybersecurity. I currently work as a Pentester at NIVEL4 Cybersecurity, where I investigate vulnerabilities and help strengthen systems against real-world threats.&lt;/p&gt;&#xA;&lt;p&gt;My interests span across web and mobile security, reverse engineering, and low-level exploitation. I&amp;rsquo;m constantly learning, exploring new techniques, and pushing my skills further in this ever-evolving field.&lt;/p&gt;&#xA;&lt;p&gt;I&amp;rsquo;m highly driven by innovative solutions and enjoy tackling challenges with a creative mindset. I work fast and efficiently, often finding practical paths where others see obstacles. My ability to quickly analyze and adapt allows me to deliver high-impact results in short timeframes, making me a productive and resourceful member of any team.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
