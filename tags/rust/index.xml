@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Rust on Lukas Gaete</title>
+    <link>http://localhost:1313/tags/rust/</link>
+    <description>Recent content in Rust on Lukas Gaete</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 09 May 2025 09:16:30 -0400</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/rust/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to set up your Android Pentesting environment</title>
+      <link>http://localhost:1313/posts/1/how-to-set-up-your-androind-pentesting-environment/</link>
+      <pubDate>Fri, 09 May 2025 09:16:30 -0400</pubDate>
+      <guid>http://localhost:1313/posts/1/how-to-set-up-your-androind-pentesting-environment/</guid>
+      <description>A search engine overview and Rust implementation, supporting free and boolean ranked queries, efficient disk and memory usage, and spelling correction.</description>
+    </item>
+  </channel>
+</rss>
