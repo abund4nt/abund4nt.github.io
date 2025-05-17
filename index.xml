@@ -6,8 +6,15 @@
     <description>Recent content in Home on Lukas Gaete</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 03 Feb 2025 14:40:35 -0300</lastBuildDate>
+    <lastBuildDate>Fri, 09 May 2025 09:16:30 -0400</lastBuildDate>
     <atom:link href="https://blog.lukas.re/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to set up your Android Pentesting environment</title>
+      <link>https://blog.lukas.re/posts/1/how-to-set-up-your-androind-pentesting-environment/</link>
+      <pubDate>Fri, 09 May 2025 09:16:30 -0400</pubDate>
+      <guid>https://blog.lukas.re/posts/1/how-to-set-up-your-androind-pentesting-environment/</guid>
+      <description>&lt;p&gt;As cybersecurity consultants, it&amp;rsquo;s pretty common to come across Android apps that need to be audited. In this short post, I’ll show you a quick and easy way to set up your own lab to make things smoother. I’ll also share some tips on how I usually approach Android app pentesting and what I like to focus on during an assessment.&lt;/p&gt;&#xA;&lt;p&gt;A bit of theory never hurts, so here we go: First, it&amp;rsquo;s important to understand that Android applications come in .apk format. This format is a variation of Java’s .jar files and is used to package and distribute components for Android devices. Basically, an APK is just a compressed ZIP file with a different extension, which means it can be opened and inspected using any archive tool — something we’ll look at later on.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>TryPwnMe One - TryHackMe</title>
       <link>https://blog.lukas.re/ctf/trypwnmeone-tryhackme/</link>
