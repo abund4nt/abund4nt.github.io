@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en-us"
+  dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+<link rel="icon" type="image/ico" href="https:/blog.lukas.re/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https:/blog.lukas.re/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https:/blog.lukas.re/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="https:/blog.lukas.re/android-chrome-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="https:/blog.lukas.re/apple-touch-icon.png">
+
+<meta name="description" content=""/>
+
+
+
+<title>
+    
+    Subdomain Takeover - Explanation and exploitation | Lukas Gaete
+    
+</title>
+
+<link rel="canonical" href="https://blog.lukas.re/posts/2/subdomain-takeover/"/>
+
+<meta property="og:url" content="https://blog.lukas.re/posts/2/subdomain-takeover/">
+  <meta property="og:site_name" content="Lukas Gaete">
+  <meta property="og:title" content="Subdomain Takeover - Explanation and exploitation">
+  <meta property="og:description" content="While browsing the internet and reading Bug Bounty reports—specifically on HackerOne—I came across an interesting vulnerability called Subdomain Takeover. It piqued my curiosity, so I decided to dive deeper to understand how it works and the various ways it can be exploited. After this self-study session, I’m sharing this post to explain what this vulnerability is all about.
+What is a Subdomain Takeover? # A Subdomain Takeover occurs when an attacker gains control over a subdomain of a target domain. This typically happens when the subdomain’s DNS record, usually a CNAME, points to an external service that is no longer in use or doesn’t exist. Because the resource on the external platform has been deleted or abandoned, an attacker can claim it and take full control of the subdomain.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-05-09T09:16:30-04:00">
+    <meta property="article:modified_time" content="2025-05-09T09:16:30-04:00">
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/assets/combined.min.a5c0c5446403b9dbdf88114f06fe485a27d44a4d0c018bf53c7216ef7256e076.css" media="all">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+</head>
+
+
+
+
+
+
+
+<body class="dark">
+
+  <div class="content">
+    <header>
+      
+
+<div class="header">
+
+    
+
+    <h1 class="header-title">
+        <a href="https://blog.lukas.re/">Lukas Gaete</a>
+    </h1>
+
+    <div class="header-menu">
+        
+
+        
+        
+
+        <p
+            class="small ">
+            <a href="/" >
+                /home
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/posts" >
+                /posts
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/ctf" >
+                /ctf
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/about" >
+                /about
+            </a>
+        </p>
+        
+        
+    </div>
+
+    
+
+</div>
+
+    </header>
+
+    <main class="main">
+      
+
+
+
+
+<div class="breadcrumbs"><a href="/">Home</a><span class="breadcrumbs-separator">/</span><a href="/posts/">Posts</a><span class="breadcrumbs-separator">/</span>
+        <a href="/posts/2/subdomain-takeover/">Subdomain Takeover - Explanation and exploitation</a></div>
+
+
+<div  class="autonumber" >
+  <article>
+    <header class="single-intro-container">
+        
+        <h1 class="single-title">Subdomain Takeover - Explanation and exploitation</h1>
+    
+        <p class="single-readtime">
+          <time datetime="2025-05-09T09:16:30-04:00">May 9, 2025</time>
+          &nbsp; · &nbsp;3 min read
+        </p>
+    </header>
+      <aside class="toc">
+        <p><strong>Table of contents</strong></p>
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#what-is-a-subdomain-takeover">What is a Subdomain Takeover?</a></li>
+    <li><a href="#how-does-it-happen">How Does It Happen?</a></li>
+    <li><a href="#exploitation-example-using-my-own-domain">Exploitation example using my own domain</a></li>
+  </ul>
+</nav>
+      </aside>
+    
+    <div class="single-content">
+      <p>While browsing the internet and reading Bug Bounty reports—specifically on HackerOne—I came across an interesting vulnerability called Subdomain Takeover. It piqued my curiosity, so I decided to dive deeper to understand how it works and the various ways it can be exploited. After this self-study session, I’m sharing this post to explain what this vulnerability is all about.</p>
+<h2 class="heading" id="what-is-a-subdomain-takeover">
+  What is a Subdomain Takeover?
+  <a class="anchor" href="#what-is-a-subdomain-takeover">#</a>
+</h2>
+<p>A Subdomain Takeover occurs when an attacker gains control over a subdomain of a target domain. This typically happens when the subdomain’s DNS record, usually a CNAME, points to an external service that is no longer in use or doesn’t exist. Because the resource on the external platform has been deleted or abandoned, an attacker can claim it and take full control of the subdomain.</p>
+<p>To better understand this, think of a subdomain like a power outlet on a wall. When you plug in your own device, everything works as expected. But if you leave the outlet empty—or forget to plug something in—someone else could come along and connect their own device. To prevent this, you would need to turn off the power at the fuse box (in this case, the DNS). If you don’t, someone else might use that outlet without your knowledge.</p>
+<h2 class="heading" id="how-does-it-happen">
+  How Does It Happen?
+  <a class="anchor" href="#how-does-it-happen">#</a>
+</h2>
+<p>Subdomain takeovers usually occur when a developer—either by accident or for some unknown reason—leaves a subdomain pointing to an external service that is no longer active. Although the external resource (such as a GitHub repository or an AWS S3 bucket) has been deleted, the DNS record (like a CNAME) remains unchanged. This oversight leaves the door open for an attacker to claim the unassigned resource and take control of the subdomain.</p>
+<p>For example, imagine a company that previously hosted a blog at blog.dominio.com using GitHub Pages. To set it up, they created a CNAME record pointing to <code>username.github.io</code>.</p>
+<p>Over time, the company stopped using the blog and deleted the GitHub repository—but forgot to remove the DNS record pointing to GitHub Pages. As a result, <code>blog.dominio.com</code> remained orphaned, still pointing to a non-existent resource.</p>
+<p>An attacker who discovers this can create a GitHub repository named <code>username.github.io</code>, upload malicious content, and gain full control over <code>blog.dominio.com</code>. This allows them to impersonate the company’s official site, potentially tricking users or stealing sensitive information.</p>
+<h2 class="heading" id="exploitation-example-using-my-own-domain">
+  Exploitation example using my own domain
+  <a class="anchor" href="#exploitation-example-using-my-own-domain">#</a>
+</h2>
+<p>As always, the best way to understand a vulnerability is through hands-on practice. While studying Subdomain Takeover, I decided to create a subdomain under my domain lukas.re that points to a non-existent GitHub repository. To do this, I set up a CNAME record pointing to exampletakeover777.github.io.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+<figure class="">
+
+    <div class="img-container" >
+        <img loading="lazy" alt="" src="https://i.postimg.cc/j5ZvTzKG/imagen.png" >
+    </div>
+
+    
+</figure>
+</p>
+<p>Now, imagine an attacker runs a DNS query (a DIG command) on this subdomain and discovers that it points to an unused CNAME, and that the corresponding GitHub username does not exist.</p>
+<p>pineco8373</p>
+
+    </div>
+  </article>
+
+  
+
+  
+
+  
+  
+
+<div class="single-pagination">
+    <hr />
+
+    <div class="flexnowrap">
+
+        <div class="single-pagination-prev">
+            
+        </div>
+
+        <div class="single-pagination-next">
+            
+            <div class="single-pagination-container-next">
+                <div class="single-pagination-text">
+                    <a href="/posts/1/how-to-set-up-your-androind-pentesting-environment/">
+                        How to set up your Android Pentesting environment
+                    </a>
+                </div>
+                <div class="single-pagination-text">→</div>
+            </div>
+            
+        </div>
+
+    </div>
+
+    <hr />
+</div>
+
+
+
+  
+
+  
+
+  
+  <div class="back-to-top">
+    <a href="#top">
+      back to top
+    </a>
+  </div>
+  
+
+</div>
+
+
+    </main>
+  </div>
+
+  
+  
+
+
+
+
+
+    
+
+
+
+
+  <footer>
+    
+
+    
+    
+
+
+
+
+
+    
+
+
+
+
+    
+    <p>Powered by
+        <a href="https://gohugo.io/">Hugo</a>
+        and
+        <a href="https://github.com/tomfran/typo">tomfran/typo</a>
+    </p>
+    
+    
+    
+
+
+  </footer>
+
+  
+  <link rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css">
+<script defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js"></script>
+
+<script defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body);"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false }
+      ]
+    });
+  });
+</script>
+  
+</body>
+
+<script src="/js/theme-switch.js"></script>
+<script defer src="/js/copy-code.js"></script>
+</html>
