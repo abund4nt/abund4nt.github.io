@@ -150,6 +150,7 @@ pre {
     color: var(--preformatted-text-color);
     overflow-x: auto;
     border-radius: 5px;
+    
 }
 
 pre:focus {
