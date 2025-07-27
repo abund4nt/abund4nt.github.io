@@ -2,19 +2,19 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://example.org/</loc>
+    <loc>https://blog.lukas.re/</loc>
     <lastmod>2025-02-03T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://example.org/post/set-up-your-android-pentesting-environment/</loc>
+    <loc>https://blog.lukas.re/post/set-up-your-android-pentesting-environment/</loc>
     <lastmod>2025-02-03T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://example.org/post/</loc>
+    <loc>https://blog.lukas.re/post/</loc>
     <lastmod>2025-02-03T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://example.org/about/</loc>
+    <loc>https://blog.lukas.re/about/</loc>
   </url><url>
-    <loc>https://example.org/categories/</loc>
+    <loc>https://blog.lukas.re/categories/</loc>
   </url><url>
-    <loc>https://example.org/tags/</loc>
+    <loc>https://blog.lukas.re/tags/</loc>
   </url>
 </urlset>
