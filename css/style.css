@@ -146,10 +146,9 @@ pre, code {
 
 pre {
     padding: 10px;
-    background-color: var(--preformatted-background-color);
+    background-color: black;
     color: var(--preformatted-text-color);
     overflow-x: auto;
-    border: 4px solid var(--preformatted-background-color);
     border-radius: 5px;
 }
 
@@ -277,4 +276,13 @@ img.u-photo {
 
 .inline-icon path {
     fill: var(--text-color);
+}
+
+p {
+    text-align: justify;
+}
+
+/* Imágenes dentro del contenido principal */
+.content img {
+  max-width: 100%;
 }
