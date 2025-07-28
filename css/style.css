@@ -143,6 +143,9 @@ a.nav-item:hover {
 pre, code {
     font-family: 'SF Mono', 'Consolas', monospace;
     font-size: 14px;
+    background-color: black;
+    border-radius: 5px;
+    padding: 1.5px;
 }
 
 pre {
