@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.138.0">
+    <title>Lukas Blog</title><link rel="stylesheet" href="https://blog.lukas.re/css/colors-default-dark.css">
+    <link rel="stylesheet" href="https://blog.lukas.re/css/style.css">
+    
+</head>
+
+    <body>
+        <div class="site-content">
+            <header>
+                <div class="header-container">
+    <div class="site-header">
+        <a class="site-header" href="https://blog.lukas.re/">Lukas Blog</a>
+    </div>
+    <div class="site-nav">
+        <nav aria-label="Site menu" class="site-nav"><a class="nav-item active first" href="/post/">posts</a><a class="nav-item last" href="/about/">about</a>
+        </nav>
+    </div>
+</div>
+
+            </header>
+            <main class="content">
+                
+<article class="h-entry">
+    <div class="post-metadata">
+        <h1 class="post-title p-name">Solving the Secure Code Review Challenges by dub-flow</h1>
+        <p class="post-date">
+            <span class="post-date">
+                Published on
+                <a class="u-url" href="https://blog.lukas.re/post/secure-code-review-challenges/"><time class="dt-published" datetime="2025-08-05T00:00:00Z">August 5, 2025</time></a>
+                by <img class="u-photo" alt="" src="https://blog.lukas.re/images/i.jpg"> <a class="p-author h-card" rel="author" href="https://blog.lukas.re/">Lukas Gaete</a>
+            </span>
+        </p>
+    </div>
+    <div class="post-content e-content">
+        <p>In this post, we’ll go through and solve all the challenges from the Secure Code Review Challenges repository by dub-flow. These exercises are designed to test and improve your ability to spot and understand common security issues in source code. Whether you’re just getting started or sharpening your review skills, this walkthrough will guide you step by step through each challenge.</p>
+<center><img src="/images/secure-code-challenges/dubflow.png" width=550px></center>
+<h2 id="challenge-01">challenge-01</h2>
+<p>We are given the source code of a web application written in Python.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> flask <span style="color:#f92672">import</span> Flask, request, redirect, url_for
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> logging
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>app <span style="color:#f92672">=</span> Flask(__name__)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>logging<span style="color:#f92672">.</span>basicConfig(level<span style="color:#f92672">=</span>logging<span style="color:#f92672">.</span>INFO)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">is_authenticated_user</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># This function checks if the user is authenticated and is omitted for brevity</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">pass</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.route</span>(<span style="color:#e6db74">&#39;/&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">home</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> is_authenticated_user():
+</span></span><span style="display:flex;"><span>        logging<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#39;Unauthorized access attempt.&#39;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> redirect(url_for(<span style="color:#e6db74">&#39;login&#39;</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    redirect_url <span style="color:#f92672">=</span> request<span style="color:#f92672">.</span>args<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#39;redirect_url&#39;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> redirect_url:
+</span></span><span style="display:flex;"><span>        logging<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Redirecting to: </span><span style="color:#e6db74">{</span>redirect_url<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> redirect(redirect_url)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#39;Welcome to the home page!&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.route</span>(<span style="color:#e6db74">&#39;/login&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">login</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Simulated login page</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#39;Login Page - User authentication goes here.&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;__main__&#39;</span>:
+</span></span><span style="display:flex;"><span>    app<span style="color:#f92672">.</span>run(debug<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)
+</span></span></code></pre></div><p>This is a web application built using the Flask framework. It defines a function called <code>is_authenticated_user</code>, which is omitted from the code since it is not relevant for this context. The application has tho main routes: the root route (<code>/</code>), which serves as the home page, and the <code>/login</code> route, which simulates a login page for user authentication.</p>
+<p>The key logic is within the home route. If the user is not authenticated, the aplication logs an unauthorized acces attempt and redirects the user to the login page. If the user is authenticated and a <code>redirect_url</code> parameter is present in the request, the application logs the redirection and forwards the user to that specified URL. Otherwhise, ti simply returns a welcome message.</p>
+<h2 id="challenge-02">challenge-02</h2>
+<p>We are given th source code of a web application written in JavaScript.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">express</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;express&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">axios</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;axios&#39;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">app</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">express</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">app</span>.<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#39;/profile&#39;</span>, (<span style="color:#a6e22e">req</span>, <span style="color:#a6e22e">res</span>) =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;Received request for /profile&#39;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Simulated profile data
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">profileData</span> <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;John Doe&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">role</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;Developer&#39;</span>
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">json</span>(<span style="color:#a6e22e">profileData</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;Sent profile data response&#39;</span>);
+</span></span><span style="display:flex;"><span>});
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">app</span>.<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#39;/fetch-data&#39;</span>, <span style="color:#66d9ef">async</span> (<span style="color:#a6e22e">req</span>, <span style="color:#a6e22e">res</span>) =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">url</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">query</span>.<span style="color:#a6e22e">url</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">`Received request for /fetch-data with URL: </span><span style="color:#e6db74">${</span><span style="color:#a6e22e">url</span><span style="color:#e6db74">}</span><span style="color:#e6db74">`</span>);
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">response</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">axios</span>.<span style="color:#a6e22e">get</span>(<span style="color:#a6e22e">url</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">send</span>(<span style="color:#a6e22e">response</span>.<span style="color:#a6e22e">data</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">`Data fetched and sent for URL: </span><span style="color:#e6db74">${</span><span style="color:#a6e22e">url</span><span style="color:#e6db74">}</span><span style="color:#e6db74">`</span>);
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">catch</span> (<span style="color:#a6e22e">error</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">error</span>(<span style="color:#e6db74">`Error fetching data from URL: </span><span style="color:#e6db74">${</span><span style="color:#a6e22e">url</span><span style="color:#e6db74">}</span><span style="color:#e6db74">`</span>, <span style="color:#a6e22e">error</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">status</span>(<span style="color:#ae81ff">500</span>).<span style="color:#a6e22e">send</span>(<span style="color:#e6db74">&#39;Error fetching data&#39;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>});
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">app</span>.<span style="color:#a6e22e">listen</span>(<span style="color:#ae81ff">3000</span>, () =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;Server running on port 3000&#39;</span>);
+</span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><p>This is a web application built using the Express framework. It defines two main routes: <code>/profiles</code>, which returns simulated user profile data as JSON, and <code>/fetch-data</code>, which accepts a <code>url</code> parameter via the query string and fetches data from that URL using the Axios library.</p>
+<p>The key issue lies within <code>/fetch-data</code> route. It takes the <code>url</code> parameter directly from the user request without any validation or restrictions and uses it to make and HTTP GET request. This allows an attacker to supply aribitrary URLs, potentially causing the server to request internal or sensitive resources whithin a private network, a vulnerability known as Server-Side Request Forgery (SSRF). As a result, the attacker can exploit this to access protected internal services or malicious endpoints.</p>
+<p>To exploit this, we can use the curl command and send the url parameter with any URL we want in the request. We can see that the server fetches and returns the data from that URL. Unlike an open redirect, if we point it to an internal address, the server will actually resolve and fetch it. In this example, I didn’t test that, but it is possible.</p>
+<pre><font color="#CC0000"><b>$</b></font> curl http://localhost:3000/fetch-data\?url\=https://blog.lukas.re/
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+    &lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;meta name=&quot;generator&quot; content=&quot;Hugo 0.138.0&quot;&gt;
+    &lt;title&gt;Lukas Blog&lt;/title&gt;&lt;link rel=&quot;stylesheet&quot; href=&quot;https://blog.lukas.re/css/colors-default-dark.css&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://blog.lukas.re/css/style.css&quot;&gt;
+    &lt;link rel=&quot;alternate&quot; type=&quot;application/rss+xml&quot; href=&quot;https://blog.lukas.re/index.xml&quot; title=&quot;Lukas Blog&quot;&gt;
+    
+&lt;/head&gt;
+
+    &lt;body&gt;
+        &lt;div class=&quot;site-content&quot;&gt;
+            &lt;header&gt;
+                &lt;div class=&quot;header-container&quot;&gt;
+    &lt;div class=&quot;site-header&quot;&gt;
+        &lt;a class=&quot;site-header&quot; href=&quot;https://blog.lukas.re/&quot;&gt;Lukas Blog&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;site-nav&quot;&gt;
+        &lt;nav aria-label=&quot;Site menu&quot; class=&quot;site-nav&quot;&gt;&lt;a class=&quot;nav-item first&quot; href=&quot;/post/&quot;&gt;posts&lt;/a&gt;&lt;a class=&quot;nav-item last&quot; href=&quot;/about/&quot;&gt;about&lt;/a&gt;
+        &lt;/nav&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+            &lt;/header&gt;
+            &lt;main class=&quot;content&quot;&gt;
+                
+&lt;img alt=&quot;Ellingson Mineral Company&quot; style=&quot;display:block;margin-left:auto;margin-right:auto;max-width:100%;height:auto;&quot; src=&quot;images/i.png&quot;&gt;
+&lt;p&gt;&lt;strong&gt;Welcome to my blog!&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Here you&amp;rsquo;ll find content about cybersecurity, AI, personal projects, and more.&lt;/p&gt;
+
+
+            &lt;/main&gt;
+            &lt;footer&gt;&lt;div class=&quot;footer-container&quot;&gt;
+    &lt;div class=&quot;h-card bio&quot;&gt;
+&lt;p&gt;
+    &lt;a class=&quot;u-url&quot; href=&quot;https://blog.lukas.re/&quot;&gt;Lukas Blog&lt;/a&gt;
+    created by &lt;img class=&quot;u-photo&quot; alt=&quot;&quot; src=&quot;https://blog.lukas.re/images/i.jpg&quot;&gt; &lt;span class=&quot;p-name&quot; rel=&quot;me&quot;&gt;Lukas Gaete&lt;/span&gt;
+        (&lt;span class=&quot;u-pronoun&quot;&gt;they&lt;/span&gt;/&lt;span class=&quot;u-pronoun&quot;&gt;them&lt;/span&gt; pronouns.
+&lt;/p&gt;
+
+&lt;/div&gt;&lt;div class=&quot;footer-text footer-right&quot;&gt;
+        &lt;p&gt;
+            Stay focus 🧠.
+        &lt;/p&gt;
+    &lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;h-card social&quot;&gt;
+    &lt;a class=&quot;u-url&quot; rel=&quot;me&quot; aria-label=&quot;email&quot; href=&quot;/cdn-cgi/l/email-protection#026360776c66366c764272706d766d6c2c6f67&quot;&gt;&lt;span class=&quot;social-icon&quot; &gt;&lt;/span&gt;&lt;/a&gt;
+&lt;a class=&quot;u-url&quot; rel=&quot;me&quot; aria-label=&quot;github&quot; href=&quot;https://github.com/abund4nt&quot;&gt;&lt;span class=&quot;social-icon&quot; &gt;&lt;/span&gt;&lt;/a&gt;
+&lt;/div&gt;
+&lt;/footer&gt;
+        &lt;/div&gt;
+    &lt;script data-cfasync=&quot;false&quot; src=&quot;/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js&quot;&gt;&lt;/script&gt;&lt;/body&gt;</pre>
+    </div>
+</article>
+
+            </main>
+            <footer><div class="footer-container">
+    <div class="h-card bio">
+<p>
+    <a class="u-url" href="https://blog.lukas.re/">Lukas Blog</a>
+    created by <img class="u-photo" alt="" src="https://blog.lukas.re/images/i.jpg"> <span class="p-name" rel="me">Lukas Gaete</span>
+        (<span class="u-pronoun">they</span>/<span class="u-pronoun">them</span> pronouns.
+</p>
+
+</div><div class="footer-text footer-right">
+        <p>
+            Stay focus 🧠.
+        </p>
+    </div></div>
+<div class="h-card social">
+    <a class="u-url" rel="me" aria-label="email" href="mailto:abund4nt@proton.me"><span class="social-icon" ></span></a>
+<a class="u-url" rel="me" aria-label="github" href="https://github.com/abund4nt"><span class="social-icon" ></span></a>
+</div>
+</footer>
+        </div>
+    </body>
+</html>

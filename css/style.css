@@ -23,7 +23,7 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
     font-weight: 400;
-    margin-top: 0;
+    margin-top: 10;
     margin-bottom: 0;
 }
 
@@ -143,9 +143,12 @@ a.nav-item:hover {
 pre, code {
     font-family: 'SF Mono', 'Consolas', monospace;
     font-size: 14px;
-    background-color: black;
     border-radius: 5px;
-    padding: 1.5px;
+    padding: 0px;
+}
+
+code {
+    background-color: black;
 }
 
 pre {
