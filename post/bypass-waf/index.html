@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.138.0">
+    <title>Lukas Blog</title><link rel="stylesheet" href="https://blog.lukas.re/css/colors-default-dark.css">
+    <link rel="stylesheet" href="https://blog.lukas.re/css/style.css">
+    
+</head>
+
+    <body>
+        <div class="site-content">
+            <header>
+                <div class="header-container">
+    <div class="site-header">
+        <a class="site-header" href="https://blog.lukas.re/">Lukas Blog</a>
+    </div>
+    <div class="site-nav">
+        <nav aria-label="Site menu" class="site-nav"><a class="nav-item active first" href="/post/">posts</a><a class="nav-item last" href="/about/">about</a>
+        </nav>
+    </div>
+</div>
+
+            </header>
+            <main class="content">
+                
+<article class="h-entry">
+    <div class="post-metadata">
+        <h1 class="post-title p-name">Tips to Bypass WAFs</h1>
+        <p class="post-date">
+            <span class="post-date">
+                Published on
+                <a class="u-url" href="https://blog.lukas.re/post/bypass-waf/"><time class="dt-published" datetime="2025-08-29T00:00:00Z">August 29, 2025</time></a>
+                by <img class="u-photo" alt="" src="https://blog.lukas.re/images/i.jpg"> <a class="p-author h-card" rel="author" href="https://blog.lukas.re/">Lukas Gaete</a>
+            </span>
+        </p>
+    </div>
+    <div class="post-content e-content">
+        <center><img src="/images/bypass-waf/image.png" width=500px></center>
+<p>When conducting a web security audit, it is common to encounter a WAF (Web Application Firewall), a security layer designed to detect and block exploitation attempts. While this protection adds security to the application, it can also significantly hinder the auditor’s work, preventing the validation of the real impact of certain findings.</p>
+<p>In this post, I’ll share some of the tricks and techniques I use when auditing applications protected by a WAF, but before diving into that, it’s important to understand what a WAF is, how it works, and its limitations.</p>
+<h2 id="what-is-a-waf-and-how-does-it-work">what is a waf and how does it work?</h2>
+<p>A WAF (Web Application Firewall) is a security system that acts as an intermediary between the client and the web application, analyzing HTTP/HTTPS traffic to detect and block malicious requests. Its main purpose is to protect against common attacks such as SQL Injection, Cross-Site Scripting (XSS), Remote File Inclusion (RFI), and other exploitation vectors described in the OWASP Top 10. Unlike a traditional firewall, which filters packets at the network or transport layers, a WAF operates at the application layer (Layer 7 of the OSI model), allowing it to thoroughly inspect the content of requests and responses.</p>
+<p>The operation of a WAF is based on applying security rules and policies that identify suspicious patterns in web requests. These rules may follow a blacklist approach (blocking known malicious traffic) or a whitelist approach (only allowing trusted traffic). Many modern WAFs leverage machine learning and behavioral analysis to detect anomalies that do not match previously known patterns. Depending on its configuration, a WAF can run in detection mode (monitoring) or prevention mode (blocking), making it a key component in the defense-in-depth strategy for Internet-exposed applications.</p>
+<h2 id="tip-1-use-security-trails-to-view-historical-ip-addresses">tip 1: use security trails to view historical ip addresses.</h2>
+<p>An initial technique when auditing applications protected by a WAF is to investigate the underlying infrastructure. For this, SecurityTrails can be used—a platform that provides historical domain information, DNS records, IP addresses, and other infrastructure data. By entering the domain of a WAF-protected website, it is possible that some historical IP records reveal the real server IP, which can be useful for understanding the site’s architecture and planning further tests, always within a legal and authorized scope.</p>
+<blockquote>
+<p><em>Below we can see an image showing where we need to go when entering the domain</em></p>
+</blockquote>
+<center><img src="/images/bypass-waf/image2.png" width=750px></center>
+<h2 id="tip-2-exploiting-the-maximum-analysis-limit-of-wafs">tip 2: exploiting the maximum analysis limit of WAFs.</h2>
+<p>From my experience, this technique works intermittently, as it depends on the specific WAF implementation. Most WAFs analyze requests only up to a maximum size limit; when the request contains too much data, the WAF does not fully inspect it and allows the request to pass.</p>
+<p>For example, in a post by <a href="https://x.com/k_firsov/status/1937084844174934025">@k_firsov</a>, it is shown how he managed to bypass Cloudflare Enterprise, whose WAF inspects requests up to 128 KB. This allows that if we inject a payload that would normally be detected, we can pad the request with extra data to increase its size, causing the WAF to miss it and letting the request pass undetected.</p>
+<p>For this technique, you can use the Burp Suite extension <a href="https://github.com/assetnote/nowafpls">nowafpls</a>, which allows adding extra data to a request to increase its size. The same repository also includes a PoC (Proof of Concept) demonstrating how to bypass an Akamai WAF.</p>
+<blockquote>
+<p>this video was extracted from the repository.</p>
+</blockquote>
+<center><video width="640" height="360" controls><source src="/images/bypass-waf/328069847-dad77c3a-d550-4e5d-894d-027256137148.mp4" type="video/mp4"></video></center>
+<h2 id="tip-3-create-the-payload-manually">tip 3: create the payload manually</h2>
+<p>The third tip involves designing and building the payload manually, rather than relying solely on automated tools. This technique is the most challenging, as it requires a deep understanding of the application’s behavior, the structure of requests, and the specific rules enforced by the WAF. By creating the payload manually, it is possible to experiment with different formats, encodings, and patterns to attempt evasion of the security protection.</p>
+<p>However, it is important to note that some vulnerabilities may be nearly impossible to exploit, even using advanced manual techniques. The success of this approach depends on the auditor’s creativity and detailed analysis of both the WAF and the application, as well as the ability to innovate by combining multiple evasion strategies.</p>
+<h2 id="conclusion">conclusion</h2>
+<p>bypassing a WAF is not an easy task. I created this post with the intention of giving readers some practical techniques and strategies that can be used when facing a security audit where the application is protected by a WAF. Although every WAF is different and not all vulnerabilities will be exploitable, these techniques provide a solid starting point for planning more advanced testing and analysis.</p>
+
+    </div>
+</article>
+
+            </main>
+            <footer><div class="footer-container">
+    <div class="h-card bio"></div><div class="footer-text footer-right">
+        <p>
+            Stay focus 🧠.
+        </p>
+    </div></div>
+<div class="h-card social">
+    <a class="u-url" rel="me" aria-label="email" href="mailto:abund4nt@proton.me"><span class="social-icon" ></span></a>
+<a class="u-url" rel="me" aria-label="github" href="https://github.com/abund4nt"><span class="social-icon" ></span></a>
+</div>
+</footer>
+        </div>
+    </body>
+</html>

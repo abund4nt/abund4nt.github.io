@@ -3,13 +3,13 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://blog.lukas.re/</loc>
-    <lastmod>2025-08-05T00:00:00+00:00</lastmod>
+    <lastmod>2025-08-29T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.lukas.re/post/</loc>
-    <lastmod>2025-08-05T00:00:00+00:00</lastmod>
+    <lastmod>2025-08-29T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.lukas.re/post/secure-code-review-challenges/</loc>
-    <lastmod>2025-08-05T00:00:00+00:00</lastmod>
+    <loc>https://blog.lukas.re/post/bypass-waf/</loc>
+    <lastmod>2025-08-29T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.lukas.re/post/set-up-your-android-pentesting-environment/</loc>
     <lastmod>2025-02-03T00:00:00+00:00</lastmod>
